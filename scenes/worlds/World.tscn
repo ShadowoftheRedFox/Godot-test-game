@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://c2xp34gehb5i1"]
+
+[ext_resource type="PackedScene" uid="uid://26srdfxbxw6k" path="res://scenes/entities/Player.tscn" id="1_88g73"]
+[ext_resource type="Script" uid="uid://cqiafggmdvg12" path="res://scripts/worlds/world.gd" id="1_rnjhf"]
+
+[node name="World" type="Node3D" unique_id=1385780268]
+script = ExtResource("1_rnjhf")
+
+[node name="Player" parent="." unique_id=319123823 instance=ExtResource("1_88g73")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2267694, 0)
+
+[node name="Chunks" type="Node3D" parent="." unique_id=1833679892]
