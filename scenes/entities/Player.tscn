@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://26srdfxbxw6k"]
+
+[ext_resource type="Script" uid="uid://cu4dw5hrdfbt5" path="res://scripts/entities/player.gd" id="1_g13of"]
+[ext_resource type="Script" uid="uid://blq5m27trpujb" path="res://scripts/components/input_component.gd" id="2_o7et6"]
+[ext_resource type="Script" uid="uid://d4kj4whqt3giv" path="res://scripts/components/move_component.gd" id="3_24gqh"]
+[ext_resource type="Script" uid="uid://bvixwki5ss1pa" path="res://scripts/components/health_component.gd" id="4_yjynp"]
+[ext_resource type="Script" uid="uid://ce4h2mdshhcdv" path="res://scripts/components/camera_component.gd" id="5_j1g85"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2m2ha"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_g13of"]
+
+[node name="Player" type="CharacterBody3D" unique_id=319123823]
+script = ExtResource("1_g13of")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=455517292]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_2m2ha")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1090582167]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_g13of")
+
+[node name="CameraAnchor" type="Node3D" parent="." unique_id=513150611]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraAnchor" unique_id=1612577861]
+current = true
+
+[node name="InputComponent" type="Node" parent="." unique_id=931172106]
+unique_name_in_owner = true
+script = ExtResource("2_o7et6")
+metadata/_custom_type_script = "uid://blq5m27trpujb"
+
+[node name="MoveComponent" type="Node" parent="." unique_id=634600859 node_paths=PackedStringArray("body", "model", "camera")]
+unique_name_in_owner = true
+script = ExtResource("3_24gqh")
+body = NodePath("..")
+model = NodePath("../MeshInstance3D")
+camera = NodePath("../CameraAnchor/Camera3D")
+metadata/_custom_type_script = "uid://d4kj4whqt3giv"
+
+[node name="HealthComponent" type="Node" parent="." unique_id=1008136294]
+unique_name_in_owner = true
+script = ExtResource("4_yjynp")
+metadata/_custom_type_script = "uid://bvixwki5ss1pa"
+
+[node name="CameraComponent" type="Node" parent="." unique_id=635656344 node_paths=PackedStringArray("camera")]
+unique_name_in_owner = true
+script = ExtResource("5_j1g85")
+camera = NodePath("../CameraAnchor/Camera3D")
+metadata/_custom_type_script = "uid://ce4h2mdshhcdv"
