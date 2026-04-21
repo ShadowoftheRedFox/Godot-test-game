@@ -7,49 +7,65 @@ const CHUNK = preload("uid://dtqtgvf43ympc")
 
 @export var chunk_size := 10
 
-@export var render_distance := 2
-var loaded_chunks: Array[WorldChunk] = []
+@export var render_distance := 5
+var loaded_chunks: Array[StringName] = []
 
-var current_pos := Vector2i.ZERO
-var old_pos := Vector2i.ZERO
+var ray: RayCast3D
+var last_chunk: WorldChunk = null
 
 func _ready() -> void:
 	assert(render_distance>=1, "Invalid render distance")
 	assert(chunk_size>=1, "Invalid chunk size")
 	
-	# create first chunks
-	for x in range(render_distance*2+1):
-		for y in range(render_distance*2+1):
-			create_chunk(Vector2i(x-render_distance, y-render_distance))
+	# make sure render distance is odd
+	render_distance = render_distance + (1 - render_distance % 2)
+	
+	create_chunk_section()
+	create_raycast()
 
 func _process(_delta: float) -> void:
-	# check where the player is to generate more chunk (centered)
-	current_pos = Vector2i((int)(player.position.x / (chunk_size)), (int)(player.position.z / (chunk_size)))
-	
-	# update chunks render
-	if current_pos != old_pos:
-		old_pos = current_pos
-		print("new pos: " + str(current_pos))
-		update_chunk()
+	# check chunk changed
+	var collide := ray.get_collider()
+	if collide == null:
+		return
 
-func create_chunk(pos: Vector2i) -> void:
+	var collided_chunk := (collide as StaticBody3D).get_parent() as WorldChunk
+	if last_chunk != collided_chunk:
+		last_chunk = collided_chunk
+		create_chunk_section(last_chunk.global_position)
+
+func create_chunk_section(current_position: Vector3 = Vector3.ZERO):
+	var half_render_distance := render_distance / 2.0
+	for i in range(render_distance * render_distance):
+		var half_point := Vector3(((i % render_distance) - half_render_distance) * chunk_size,
+		0,
+		((i / render_distance) - half_render_distance) * chunk_size)
+		# center the player on the middle of the center chunk
+		var offset := current_position + half_point + Vector3(chunk_size / 2.0, 0, chunk_size / 2.0)
+		var chunk_name := StringName("c_" + str(offset.x) + "X" + str(offset.z))
+		if chunk_name in loaded_chunks:
+			continue
+		else:
+			create_chunk(offset, chunk_name)
+
+func create_chunk(pos: Vector3, name: StringName) -> void:
 	var chunk: WorldChunk = CHUNK.instantiate()
 	chunk.world_controller = self
 	chunk.pos = pos
-	loaded_chunks.append(chunk)
+	chunk.name = name
+	loaded_chunks.append(name)
 	chunks.add_child(chunk)
+	chunk.create_chunk()
 
-func update_chunk() -> void:
-	var to_remove: Array[WorldChunk] = []
-	for i in range(loaded_chunks.size()):
-		var c: WorldChunk = loaded_chunks[i]
-		print("distance to " + str(c.pos) + ": " + str(c.pos.distance_squared_to(current_pos)))
-		if c.pos.distance_squared_to(current_pos) >= (render_distance+1)*(render_distance+1):
-			c.erase()
-			c.queue_free()
-			to_remove.append(c)
+func create_raycast() -> void:
+	ray = RayCast3D.new()
 	
-	for c in to_remove:
-		loaded_chunks.remove_at(loaded_chunks.find(c))
+	ray.target_position.y = -1000
+	ray.collision_mask = 2 # ChunkRayCastMask
 	
-	#TODO create new chunks
+	ray.name = "PlayerChunkRaycast"
+	
+	ray.debug_shape_custom_color = Color.RED
+	ray.debug_shape_thickness = 5
+	
+	player.add_child(ray)

@@ -61,6 +61,10 @@ action_back={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_2="ChunkRayCastMask"
+
 [physics]
 
 common/physics_jitter_fix=0.0
