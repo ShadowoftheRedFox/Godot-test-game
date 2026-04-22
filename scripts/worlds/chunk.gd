@@ -1,8 +1,8 @@
 class_name WorldChunk extends MeshInstance3D
 
 var world_controller: WorldController = null
-var pos := Vector3.ZERO
 var lod := 1
+# same as name, but not transformed as StringName, because it somehow creates problem
 var id := ""
 
 @onready var collision_shape_3d: CollisionShape3D = $StaticBody3D/CollisionShape3D
@@ -11,10 +11,12 @@ var id := ""
 func _ready() -> void:
 	assert(world_controller != null, "No world controller")
 
-func create_chunk() -> void:
+func create_chunk(pos: Vector3, chunk_name: String) -> void:
 	position = pos
 	global_position = pos
 	
+	name = chunk_name
+	id = chunk_name
 	label_3d.text = name
 	create_mesh()
 

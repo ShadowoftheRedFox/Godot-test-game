@@ -5,9 +5,9 @@ const CHUNK = preload("uid://dtqtgvf43ympc")
 @onready var player: Player = $Player
 @onready var chunks: Node3D = $Chunks
 
-@export_range(10.0, 1000.0) var chunk_size := 10
+@export_range(10.0, 1000.0) var chunk_size := 50
 
-@export_range(3.0, 100.0, 2.0) var render_distance := 5
+@export_range(3.0, 100.0, 2.0) var render_distance := 7
 var loaded_chunks := PackedStringArray([])
 
 var ray: RayCast3D
@@ -53,13 +53,10 @@ func create_chunk_section(current_position: Vector3 = Vector3.ZERO):
 func create_chunk(pos: Vector3, chunk_name: String) -> void:
 	var chunk: WorldChunk = CHUNK.instantiate()
 	chunk.world_controller = self
-	chunk.pos = pos
-	chunk.name = chunk_name
-	chunk.id = chunk_name
 	
 	loaded_chunks.append(chunk_name)
 	chunks.add_child(chunk)
-	chunk.create_chunk()
+	chunk.create_chunk(pos, chunk_name)
 
 func create_raycast() -> void:
 	ray = RayCast3D.new()
