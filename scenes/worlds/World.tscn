@@ -10,6 +10,3 @@ script = ExtResource("1_rnjhf")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2267694, 0)
 
 [node name="Chunks" type="Node3D" parent="." unique_id=1833679892]
-
-[node name="RayCast3D" type="RayCast3D" parent="." unique_id=506827490]
-collision_mask = 0

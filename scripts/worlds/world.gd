@@ -5,10 +5,10 @@ const CHUNK = preload("uid://dtqtgvf43ympc")
 @onready var player: Player = $Player
 @onready var chunks: Node3D = $Chunks
 
-@export var chunk_size := 10
+@export_range(10.0, 1000.0) var chunk_size := 10
 
-@export var render_distance := 5
-var loaded_chunks: Array[StringName] = []
+@export_range(3.0, 100.0, 2.0) var render_distance := 5
+var loaded_chunks := PackedStringArray([])
 
 var ray: RayCast3D
 var last_chunk: WorldChunk = null
@@ -42,18 +42,22 @@ func create_chunk_section(current_position: Vector3 = Vector3.ZERO):
 		((i / render_distance) - half_render_distance) * chunk_size)
 		# center the player on the middle of the center chunk
 		var offset := current_position + half_point + Vector3(chunk_size / 2.0, 0, chunk_size / 2.0)
-		var chunk_name := StringName("c_" + str(offset.x) + "X" + str(offset.z))
-		if chunk_name in loaded_chunks:
+		var chunk_name := "chunk_" + str(offset.x) + ":" + str(offset.z)
+		
+		# if chunk_name in loaded_chunks:
+		if loaded_chunks.has(chunk_name):
 			continue
 		else:
 			create_chunk(offset, chunk_name)
 
-func create_chunk(pos: Vector3, name: StringName) -> void:
+func create_chunk(pos: Vector3, chunk_name: String) -> void:
 	var chunk: WorldChunk = CHUNK.instantiate()
 	chunk.world_controller = self
 	chunk.pos = pos
-	chunk.name = name
-	loaded_chunks.append(name)
+	chunk.name = chunk_name
+	chunk.id = chunk_name
+	
+	loaded_chunks.append(chunk_name)
 	chunks.add_child(chunk)
 	chunk.create_chunk()
 

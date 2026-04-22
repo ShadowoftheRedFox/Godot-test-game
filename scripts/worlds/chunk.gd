@@ -2,11 +2,14 @@ class_name WorldChunk extends MeshInstance3D
 
 var world_controller: WorldController = null
 var pos := Vector3.ZERO
-var collision : CollisionShape3D = null
 var lod := 1
+var id := ""
 
 @onready var collision_shape_3d: CollisionShape3D = $StaticBody3D/CollisionShape3D
 @onready var label_3d: Label3D = $Label3D
+
+func _ready() -> void:
+	assert(world_controller != null, "No world controller")
 
 func create_chunk() -> void:
 	position = pos
@@ -19,7 +22,7 @@ func create_chunk() -> void:
 func create_mesh() -> void:
 	mesh = PlaneMesh.new()
 	mesh.size = Vector2(world_controller.chunk_size, world_controller.chunk_size)
-	var subdivide_size: int = world_controller.chunk_size / lod
+	var subdivide_size: int = int(world_controller.chunk_size / lod)
 	mesh.subdivide_depth = subdivide_size
 	mesh.subdivide_width = subdivide_size
 	
@@ -38,18 +41,20 @@ func _process(_delta) -> void:
 	var rdist := world_controller.render_distance * world_controller.render_distance * world_controller.chunk_size * world_controller.chunk_size / 1.25
 	
 	if dist > rdist:
-		print("Render: " + str(rdist) + ", dist: " + str(dist)) # FIXME doesn't load centered on player
+		#print("Render: " + str(rdist) + ", dist: " + str(dist)) 
 		erase()
 		return
-	# TODO redraw LOD
-	var new_LOD = ceili((dist+1.0)/(rdist+1.0)) # FIXME doesn"t get a correct LOD
+	
+	# redraw with LOD
+	# - chunk_size to have a minimum distance before LOD
+	# * chunk_size to have the LOD depending on the current chunk size
+	var new_LOD: int = max(1, ceili(float(dist - world_controller.chunk_size) / float(rdist) * world_controller.chunk_size) ) 
 	if lod != new_LOD:
-		#print("Supposed lod: " + str(dist/4))
+		#print("Supposed lod: " + str(new_LOD))
 		lod = new_LOD
 		create_mesh()
 
 # called before getting deleted
 func erase() -> void:
-	print("erasing " + name)
-	world_controller.loaded_chunks.erase(name)
+	world_controller.loaded_chunks.erase(self.id)
 	queue_free()
