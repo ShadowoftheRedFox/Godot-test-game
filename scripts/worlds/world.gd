@@ -6,12 +6,12 @@ const CHUNK = preload("uid://dtqtgvf43ympc")
 @onready var chunks: Node3D = $Chunks
 
 @export_range(10.0, 1000.0) var chunk_size := 50
-
 @export_range(3.0, 100.0, 2.0) var render_distance := 7
-var loaded_chunks := PackedStringArray([])
+@export var noises: Array[NoiseComponent] = []
 
-var ray: RayCast3D
+var loaded_chunks := PackedStringArray([])
 var last_chunk: WorldChunk = null
+var ray: RayCast3D
 
 func _ready() -> void:
 	assert(render_distance>=1, "Invalid render distance")
@@ -52,7 +52,7 @@ func create_chunk_section(current_position: Vector3 = Vector3.ZERO):
 
 func create_chunk(pos: Vector3, chunk_name: String) -> void:
 	var chunk: WorldChunk = CHUNK.instantiate()
-	chunk.world_controller = self
+	chunk.world_controller = self as WorldController
 	
 	loaded_chunks.append(chunk_name)
 	chunks.add_child(chunk)

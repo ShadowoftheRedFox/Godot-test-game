@@ -2,9 +2,20 @@
 
 [ext_resource type="PackedScene" uid="uid://26srdfxbxw6k" path="res://scenes/entities/Player.tscn" id="1_88g73"]
 [ext_resource type="Script" uid="uid://cqiafggmdvg12" path="res://scripts/worlds/world.gd" id="1_rnjhf"]
+[ext_resource type="Script" uid="uid://cjuqnayg06q4w" path="res://scripts/components/noise_component.gd" id="2_ttlxp"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ttlxp"]
+domain_warp_fractal_type = 0
+domain_warp_fractal_gain = 0.875
+
+[sub_resource type="Resource" id="Resource_y72ey"]
+script = ExtResource("2_ttlxp")
+noise = SubResource("FastNoiseLite_ttlxp")
+metadata/_custom_type_script = "uid://cjuqnayg06q4w"
 
 [node name="World" type="Node3D" unique_id=1385780268]
 script = ExtResource("1_rnjhf")
+noises = Array[ExtResource("2_ttlxp")]([SubResource("Resource_y72ey")])
 
 [node name="Player" parent="." unique_id=319123823 instance=ExtResource("1_88g73")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2267694, 0)

@@ -9,6 +9,7 @@ class_name MoveComponent extends Node
 
 var direction := Vector2.ZERO
 var wants_jump := false
+var flying := false
 
 func update(delta: float) -> void:
 	if body == null:
@@ -18,7 +19,11 @@ func update(delta: float) -> void:
 	if wants_jump && body.is_on_floor():
 		body.velocity.y = jump_force
 	elif not body.is_on_floor():
-		body.velocity.y += body.get_gravity().y * delta
+		if wants_jump:
+			# TODO raise and lower when flying
+			flying = not flying
+		if not flying:
+			body.velocity.y += body.get_gravity().y * delta
 	wants_jump = false
 	
 	# move in the direction of the camera (body rotation)

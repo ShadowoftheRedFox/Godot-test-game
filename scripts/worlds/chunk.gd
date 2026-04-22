@@ -19,21 +19,49 @@ func create_chunk(pos: Vector3, chunk_name: String) -> void:
 	id = chunk_name
 	label_3d.text = name
 	create_mesh()
+	
+func apply_noise() -> void:
+	var sTool = SurfaceTool.new()
+	var dataTool = MeshDataTool.new()
+	var noise := world_controller.noises[0].noise
+	var strength := world_controller.noises[0].strength
+	
+	noise.offset = position
+	sTool.clear()
+	sTool.create_from(mesh, 0)
+	var array_mesh = sTool.commit()
+	dataTool.clear()
+	dataTool.create_from_surface(array_mesh, 0)
+	var vertex_count = dataTool.get_vertex_count()
+	for i in range(vertex_count):
+		var vertex = dataTool.get_vertex(i)
+		var value = noise.get_noise_3d(vertex.x, vertex.y, vertex.z)
+		vertex.y =  value * strength * 10
+		dataTool.set_vertex(i, vertex)
+	array_mesh.clear_surfaces()
+	dataTool.commit_to_surface(array_mesh)
+	sTool.clear()
+	sTool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	sTool.create_from(array_mesh, 0)
+	sTool.generate_normals()
+	mesh = sTool.commit()
 
 # create the chunk mesh and collisions
 func create_mesh() -> void:
 	mesh = PlaneMesh.new()
 	mesh.size = Vector2(world_controller.chunk_size, world_controller.chunk_size)
-	var subdivide_size: int = int(world_controller.chunk_size / lod)
+	@warning_ignore("integer_division")
+	var subdivide_size: int = world_controller.chunk_size / lod
 	mesh.subdivide_depth = subdivide_size
 	mesh.subdivide_width = subdivide_size
 	
-	collision_shape_3d.shape = mesh.create_trimesh_shape()
 
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = Color(randf(), randf(), randf())
 
 	set_surface_override_material(0, mat)
+	apply_noise()
+	collision_shape_3d.shape = mesh.create_trimesh_shape()
 
 func _process(_delta) -> void:
 	var player_position := Vector2(world_controller.player.global_position.x, world_controller.player.global_position.z)

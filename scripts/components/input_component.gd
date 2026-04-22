@@ -9,7 +9,7 @@ var backs := false
 var hide_mouse := true
 
 func _ready() -> void:
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED) # FIXME not working?
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED # FIXME not working?
 
 func update() -> void:
 	direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -18,7 +18,7 @@ func update() -> void:
 	backs = Input.is_action_just_pressed("action_back")
 	
 	if hide_mouse:
-		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	else:
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		
