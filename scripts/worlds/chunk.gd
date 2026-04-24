@@ -17,9 +17,10 @@ func create_chunk(pos: Vector3, chunk_name: String) -> void:
 	
 	name = chunk_name
 	id = chunk_name
-	label_3d.text = name
+	label_3d.text = chunk_name
+	# TODO do it in another thread
 	create_mesh()
-	
+
 func apply_noise() -> void:
 	var sTool = SurfaceTool.new()
 	var dataTool = MeshDataTool.new()
@@ -56,15 +57,16 @@ func create_mesh() -> void:
 	mesh.subdivide_depth = subdivide_size
 	mesh.subdivide_width = subdivide_size
 	
-
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = Color(randf(), randf(), randf())
 
 	set_surface_override_material(0, mat)
-	apply_noise()
+	if world_controller.noises.size() > 0:
+		apply_noise()
 	collision_shape_3d.shape = mesh.create_trimesh_shape()
 
 func _process(_delta) -> void:
+	# check the distance, without accounting for height differences
 	var player_position := Vector2(world_controller.player.global_position.x, world_controller.player.global_position.z)
 	var chunk_position := Vector2(position.x, position.z)
 	var dist := ceili(player_position.distance_squared_to(chunk_position))

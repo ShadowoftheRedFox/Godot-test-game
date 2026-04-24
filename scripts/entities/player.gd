@@ -5,6 +5,9 @@ class_name Player extends CharacterBody3D
 @onready var health_component: HealthComponent = %HealthComponent
 @onready var camera_component: CameraComponent = %CameraComponent
 
+func _ready() -> void:
+	camera_component.character = self
+
 func _physics_process(delta: float) -> void:
 	input_component.update()
 	
@@ -18,5 +21,4 @@ func _physics_process(delta: float) -> void:
 	if input_component.interacts:
 		input_component.hide_mouse = not input_component.hide_mouse
 	
-	camera_component.move_camera(self)
 	move_component.update(delta)

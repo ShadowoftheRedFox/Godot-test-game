@@ -13,12 +13,16 @@ var loaded_chunks := PackedStringArray([])
 var last_chunk: WorldChunk = null
 var ray: RayCast3D
 
+var thread := Thread.new()
+
 func _ready() -> void:
 	assert(render_distance>=1, "Invalid render distance")
 	assert(chunk_size>=1, "Invalid chunk size")
 	
 	# make sure render distance is odd
 	render_distance = render_distance + (1 - render_distance % 2)
+	
+	merge_noises()
 	
 	create_chunk_section()
 	create_raycast()
@@ -32,6 +36,8 @@ func _process(_delta: float) -> void:
 	var collided_chunk := (collide as StaticBody3D).get_parent() as WorldChunk
 	if last_chunk != collided_chunk:
 		last_chunk = collided_chunk
+		#thread.start(create_chunk_section.bind(last_chunk.global_position))
+		#thread.wait_to_finish()
 		create_chunk_section(last_chunk.global_position)
 
 func create_chunk_section(current_position: Vector3 = Vector3.ZERO):
@@ -55,8 +61,10 @@ func create_chunk(pos: Vector3, chunk_name: String) -> void:
 	chunk.world_controller = self as WorldController
 	
 	loaded_chunks.append(chunk_name)
-	chunks.add_child(chunk)
-	chunk.create_chunk(pos, chunk_name)
+	#chunks.add_child(chunk)
+	chunks.call_deferred("add_child", chunk)
+	#chunk.create_chunk(pos, chunk_name)
+	chunk.call_deferred("create_chunk", pos, chunk_name)
 
 func create_raycast() -> void:
 	ray = RayCast3D.new()
@@ -70,3 +78,11 @@ func create_raycast() -> void:
 	ray.debug_shape_thickness = 5
 	
 	player.add_child(ray)
+
+func merge_noises() -> void:
+	pass
+
+func _exit_tree() -> void:
+	if thread == null:
+		return
+	thread.wait_to_finish()
