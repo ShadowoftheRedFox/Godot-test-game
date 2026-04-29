@@ -24,28 +24,29 @@ func create_chunk(pos: Vector3, chunk_name: String) -> void:
 func apply_noise() -> void:
 	var sTool = SurfaceTool.new()
 	var dataTool = MeshDataTool.new()
+	sTool.clear()
+	sTool.create_from(mesh, 0)
+	var array_mesh = sTool.commit()
+	dataTool.clear()
+	dataTool.create_from_surface(array_mesh, 0)
+	var vertex_count = dataTool.get_vertex_count()
 	
 	for noise_component in world_controller.noises: 
 		var noise := noise_component.noise
 		var strength := noise_component.strength
 		noise.offset = position
-		sTool.clear()
-		sTool.create_from(mesh, 0)
-		var array_mesh = sTool.commit()
-		dataTool.clear()
-		dataTool.create_from_surface(array_mesh, 0)
-		var vertex_count = dataTool.get_vertex_count()
 		for i in range(vertex_count):
 			var vertex = dataTool.get_vertex(i)
 			var value = noise.get_noise_3d(vertex.x, vertex.y, vertex.z)
 			vertex.y = value * strength
 			dataTool.set_vertex(i, vertex)
-		array_mesh.clear_surfaces()
-		dataTool.commit_to_surface(array_mesh)
-		sTool.clear()
-		sTool.begin(Mesh.PRIMITIVE_TRIANGLES)
-		sTool.create_from(array_mesh, 0)
-		sTool.generate_normals()
+	
+	array_mesh.clear_surfaces()
+	dataTool.commit_to_surface(array_mesh)
+	sTool.clear()
+	sTool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	sTool.create_from(array_mesh, 0)
+	sTool.generate_normals()
 	mesh = sTool.commit()
 
 # create the chunk mesh and collisions
@@ -64,6 +65,7 @@ func create_mesh() -> void:
 	if world_controller.noises.size() > 0:
 		apply_noise()
 	collision_shape_3d.shape = mesh.create_trimesh_shape()
+	print(collision_shape_3d.shape)
 
 func _process(_delta) -> void:
 	# check the distance, without accounting for height differences

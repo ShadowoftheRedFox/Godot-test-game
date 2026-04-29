@@ -1,0 +1,123 @@
+[gd_scene format=3 uid="uid://s37ls2nh0fp6"]
+
+[ext_resource type="PackedScene" uid="uid://26srdfxbxw6k" path="res://scenes/entities/Player.tscn" id="1_btegx"]
+[ext_resource type="Shader" uid="uid://ccmyys8tgplld" path="res://shaders/Test.tres" id="2_2i2g6"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_q3a2t"]
+
+[sub_resource type="ClipmapMesh" id="ClipmapMesh_km1cg"]
+clipmap/number_of_lods = 5
+clipmap/lod_0/size = 50.0
+clipmap/lod_0/subdivisions = 50
+clipmap/lod_1/size = 100.0
+clipmap/lod_1/subdivisions = 40
+clipmap/lod_2/size = 200.0
+clipmap/lod_2/subdivisions = 30
+clipmap/lod_3/size = 400.0
+clipmap/lod_3/subdivisions = 20
+clipmap/lod_4/size = 800.0
+clipmap/lod_4/subdivisions = 10
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_2i2g6"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_iqb0y"]
+noise = SubResource("FastNoiseLite_2i2g6")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_km1cg"]
+noise = SubResource("FastNoiseLite_2i2g6")
+as_normal_map = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h2ci0"]
+render_priority = 0
+shader = ExtResource("2_2i2g6")
+shader_parameter/Noise = SubResource("NoiseTexture2D_iqb0y")
+shader_parameter/Height = 42.26
+shader_parameter/Roughness = 835.0
+shader_parameter/UVs = Vector2(0, 0)
+shader_parameter/Noise_Normal = SubResource("NoiseTexture2D_km1cg")
+shader_parameter/u_normal_basis = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GDScript" id="GDScript_km1cg"]
+script/source = "@tool
+extends CollisionShape3D
+
+# https://youtu.be/rcsIMlet7Fw?t=236
+
+@export var mesh3d: MeshInstance3D
+@export var reducing_ratio: int = 2
+
+func _ready() -> void:
+	if mesh3d == null:
+		return
+	
+	# get the noise of the shader on the mesh
+	var shader: ShaderMaterial = mesh3d.get_surface_override_material(0)
+	var noise_texture: NoiseTexture2D = shader.get_shader_parameter(\"Noise\")
+	var height: float = shader.get_shader_parameter(\"Height\")
+	var roughness: float = shader.get_shader_parameter(\"Roughness\")
+	var uvs: Vector2 = shader.get_shader_parameter(\"UVs\")
+	
+	await noise_texture.changed
+	var noise: FastNoiseLite = noise_texture.noise
+	var image: Image = noise.get_image(512, 512)
+	
+	scale.x = mesh3d.scale.x * reducing_ratio
+	scale.z = mesh3d.scale.z * reducing_ratio
+	
+	#image.resize(image.get_height() / reducing_ratio +1, image.get_width() / reducing_ratio +1)
+	
+	var hms: HeightMapShape3D = HeightMapShape3D.new()
+	hms.map_width = image.get_height()
+	hms.map_depth = image.get_width()
+	
+	var float_array: PackedFloat32Array = []
+	float_array.resize(image.get_width() * image.get_height())
+	
+	for y: int in image.get_height():
+		for x: int in image.get_width():
+			#float_array.append(noise.get_noise_2d(x/roughness + 0.5 + uvs.x, y/roughness +0.5 + uvs.y) * height)
+			#float_array.append(image.get_pixel(x + uvs.x, y + uvs.y).r * height)
+			
+			var vertex_xz: Vector2 = Vector2(x, y)
+
+			var uv: Vector2 = vertex_xz / roughness + Vector2(0.5, 0.5) + uvs
+			var h: float = sample_noise(image, uv) * height
+
+			float_array.append(h)
+	
+	hms.map_data = float_array
+	shape = hms
+
+func sample_noise(image: Image, uv: Vector2) -> float:
+	var x: float = uv.x * image.get_width()
+	var y: float = uv.y * image.get_height()
+	@warning_ignore(\"narrowing_conversion\")
+	image.srgb_to_linear()
+	return image.get_pixelv(Vector2i(x, y)).r
+"
+
+[node name="Test" type="Node3D" unique_id=1179395747]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=575189181]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=2136345416]
+shape = SubResource("WorldBoundaryShape3D_q3a2t")
+
+[node name="Player" parent="." unique_id=319123823 instance=ExtResource("1_btegx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 21.869757, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=916647670]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6302948, 0)
+mesh = SubResource("ClipmapMesh_km1cg")
+surface_material_override/0 = SubResource("ShaderMaterial_h2ci0")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" unique_id=1473538284]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" unique_id=1645244587 node_paths=PackedStringArray("mesh3d")]
+script = SubResource("GDScript_km1cg")
+mesh3d = NodePath("../..")
+reducing_ratio = null
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1802581321]
+transform = Transform3D(0.6382612, -0.6996326, 0.32114956, 0.50419575, 0.695164, 0.5123805, -0.58172965, -0.16511038, 0.7964478, 0, 4, 0)
+shadow_enabled = true

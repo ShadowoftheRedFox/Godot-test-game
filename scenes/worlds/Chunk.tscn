@@ -1,8 +1,26 @@
 [gd_scene format=3 uid="uid://dtqtgvf43ympc"]
 
+[ext_resource type="Shader" uid="uid://gnxmlu8jdoqe" path="res://shaders/HeightBlend.tres" id="1_hbpt1"]
 [ext_resource type="Script" uid="uid://dlb2ip8b7yjxm" path="res://scripts/worlds/chunk.gd" id="1_lxhqj"]
+[ext_resource type="Texture2D" uid="uid://0oqywy1u2aam" path="res://assets/Grounds 1-100/Ground (11).png" id="2_cupe1"]
+[ext_resource type="Texture2D" uid="uid://bddsvrup1x3lv" path="res://assets/Grounds 1-100/Ground (70).png" id="3_pvka4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6e57q"]
+render_priority = 0
+shader = ExtResource("1_hbpt1")
+shader_parameter/Texture_Scale_1 = 1.485
+shader_parameter/Albedo_1 = ExtResource("2_cupe1")
+shader_parameter/Texture_Scale_2 = 0.545
+shader_parameter/Albedo_2 = ExtResource("3_pvka4")
+shader_parameter/Height_1 = ExtResource("2_cupe1")
+shader_parameter/Height_Offset = 0.21
+shader_parameter/Height_2 = ExtResource("3_pvka4")
+shader_parameter/Mask = 0.97
+shader_parameter/Contrast = 2.505
+shader_parameter/Light_Affect = 1.0
 
 [node name="Chunk" type="MeshInstance3D" unique_id=900694582]
+material_override = SubResource("ShaderMaterial_6e57q")
 script = ExtResource("1_lxhqj")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=828468872]
@@ -10,6 +28,7 @@ collision_layer = 3
 collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=1201012438]
+editor_description = "Shape made from the Chunk script from a random noise used as height in World."
 
 [node name="Label3D" type="Label3D" parent="." unique_id=744637836]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5761948, 0)

@@ -1,12 +1,12 @@
 class_name  InputComponent extends Node
 
-var direction := Vector2.ZERO
-var mouse_direction := Vector2.ZERO
-var jumps := false
-var interacts := false
-var backs := false
+var direction: Vector2 = Vector2.ZERO
+var mouse_direction: Vector2 = Vector2.ZERO
+var jumps: bool= false
+var interacts: bool= false
+var backs: bool = false
 
-var hide_mouse := true
+var hide_mouse: bool = true
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED # FIXME not working?

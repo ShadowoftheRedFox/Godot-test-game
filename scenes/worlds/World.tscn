@@ -3,10 +3,10 @@
 [ext_resource type="PackedScene" uid="uid://26srdfxbxw6k" path="res://scenes/entities/Player.tscn" id="1_88g73"]
 [ext_resource type="Script" uid="uid://cqiafggmdvg12" path="res://scripts/worlds/world.gd" id="1_rnjhf"]
 [ext_resource type="Script" uid="uid://cjuqnayg06q4w" path="res://scripts/components/noise_component.gd" id="2_ttlxp"]
+[ext_resource type="Environment" uid="uid://bubfaqibysqev" path="res://assets/PolygonStarter/Materials/WorldEnvironmentLighting.tres" id="4_y72ey"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ttlxp"]
-domain_warp_fractal_type = 0
-domain_warp_fractal_gain = 0.875
+frequency = 0.0042
 
 [sub_resource type="Resource" id="Resource_y72ey"]
 script = ExtResource("2_ttlxp")
@@ -15,14 +15,20 @@ metadata/_custom_type_script = "uid://cjuqnayg06q4w"
 
 [node name="World" type="Node3D" unique_id=1385780268]
 script = ExtResource("1_rnjhf")
+chunk_size = 10
 noises = Array[ExtResource("2_ttlxp")]([SubResource("Resource_y72ey")])
 
 [node name="Player" parent="." unique_id=319123823 instance=ExtResource("1_88g73")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2267694, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0)
 
 [node name="Chunks" type="Node3D" parent="." unique_id=1833679892]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=274916135]
-transform = Transform3D(0.04005418, -0.6724619, 0.73904705, 0.3259149, 0.70798135, 0.6265315, -0.9445502, 0.21577126, 0.24752304, 0, 7.584976, 0)
-light_color = Color(0.99999946, 0.99489874, 0.40723854, 1)
+[node name="Light" type="Node3D" parent="." unique_id=101991057]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Light" unique_id=821055137]
+environment = ExtResource("4_y72ey")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Light" unique_id=10833226]
+transform = Transform3D(0.8700099, -0.25, 0.42495024, 0.09914386, 0.93301266, 0.34591585, -0.48296288, -0.25881904, 0.8365162, 0, 0, 0)
 shadow_enabled = true

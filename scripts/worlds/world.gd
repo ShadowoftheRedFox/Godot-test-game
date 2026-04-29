@@ -22,8 +22,6 @@ func _ready() -> void:
 	# make sure render distance is odd
 	render_distance = render_distance + (1 - render_distance % 2)
 	
-	merge_noises()
-	
 	create_chunk_section()
 	create_raycast()
 
@@ -79,8 +77,6 @@ func create_raycast() -> void:
 	
 	player.add_child(ray)
 
-func merge_noises() -> void:
-	pass
 
 func _exit_tree() -> void:
 	if thread == null:

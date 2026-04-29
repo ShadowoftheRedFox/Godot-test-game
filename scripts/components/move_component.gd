@@ -4,12 +4,12 @@ class_name MoveComponent extends Node
 @export var model: Node3D
 @export var camera: Camera3D
 
-@export var move_speed := 10.0
-@export var jump_force := 10.0
+@export var move_speed: float = 10.0
+@export var jump_force: float = 10.0
 
-var direction := Vector2.ZERO
-var wants_jump := false
-var flying := false
+var direction: Vector2 = Vector2.ZERO
+var wants_jump: bool = false
+var flying: bool = false
 
 func update(delta: float) -> void:
 	if body == null:
@@ -27,17 +27,17 @@ func update(delta: float) -> void:
 	wants_jump = false
 	
 	# move in the direction of the camera (body rotation)
-	var camera_basis := camera.global_transform.basis
+	var camera_basis: Basis = camera.global_transform.basis
 	
-	var up_down := camera_basis.z
+	var up_down: Vector3 = camera_basis.z
 	up_down.y = 0 # we walk on a flat plane, not on walls
-	up_down.normalized()
+	up_down = up_down.normalized()
 	
-	var left_right := camera_basis.x
+	var left_right: Vector3 = camera_basis.x
 	left_right.y = 0 # we walk on a flat plane, not on walls
-	left_right.normalized()
+	left_right = left_right.normalized()
 	
-	var move_direction := (direction.x * left_right + direction.y * up_down).normalized()
+	var move_direction: Vector3 = (direction.x * left_right + direction.y * up_down).normalized()
 	
 	body.velocity.x = move_direction.x * move_speed
 	body.velocity.z = move_direction.z * move_speed
