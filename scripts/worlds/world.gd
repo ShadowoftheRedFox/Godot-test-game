@@ -1,19 +1,17 @@
 class_name WorldController extends Node3D
 
-const CHUNK = preload("uid://dtqtgvf43ympc")
+const CHUNK: PackedScene = preload("uid://dtqtgvf43ympc")
 
 @onready var player: Player = $Player
 @onready var chunks: Node3D = $Chunks
 
-@export_range(10.0, 1000.0) var chunk_size := 50
-@export_range(3.0, 100.0, 2.0) var render_distance := 7
+@export_range(10, 1000, 10, "or_greater") var chunk_size: int = 50
+@export_range(3, 100, 2, "or_greater") var render_distance: int = 7
 @export var noises: Array[NoiseComponent] = []
 
-var loaded_chunks := PackedStringArray([])
+var loaded_chunks: PackedStringArray = PackedStringArray([])
 var last_chunk: WorldChunk = null
 var ray: RayCast3D
-
-var thread := Thread.new()
 
 func _ready() -> void:
 	assert(render_distance>=1, "Invalid render distance")
@@ -27,26 +25,26 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	# check chunk changed
-	var collide := ray.get_collider()
+	var collide: Object = ray.get_collider()
 	if collide == null:
 		return
 
-	var collided_chunk := (collide as StaticBody3D).get_parent() as WorldChunk
+	var collided_chunk: WorldChunk = (collide as StaticBody3D).get_parent()
 	if last_chunk != collided_chunk:
 		last_chunk = collided_chunk
 		#thread.start(create_chunk_section.bind(last_chunk.global_position))
 		#thread.wait_to_finish()
 		create_chunk_section(last_chunk.global_position)
 
-func create_chunk_section(current_position: Vector3 = Vector3.ZERO):
-	var half_render_distance := render_distance / 2.0
-	for i in range(render_distance * render_distance):
-		var half_point := Vector3(((i % render_distance) - half_render_distance) * chunk_size,
+func create_chunk_section(current_position: Vector3 = Vector3.ZERO) -> void:
+	var half_render_distance: float = render_distance / 2.0
+	for i: int in range(render_distance * render_distance):
+		var half_point: Vector3 = Vector3(((i % render_distance) - half_render_distance) * chunk_size,
 		0,
-		((i / render_distance) - half_render_distance) * chunk_size)
+		((i / float(render_distance)) - half_render_distance) * chunk_size)
 		# center the player on the middle of the center chunk
-		var offset := current_position + half_point + Vector3(chunk_size / 2.0, 0, chunk_size / 2.0)
-		var chunk_name := "chunk_" + str(offset.x) + ":" + str(offset.z)
+		var offset: Vector3 = current_position + half_point + Vector3(chunk_size / 2.0, 0, chunk_size / 2.0)
+		var chunk_name: String = "chunk_" + str(offset.x) + ":" + str(offset.z)
 		
 		# if chunk_name in loaded_chunks:
 		if loaded_chunks.has(chunk_name):
@@ -76,9 +74,3 @@ func create_raycast() -> void:
 	ray.debug_shape_thickness = 5
 	
 	player.add_child(ray)
-
-
-func _exit_tree() -> void:
-	if thread == null:
-		return
-	thread.wait_to_finish()

@@ -22,22 +22,22 @@ func create_chunk(pos: Vector3, chunk_name: String) -> void:
 	create_mesh()
 
 func apply_noise() -> void:
-	var sTool = SurfaceTool.new()
-	var dataTool = MeshDataTool.new()
+	var sTool: SurfaceTool = SurfaceTool.new()
+	var dataTool: MeshDataTool = MeshDataTool.new()
 	sTool.clear()
 	sTool.create_from(mesh, 0)
-	var array_mesh = sTool.commit()
+	var array_mesh: ArrayMesh = sTool.commit()
 	dataTool.clear()
 	dataTool.create_from_surface(array_mesh, 0)
-	var vertex_count = dataTool.get_vertex_count()
+	var vertex_count: int = dataTool.get_vertex_count()
 	
-	for noise_component in world_controller.noises: 
-		var noise := noise_component.noise
-		var strength := noise_component.strength
+	for noise_component: NoiseComponent in world_controller.noises: 
+		var noise: FastNoiseLite = noise_component.texture.noise
+		var strength: float = noise_component.strength
 		noise.offset = position
-		for i in range(vertex_count):
-			var vertex = dataTool.get_vertex(i)
-			var value = noise.get_noise_3d(vertex.x, vertex.y, vertex.z)
+		for i: int in range(vertex_count):
+			var vertex: Vector3 = dataTool.get_vertex(i)
+			var value: float = noise.get_noise_3d(vertex.x, vertex.y, vertex.z)
 			vertex.y = value * strength
 			dataTool.set_vertex(i, vertex)
 	

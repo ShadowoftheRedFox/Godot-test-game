@@ -42,7 +42,7 @@ linked_parent_graph_frame = 3
 operator = 1
 
 [sub_resource type="VisualShaderNodeFrame" id="VisualShaderNodeFrame_xm5ll"]
-size = Vector2(984, 1591)
+size = Vector2(984, 1322)
 title = "Height Inputs"
 attached_nodes = PackedInt32Array(4, 5, 6, 7, 8, 9, 10, 11)
 
@@ -80,7 +80,7 @@ default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(1, 1, 1), 2, Vector3(0.5
 op_type = 3
 
 [sub_resource type="VisualShaderNodeFrame" id="VisualShaderNodeFrame_pm3ud"]
-size = Vector2(1384, 390)
+size = Vector2(1384, 282)
 title = "Height Calculations"
 attached_nodes = PackedInt32Array(14, 15, 16, 17, 18, 19, 20, 21)
 

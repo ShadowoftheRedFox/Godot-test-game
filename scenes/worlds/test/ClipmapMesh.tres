@@ -1,0 +1,14 @@
+[gd_resource type="ClipmapMesh" format=3 uid="uid://dtr640tt4r052"]
+
+[resource]
+clipmap/number_of_lods = 5
+clipmap/lod_0/size = 50.0
+clipmap/lod_0/subdivisions = 50
+clipmap/lod_1/size = 100.0
+clipmap/lod_1/subdivisions = 40
+clipmap/lod_2/size = 200.0
+clipmap/lod_2/subdivisions = 30
+clipmap/lod_3/size = 400.0
+clipmap/lod_3/subdivisions = 20
+clipmap/lod_4/size = 800.0
+clipmap/lod_4/subdivisions = 10

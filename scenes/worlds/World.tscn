@@ -5,12 +5,8 @@
 [ext_resource type="Script" uid="uid://cjuqnayg06q4w" path="res://scripts/components/noise_component.gd" id="2_ttlxp"]
 [ext_resource type="Environment" uid="uid://bubfaqibysqev" path="res://assets/PolygonStarter/Materials/WorldEnvironmentLighting.tres" id="4_y72ey"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_ttlxp"]
-frequency = 0.0042
-
 [sub_resource type="Resource" id="Resource_y72ey"]
 script = ExtResource("2_ttlxp")
-noise = SubResource("FastNoiseLite_ttlxp")
 metadata/_custom_type_script = "uid://cjuqnayg06q4w"
 
 [node name="World" type="Node3D" unique_id=1385780268]
