@@ -16,6 +16,9 @@ func _physics_process(delta: float) -> void:
 	
 	move_component.direction = input_component.direction
 	move_component.wants_jump = input_component.jumps
+	move_component.wants_crouch = input_component.crouches
+	move_component.wants_fly_up = input_component.fly_up
+	move_component.wants_fly_down = input_component.fly_down
 	
 	# show mouse if interaction
 	if input_component.interacts:
