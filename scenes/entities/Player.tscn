@@ -38,6 +38,7 @@ script = ExtResource("3_24gqh")
 body = NodePath("..")
 model = NodePath("../MeshInstance3D")
 camera = NodePath("../CameraAnchor/Camera3D")
+is_able_to_fly = true
 metadata/_custom_type_script = "uid://d4kj4whqt3giv"
 
 [node name="HealthComponent" type="Node" parent="." unique_id=1008136294]

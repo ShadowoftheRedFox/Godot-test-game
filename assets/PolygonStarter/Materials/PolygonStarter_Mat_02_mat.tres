@@ -1,6 +1,6 @@
-[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://d1bnres68m4mj"]
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://d1bnres68m4mj"]
 
-[ext_resource type="Texture2D" uid="uid://bgb3o7v4xhksv" path="res://Assets/Synty/PolygonStarter/Textures/PolygonStarter_Texture_02.png" id="1_tral4"]
+[ext_resource type="Texture2D" uid="uid://bgb3o7v4xhksv" path="res://assets/PolygonStarter/Textures/PolygonStarter_Texture_02.png" id="1_tral4"]
 
 [resource]
 resource_name = "PolygonStarter_Mat_02_mat"

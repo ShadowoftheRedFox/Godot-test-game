@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bl1nkfu5cylho"]
+
+[ext_resource type="Environment" uid="uid://bubfaqibysqev" path="res://assets/PolygonStarter/Materials/WorldEnvironmentLighting.tres" id="1_fivrb"]
+
+[node name="Environment" type="Node3D" unique_id=279306561]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1805636479]
+environment = ExtResource("1_fivrb")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1593511961]
+transform = Transform3D(0.4823092, -0.73933905, 0.4698464, 0.46984634, 0.67101, 0.5735765, -0.7393391, -0.05588564, 0.67101014, 0, 0, 0)

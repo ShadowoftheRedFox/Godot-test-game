@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://b8brfdyr57ked"]
+
+[ext_resource type="PackedScene" uid="uid://26srdfxbxw6k" path="res://scenes/entities/Player.tscn" id="1_t08so"]
+[ext_resource type="PackedScene" uid="uid://bl1nkfu5cylho" path="res://assets/internal/Environment.tscn" id="2_67kpa"]
+[ext_resource type="Script" uid="uid://hecfvxibibx5" path="res://scenes/worlds/test/crate.gd" id="3_t0xw0"]
+[ext_resource type="Script" uid="uid://d4kj4whqt3giv" path="res://scripts/components/move_component.gd" id="4_bc5xn"]
+[ext_resource type="ArrayMesh" uid="uid://mpfrov2bagji" path="res://assets/PolygonStarter/Models/extracted/SM_PolygonPrototype_Prop_Crate_03.res" id="6_eclf4"]
+[ext_resource type="Material" uid="uid://bprw8jx500qd0" path="res://assets/PolygonStarter/Materials/PolygonStarter_Mat_01_mat.tres" id="6_nnpde"]
+[ext_resource type="PackedScene" uid="uid://dlwjol7yjo20y" path="res://assets/PolygonStarter/Prefabs/SM_Generic_Small_Rocks_01.tscn" id="7_eclf4"]
+[ext_resource type="Script" uid="uid://bvixwki5ss1pa" path="res://scripts/components/health_component.gd" id="7_np46q"]
+[ext_resource type="Script" uid="uid://dg5e2chr6wtql" path="res://scripts/components/health_bar_component.gd" id="8_dlpac"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_bc5xn"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_t0xw0"]
+size = Vector2(1000, 1000)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_t0xw0"]
+points = PackedVector3Array(-0.49824983, -0.39865682, -0.49824792, -0.49824983, 0.49824753, -0.49824792, -0.44840533, -0.44859865, -0.49824792, -0.49824983, -0.45250034, -0.4445019, -0.49824983, 0.49824753, 0.49824786, 0.49824983, 0.49824753, -0.49824792, -0.3986584, -0.49824783, -0.49824792, -0.49824983, -0.49824783, -0.39865687, -0.49824983, -0.49824783, 0.49824786, 0.39856088, 0.49824753, 0.49824786, 0.49824983, 0.49824753, 0.39855927, 0.49824983, -0.49824783, -0.49824792, -0.094129026, -0.49824783, 0.49824786, 0.4483078, 0.44850078, 0.49824786, 0.49824983, 0.4524025, 0.44440436, 0.49824983, -0.49824783, 0.49815035, 0.3843196, -0.3849033, 0.49824786, 0.49824983, 0.398559, 0.49815035)
+
+[node name="Laboratory" type="Node3D" unique_id=1111460297]
+
+[node name="Player" parent="." unique_id=319123823 instance=ExtResource("1_t08so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8172724, 0)
+
+[node name="Environment" parent="." unique_id=279306561 instance=ExtResource("2_67kpa")]
+
+[node name="Room" type="Node3D" parent="." unique_id=1795409838]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Room" unique_id=255950994]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/StaticBody3D" unique_id=1701902896]
+shape = SubResource("WorldBoundaryShape3D_bc5xn")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/StaticBody3D" unique_id=574574425]
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_t0xw0")
+
+[node name="Crate" type="RigidBody3D" parent="." unique_id=702855065]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1814833, -3.134778)
+script = ExtResource("3_t0xw0")
+
+[node name="MoveComponent" type="Node" parent="Crate" unique_id=1731043042 node_paths=PackedStringArray("body")]
+unique_name_in_owner = true
+script = ExtResource("4_bc5xn")
+body = NodePath("")
+metadata/_custom_type_script = "uid://d4kj4whqt3giv"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Crate" unique_id=197693970]
+shape = SubResource("ConvexPolygonShape3D_t0xw0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Crate" unique_id=364888298]
+mesh = ExtResource("6_eclf4")
+surface_material_override/0 = ExtResource("6_nnpde")
+
+[node name="HealthComponent" type="Node" parent="Crate" unique_id=731124041]
+unique_name_in_owner = true
+script = ExtResource("7_np46q")
+current_health = 70
+metadata/_custom_type_script = "uid://bvixwki5ss1pa"
+
+[node name="HealthBarComponent" type="Sprite3D" parent="Crate" unique_id=847809752 node_paths=PackedStringArray("health_component", "visual_body")]
+script = ExtResource("8_dlpac")
+health_component = NodePath("../HealthComponent")
+visual_body = NodePath("../MeshInstance3D")
+metadata/_custom_type_script = "uid://dg5e2chr6wtql"
+
+[node name="SM_Generic_Small_Rocks_01" parent="." unique_id=119245510 instance=ExtResource("7_eclf4")]
