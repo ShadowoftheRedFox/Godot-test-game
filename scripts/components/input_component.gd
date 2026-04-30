@@ -11,6 +11,9 @@ var fly_down: bool = false
 var interacts: bool = false
 var backs: bool = false
 
+var special_up: bool = false
+var special_down: bool = false
+
 var hide_mouse: bool = true
 
 func update() -> void:
@@ -24,6 +27,9 @@ func update() -> void:
 	
 	interacts = Input.is_action_just_pressed("action_interact")
 	backs = Input.is_action_just_pressed("action_back")
+	
+	special_up = Input.is_action_just_pressed("action_special_up")
+	special_down = Input.is_action_just_pressed("action_special_down")
 	
 	if hide_mouse:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

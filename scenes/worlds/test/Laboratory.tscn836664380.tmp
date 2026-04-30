@@ -105,6 +105,7 @@ health_component = NodePath("../HealthComponent")
 visual_body = NodePath("../MeshInstance3D")
 metadata/_custom_type_script = "uid://dg5e2chr6wtql"
 
-[node name="SubViewport" type="SubViewport" parent="Crate/HealthBarComponent" unique_id=909375108]
-
 [node name="SM_Generic_Small_Rocks_01" parent="." unique_id=119245510 instance=ExtResource("7_eclf4")]
+
+[node name="RayCast3D" type="RayCast3D" parent="." unique_id=81009789]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
