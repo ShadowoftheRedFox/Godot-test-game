@@ -1,9 +1,9 @@
 class_name WorldChunk extends MeshInstance3D
 
 var world_controller: WorldController = null
-var lod := 1
+var lod: int = 1
 # same as name, but not transformed as StringName, because it somehow creates problem
-var id := ""
+var id: String = ""
 
 @onready var collision_shape_3d: CollisionShape3D = $StaticBody3D/CollisionShape3D
 @onready var label_3d: Label3D = $Label3D
@@ -31,7 +31,7 @@ func apply_noise() -> void:
 	dataTool.create_from_surface(array_mesh, 0)
 	var vertex_count: int = dataTool.get_vertex_count()
 	
-	for noise_component: NoiseComponent in world_controller.noises: 
+	for noise_component: NoiseComponent in world_controller.noises:
 		var noise: FastNoiseLite = noise_component.texture.noise
 		var strength: float = noise_component.strength
 		noise.offset = position
@@ -51,29 +51,29 @@ func apply_noise() -> void:
 
 # create the chunk mesh and collisions
 func create_mesh() -> void:
-	mesh = PlaneMesh.new()
-	mesh.size = Vector2(world_controller.chunk_size, world_controller.chunk_size)
+	var pmesh: PlaneMesh = PlaneMesh.new()
+	pmesh.size = Vector2(world_controller.chunk_size, world_controller.chunk_size)
 	@warning_ignore("integer_division")
 	var subdivide_size: int = world_controller.chunk_size / lod
-	mesh.subdivide_depth = subdivide_size
-	mesh.subdivide_width = subdivide_size
+	pmesh.subdivide_depth = subdivide_size
+	pmesh.subdivide_width = subdivide_size
 	
-	var mat := StandardMaterial3D.new()
+	var mat: StandardMaterial3D = StandardMaterial3D.new()
 	mat.albedo_color = Color(randf(), randf(), randf())
 
 	set_surface_override_material(0, mat)
 	if world_controller.noises.size() > 0:
 		apply_noise()
-	collision_shape_3d.shape = mesh.create_trimesh_shape()
-	print(collision_shape_3d.shape)
+	collision_shape_3d.shape = pmesh.create_trimesh_shape()
+	mesh = pmesh
 
-func _process(_delta) -> void:
+func _process(_delta: float) -> void:
 	# check the distance, without accounting for height differences
-	var player_position := Vector2(world_controller.player.global_position.x, world_controller.player.global_position.z)
-	var chunk_position := Vector2(position.x, position.z)
-	var dist := ceili(player_position.distance_squared_to(chunk_position))
+	var player_position: Vector2 = Vector2(world_controller.player.global_position.x, world_controller.player.global_position.z)
+	var chunk_position: Vector2 = Vector2(position.x, position.z)
+	var dist: int = ceili(player_position.distance_squared_to(chunk_position))
 	
-	var rdist := world_controller.render_distance * world_controller.render_distance * world_controller.chunk_size * world_controller.chunk_size / 1.25
+	var rdist: float = world_controller.render_distance * world_controller.render_distance * world_controller.chunk_size * world_controller.chunk_size / 1.25
 	
 	if dist > rdist:
 		#print("Render: " + str(rdist) + ", dist: " + str(dist)) 
@@ -83,7 +83,7 @@ func _process(_delta) -> void:
 	# redraw with LOD
 	# - chunk_size to have a minimum distance before LOD
 	# * chunk_size to have the LOD depending on the current chunk size
-	var new_LOD: int = max(1, ceili(float(dist - world_controller.chunk_size) / float(rdist) * world_controller.chunk_size) ) 
+	var new_LOD: int = max(1, ceili(float(dist - world_controller.chunk_size) / float(rdist) * world_controller.chunk_size))
 	if lod != new_LOD:
 		#print("Supposed lod: " + str(new_LOD))
 		lod = new_LOD

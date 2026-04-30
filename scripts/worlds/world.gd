@@ -14,8 +14,8 @@ var last_chunk: WorldChunk = null
 var ray: RayCast3D
 
 func _ready() -> void:
-	assert(render_distance>=1, "Invalid render distance")
-	assert(chunk_size>=1, "Invalid chunk size")
+	assert(render_distance >= 1, "Invalid render distance")
+	assert(chunk_size >= 1, "Invalid chunk size")
 	
 	# make sure render distance is odd
 	render_distance = render_distance + (1 - render_distance % 2)

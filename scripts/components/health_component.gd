@@ -10,7 +10,7 @@ func _ready() -> void:
 	_emit()
 
 func damage(value: int) -> void:
-	assert(value>=0, "Took damage but is negative, use heal instead?")
+	assert(value >= 0, "Took damage but is negative, use heal instead?")
 	current_health = clamp(current_health - value, 0, max_health)
 	_emit()
 	
@@ -18,7 +18,7 @@ func damage(value: int) -> void:
 		died.emit()
 		
 func heal(value: int) -> void:
-	assert(value>=0, "Took heal but is negative, use damage instead?")
+	assert(value >= 0, "Took heal but is negative, use damage instead?")
 	current_health = clamp(current_health + value, 0, max_health)
 	_emit()
 

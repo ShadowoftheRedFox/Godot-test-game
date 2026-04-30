@@ -1,4 +1,4 @@
-class_name  InputComponent extends Node
+class_name InputComponent extends Node
 
 var direction: Vector2 = Vector2.ZERO
 var mouse_direction: Vector2 = Vector2.ZERO
@@ -29,4 +29,3 @@ func update() -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	else:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		

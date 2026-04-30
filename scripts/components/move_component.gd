@@ -57,8 +57,8 @@ func update(delta: float) -> void:
 		if wants_fly_up:
 			body.velocity.y = fly_speed
 		elif wants_fly_down:
-			body.velocity.y = -fly_speed
-		else: 
+			body.velocity.y = - fly_speed
+		else:
 			body.velocity.y = 0
 	elif wants_jump and body.is_on_floor():
 		body.velocity.y = jump_force

@@ -1,7 +1,7 @@
 class_name Reactive
 extends Resource
 
-var owner : Reactive:
+var owner: Reactive:
 	set(v):
 		if owner != null:
 			reactive_changed.disconnect(owner._propagate)
@@ -9,13 +9,13 @@ var owner : Reactive:
 		if owner != null:
 			reactive_changed.connect(owner._propagate)
 
-signal reactive_changed(reactive)
+signal reactive_changed(reactive: Reactive)
 
-func _init(initial_owner : Reactive = null) -> void:
+func _init(initial_owner: Reactive = null) -> void:
 	owner = initial_owner
 
-func _propagate(_reactive : Reactive = null) -> void:
-	reactive_changed.emit(self)
+func _propagate(_reactive: Reactive = null) -> void:
+	reactive_changed.emit(self )
 
 func manually_emit() -> void:
-	reactive_changed.emit(self)
+	reactive_changed.emit(self )

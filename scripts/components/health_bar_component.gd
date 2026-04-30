@@ -12,7 +12,7 @@ func _ready() -> void:
 	# if no health component, remove from scene
 	if health_component == null:
 		queue_free()
-		return	
+		return
 	
 	billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	
@@ -40,7 +40,7 @@ func _ready() -> void:
 	
 	# remove after adding because we can't have an empty array, and it automatically resize 
 	# and set_color on an existing point doesn't seem to work
-	under.gradient.add_point(0, Color(0,0,0,0.5))
+	under.gradient.add_point(0, Color(0, 0, 0, 0.5))
 	under.gradient.remove_point(0)
 	under.gradient.remove_point(0)
 	

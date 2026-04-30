@@ -1,3 +1,9 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# Addons not important for the project
+/addons/discord-rpc-gd
+
+# IDE files
+.vscode

@@ -8,8 +8,8 @@ var character: CharacterBody3D = null
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
-		mouse_input.x = -(event as InputEventMouseMotion).relative.x * mouse_sensitivity
-		mouse_input.y = -(event as InputEventMouseMotion).relative.y * mouse_sensitivity
+		mouse_input.x = - (event as InputEventMouseMotion).relative.x * mouse_sensitivity
+		mouse_input.y = - (event as InputEventMouseMotion).relative.y * mouse_sensitivity
 		move_camera()
 
 func move_camera() -> void:
