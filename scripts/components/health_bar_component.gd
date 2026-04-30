@@ -38,17 +38,17 @@ func _ready() -> void:
 	under.gradient = Gradient.new()
 	progress.gradient = Gradient.new()
 	
-	# remove in inverse order, because the array resizes
+	# remove after adding because we can't have an empty array, and it automatically resize 
 	# and set_color on an existing point doesn't seem to work
-	under.gradient.remove_point(1)
-	under.gradient.remove_point(0)
 	under.gradient.add_point(0, Color(0,0,0,0.5))
+	under.gradient.remove_point(0)
+	under.gradient.remove_point(0)
 	
-	progress.gradient.remove_point(1)
-	progress.gradient.remove_point(0)
 	progress.gradient.add_point(0, Color.RED)
 	progress.gradient.add_point(0.5, Color.YELLOW)
 	progress.gradient.add_point(1, Color.GREEN)
+	progress.gradient.remove_point(0)
+	progress.gradient.remove_point(0)
 	
 	bar.texture_under = under
 	bar.texture_progress = progress
