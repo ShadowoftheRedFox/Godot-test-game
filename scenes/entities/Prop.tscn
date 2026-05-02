@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://1anjtmyppsfo"]
+
+[ext_resource type="Script" uid="uid://hecfvxibibx5" path="res://scenes/worlds/test/crate.gd" id="1_dqu0d"]
+[ext_resource type="Script" uid="uid://bvixwki5ss1pa" path="res://scripts/components/health_component.gd" id="5_sabgl"]
+[ext_resource type="Script" uid="uid://dg5e2chr6wtql" path="res://scripts/components/health_bar_component.gd" id="6_yn1h3"]
+
+[node name="Prop" type="RigidBody3D" unique_id=134364856]
+script = ExtResource("1_dqu0d")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1260180405]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=166498230]
+
+[node name="HealthComponent" type="Node" parent="." unique_id=1845981692]
+unique_name_in_owner = true
+script = ExtResource("5_sabgl")
+metadata/_custom_type_script = "uid://bvixwki5ss1pa"
+
+[node name="HealthBarComponent" type="Sprite3D" parent="." unique_id=1255873212 node_paths=PackedStringArray("health_component", "visual_body")]
+script = ExtResource("6_yn1h3")
+health_component = NodePath("../HealthComponent")
+visual_body = NodePath("../MeshInstance3D")
+bar_size = Vector2i(256, 10)
+metadata/_custom_type_script = "uid://dg5e2chr6wtql"

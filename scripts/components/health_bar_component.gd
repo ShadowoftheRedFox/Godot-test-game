@@ -2,11 +2,13 @@ class_name HealthBarComponent extends Sprite3D
 
 @export var health_component: HealthComponent
 @export var visual_body: MeshInstance3D
-@export var height_offset: float = 0.5
+@export var height_offset: float = 0.8
 @export var bar_size: Vector2i = Vector2i(256, 40)
+@export var oof: TextureRect
 
 var sub_viewport: SubViewport = SubViewport.new()
-var bar: TextureProgressBar = TextureProgressBar.new()
+var bar: ProgressBar = ProgressBar.new()
+var progress_gradient: Gradient = Gradient.new()
 
 func _ready() -> void:
 	# if no health component, remove from scene
@@ -31,30 +33,27 @@ func _ready() -> void:
 	bar.max_value = health_component.max_health
 	bar.value = health_component.current_health
 	
-	# create the bar texture
-	var under: GradientTexture1D = GradientTexture1D.new()
-	var progress: GradientTexture1D = GradientTexture1D.new()
+	# create the bar texture gradient
+	progress_gradient.add_point(0, Color.RED)
+	progress_gradient.add_point(0.5, Color.YELLOW)
+	progress_gradient.add_point(1, Color.GREEN)
+	progress_gradient.remove_point(0)
+	progress_gradient.remove_point(0)
 	
-	under.gradient = Gradient.new()
-	progress.gradient = Gradient.new()
+	# create the bar style
+	var under: StyleBoxFlat = StyleBoxFlat.new()
+	under.bg_color = Color(0, 0, 0, 0.5)
+	# will be changed at the next health changed
+	var over: StyleBoxFlat = StyleBoxFlat.new()
+	bar.show_percentage = false
 	
-	# remove after adding because we can't have an empty array, and it automatically resize 
-	# and set_color on an existing point doesn't seem to work
-	under.gradient.add_point(0, Color(0, 0, 0, 0.5))
-	under.gradient.remove_point(0)
-	under.gradient.remove_point(0)
-	
-	progress.gradient.add_point(0, Color.RED)
-	progress.gradient.add_point(0.5, Color.YELLOW)
-	progress.gradient.add_point(1, Color.GREEN)
-	progress.gradient.remove_point(0)
-	progress.gradient.remove_point(0)
-	
-	bar.texture_under = under
-	bar.texture_progress = progress
+	bar.add_theme_stylebox_override("background", under)
+	bar.add_theme_stylebox_override("fill", over)
 	
 	# connect the bar to the health event
 	health_component.health_changed.connect(health_changed)
+	# resend the current heath to reset
+	health_changed(health_component.current_health, health_component.max_health)
 
 # get the top center of the visual body
 func position_on_top() -> void:
@@ -65,6 +64,9 @@ func position_on_top() -> void:
 	position.y += height_offset
 	
 func health_changed(current_health: int, max_health: int) -> void:
+	var current_color: Color = progress_gradient.sample(float(health_component.current_health) / float(health_component.max_health))
+	(bar.get_theme_stylebox("fill") as StyleBoxFlat).bg_color = current_color
+	
 	bar.value = current_health
 	# show if not full health
 	bar.visible = current_health != max_health

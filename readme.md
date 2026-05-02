@@ -39,7 +39,6 @@ Sepcial up and down are special buttons to use without care in a specific scenes
 They are used in [Worlds/ClipMap](/scenes/worlds/ClipMap) to tweak a ratio when displacing the map (I tried to remove the jumps when snapping to the player new position), and in [Worlds/test] to "shoot" the crate. Up to damage, down to heal.
 
 # Bugs/Todos:
-- The healthbar is super thin
 - On ClipMap, when the mesh is snaped to displace with the player movement, there are jumps. The map doesn't move in reverse of the player.
 - When turning the camera left and right, the player body spin like crazy.
 - Chunks generation can be slow, they need their own thread.
