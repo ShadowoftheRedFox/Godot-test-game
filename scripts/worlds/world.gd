@@ -20,6 +20,8 @@ func _ready() -> void:
 	# make sure render distance is odd
 	render_distance = render_distance + (1 - render_distance % 2)
 	
+	loaded_chunks.resize(render_distance * render_distance)
+	
 	create_chunk_section()
 	create_raycast()
 
@@ -39,11 +41,12 @@ func _process(_delta: float) -> void:
 func create_chunk_section(current_position: Vector3 = Vector3.ZERO) -> void:
 	var half_render_distance: float = render_distance / 2.0
 	for i: int in range(render_distance * render_distance):
+		@warning_ignore("integer_division")
 		var half_point: Vector3 = Vector3(((i % render_distance) - half_render_distance) * chunk_size,
 		0,
-		((i / float(render_distance)) - half_render_distance) * chunk_size)
+		((i / render_distance) - half_render_distance) * chunk_size)
 		# center the player on the middle of the center chunk
-		var offset: Vector3 = current_position + half_point + Vector3(chunk_size / 2.0, 0, chunk_size / 2.0)
+		var offset: Vector3 = current_position + half_point + Vector3(chunk_size / 2.0, 0, chunk_size / 2.0).round()
 		var chunk_name: String = "chunk_" + str(offset.x) + ":" + str(offset.z)
 		
 		# if chunk_name in loaded_chunks:
@@ -54,7 +57,7 @@ func create_chunk_section(current_position: Vector3 = Vector3.ZERO) -> void:
 
 func create_chunk(pos: Vector3, chunk_name: String) -> void:
 	var chunk: WorldChunk = CHUNK.instantiate()
-	chunk.world_controller = self as WorldController
+	chunk.world_controller = self
 	
 	loaded_chunks.append(chunk_name)
 	#chunks.add_child(chunk)

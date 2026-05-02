@@ -21,38 +21,11 @@ func create_chunk(pos: Vector3, chunk_name: String) -> void:
 	# TODO do it in another thread
 	create_mesh()
 
-func apply_noise() -> void:
-	var sTool: SurfaceTool = SurfaceTool.new()
-	var dataTool: MeshDataTool = MeshDataTool.new()
-	sTool.clear()
-	sTool.create_from(mesh, 0)
-	var array_mesh: ArrayMesh = sTool.commit()
-	dataTool.clear()
-	dataTool.create_from_surface(array_mesh, 0)
-	var vertex_count: int = dataTool.get_vertex_count()
-	
-	for noise_component: NoiseComponent in world_controller.noises:
-		var noise: FastNoiseLite = noise_component.texture.noise
-		var strength: float = noise_component.strength
-		noise.offset = position
-		for i: int in range(vertex_count):
-			var vertex: Vector3 = dataTool.get_vertex(i)
-			var value: float = noise.get_noise_3d(vertex.x, vertex.y, vertex.z)
-			vertex.y = value * strength
-			dataTool.set_vertex(i, vertex)
-	
-	array_mesh.clear_surfaces()
-	dataTool.commit_to_surface(array_mesh)
-	sTool.clear()
-	sTool.begin(Mesh.PRIMITIVE_TRIANGLES)
-	sTool.create_from(array_mesh, 0)
-	sTool.generate_normals()
-	mesh = sTool.commit()
-
 # create the chunk mesh and collisions
 func create_mesh() -> void:
 	var pmesh: PlaneMesh = PlaneMesh.new()
 	pmesh.size = Vector2(world_controller.chunk_size, world_controller.chunk_size)
+
 	@warning_ignore("integer_division")
 	var subdivide_size: int = world_controller.chunk_size / lod
 	pmesh.subdivide_depth = subdivide_size
@@ -61,11 +34,12 @@ func create_mesh() -> void:
 	var mat: StandardMaterial3D = StandardMaterial3D.new()
 	mat.albedo_color = Color(randf(), randf(), randf())
 
-	set_surface_override_material(0, mat)
+	material_override = mat
 	if world_controller.noises.size() > 0:
-		apply_noise()
-	collision_shape_3d.shape = pmesh.create_trimesh_shape()
-	mesh = pmesh
+		mesh = NoiseTerrainGenerator.new().apply_noise(world_controller.noises, pmesh, Vector2.ZERO)
+	else:
+		mesh = pmesh
+	collision_shape_3d.shape = mesh.create_trimesh_shape()
 
 func _process(_delta: float) -> void:
 	# check the distance, without accounting for height differences
