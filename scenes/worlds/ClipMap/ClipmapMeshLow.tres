@@ -1,0 +1,6 @@
+[gd_resource type="ClipmapMesh" format=3 uid="uid://miy8w34pfrn1"]
+
+[resource]
+clipmap/number_of_lods = 1
+clipmap/lod_0/size = 200.0
+clipmap/lod_0/subdivisions = 200

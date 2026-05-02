@@ -10,5 +10,5 @@ clipmap/lod_2/size = 400.0
 clipmap/lod_2/subdivisions = 30
 clipmap/lod_3/size = 800.0
 clipmap/lod_3/subdivisions = 20
-clipmap/lod_4/size = 1600.0
-clipmap/lod_4/subdivisions = 10
+clipmap/lod_4/size = 3200.0
+clipmap/lod_4/subdivisions = 20

@@ -1,5 +1,5 @@
 @tool
-class_name TerrainMeshNoise extends MeshInstance3D
+class_name Terrain extends MeshInstance3D
 
 @export var player: CharacterBody3D
 @export var noises: Array[NoiseComponent] = []
@@ -26,35 +26,7 @@ func update() -> void:
 
 # apply the noises on the terrain mesh
 func apply_noise() -> void:	
-	if noises.size() == 0:
-		return
-	
-	var sTool: SurfaceTool = SurfaceTool.new()
-	var dataTool: MeshDataTool = MeshDataTool.new()
-	sTool.clear()
-	sTool.create_from(mesh, 0)
-	var array_mesh: ArrayMesh = sTool.commit()
-	dataTool.clear()
-	dataTool.create_from_surface(array_mesh, 0)
-	var vertex_count: int = dataTool.get_vertex_count()
-	
-	for noise_component: NoiseComponent in noises: 
-		var noise: FastNoiseLite = noise_component.texture.noise
-		var strength: float = noise_component.strength
-		noise.offset = Vector3(offset.x, 0, offset.y)
-		for i: int in range(vertex_count):
-			var vertex: Vector3 = dataTool.get_vertex(i)
-			var value: float = noise.get_noise_3d(vertex.x, vertex.y, vertex.z)
-			vertex.y = value * strength
-			dataTool.set_vertex(i, vertex)
-	
-	array_mesh.clear_surfaces()
-	dataTool.commit_to_surface(array_mesh)
-	sTool.clear()
-	sTool.begin(Mesh.PRIMITIVE_TRIANGLES)
-	sTool.create_from(array_mesh, 0)
-	sTool.generate_normals()
-	mesh = sTool.commit()
+	mesh = NoiseTerrainGenerator.new().apply_noise(noises, mesh, offset)
 
 # create a collision shape of the mesh
 func create_shape() -> void:
@@ -67,6 +39,9 @@ var ratio: float = 1
 ######### TEMP #########
 
 func _process(_delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+	
 	if Input.is_action_just_pressed("action_special_up"):
 		if ratio < 1:
 			ratio += 0.1

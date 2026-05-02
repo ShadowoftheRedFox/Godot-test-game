@@ -1,7 +1,6 @@
 [gd_resource type="NoiseTexture2D" format=3 uid="uid://l0jtohkyusrf"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_yur2r"]
-frequency = 0.002
 cellular_distance_function = 1
 metadata/_preview_in_3d_space_ = true
 
