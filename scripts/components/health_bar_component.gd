@@ -70,4 +70,3 @@ func health_changed(current_health: int, max_health: int) -> void:
 	bar.value = current_health
 	# show if not full health
 	bar.visible = current_health != max_health
-	print("Bar: %d / %d" % [current_health, max_health])

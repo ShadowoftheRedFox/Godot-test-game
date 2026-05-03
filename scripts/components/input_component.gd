@@ -16,6 +16,7 @@ var special_down: bool = false
 
 var hide_mouse: bool = true
 
+
 func update() -> void:
 	direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	

@@ -2,7 +2,7 @@
 class_name Terrain extends MeshInstance3D
 
 @export var player: CharacterBody3D
-@export var noises: Array[NoiseComponent] = []
+@export var noises: TerrainNoise
 @export var offset: Vector2 = Vector2.ZERO
 @export var collision: CollisionShape3D
 @export_tool_button("Update", "Reload")
@@ -21,17 +21,36 @@ func _ready() -> void:
 
 # update both mesh and shape
 func update() -> void:
-	apply_noise()
+	#apply_noise()
 	create_shape()
 
 # apply the noises on the terrain mesh
-func apply_noise() -> void:	
-	mesh = NoiseTerrainGenerator.new().apply_noise(noises, mesh, offset)
+func apply_noise() -> void:
+	mesh = NoiseTerrainGenerator.new().apply_noise(noises, mesh, Vector3(offset.x, 0, offset.y))
 
 # create a collision shape of the mesh
 func create_shape() -> void:
+	var size: int = 200
+	var heights: PackedFloat32Array = PackedFloat32Array()
+	heights.resize(size*size)
+
+	for x: int in range(size):
+		for y: int in range(size):
+			var noise: FastNoiseLite = noises.textures[0].noise
+			noise.frequency = noises.lacunarity
+			noise.offset = Vector3(offset.x + x, 0, offset.y + y)
+			var h: float = noise.get_noise_2d(x, y)
+			h = (h + 1.0) * 0.5  # normalize to 0–1
+			heights[x * size + y] = h * noises.persistance
+	
+	var map_shape: HeightMapShape3D = HeightMapShape3D.new()
+	map_shape.map_width = size
+	map_shape.map_depth = size
+	map_shape.map_data = heights
+	
 	if collision and not Engine.is_editor_hint():
-		collision.shape = mesh.create_trimesh_shape()
+		collision.shape = map_shape
+		#collision.shape = mesh.create_trimesh_shape()
 
 ######### TEMP #########
 var ratio: float = 1

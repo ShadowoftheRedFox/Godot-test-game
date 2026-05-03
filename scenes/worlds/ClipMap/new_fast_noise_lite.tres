@@ -1,0 +1,6 @@
+[gd_resource type="FastNoiseLite" format=3 uid="uid://bvxpw6st27bsl"]
+
+[resource]
+frequency = 0.0031
+cellular_distance_function = 1
+metadata/_preview_in_3d_space_ = true

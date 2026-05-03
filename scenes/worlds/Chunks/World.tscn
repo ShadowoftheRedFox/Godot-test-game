@@ -2,13 +2,41 @@
 
 [ext_resource type="PackedScene" uid="uid://26srdfxbxw6k" path="res://scenes/entities/Player.tscn" id="1_88g73"]
 [ext_resource type="Script" uid="uid://cqiafggmdvg12" path="res://scripts/worlds/world.gd" id="1_rnjhf"]
+[ext_resource type="Script" uid="uid://cp2gn5pvymipb" path="res://scripts/resources/terrain_noise.gd" id="2_bcryp"]
 [ext_resource type="PackedScene" uid="uid://bl1nkfu5cylho" path="res://assets/internal/Environment.tscn" id="3_dmbvu"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5hah2"]
+cellular_distance_function = 1
+metadata/_preview_in_3d_space_ = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_bcryp"]
+noise = SubResource("FastNoiseLite_5hah2")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_d6lo7"]
+seed = -5
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_g27os"]
+noise = SubResource("FastNoiseLite_d6lo7")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_bcryp"]
+seed = -5
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hu601"]
+noise = SubResource("FastNoiseLite_bcryp")
+
+[sub_resource type="Resource" id="Resource_ihyo5"]
+script = ExtResource("2_bcryp")
+textures = Array[NoiseTexture2D]([SubResource("NoiseTexture2D_bcryp"), SubResource("NoiseTexture2D_g27os"), SubResource("NoiseTexture2D_hu601")])
+height = 29.194
+metadata/_custom_type_script = "uid://cp2gn5pvymipb"
 
 [node name="World" type="Node3D" unique_id=1385780268]
 script = ExtResource("1_rnjhf")
 chunk_size = 10
+noises = SubResource("Resource_ihyo5")
 
 [node name="Player" parent="." unique_id=319123823 instance=ExtResource("1_88g73")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0)
 
 [node name="Chunks" type="Node3D" parent="." unique_id=1833679892]
 

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://1anjtmyppsfo"]
 
-[ext_resource type="Script" uid="uid://hecfvxibibx5" path="res://scenes/worlds/test/crate.gd" id="1_dqu0d"]
+[ext_resource type="Script" uid="uid://hecfvxibibx5" path="res://scripts/entities/prop.gd" id="1_dqu0d"]
 [ext_resource type="Script" uid="uid://bvixwki5ss1pa" path="res://scripts/components/health_component.gd" id="5_sabgl"]
 [ext_resource type="Script" uid="uid://dg5e2chr6wtql" path="res://scripts/components/health_bar_component.gd" id="6_yn1h3"]
 
@@ -17,6 +17,7 @@ script = ExtResource("5_sabgl")
 metadata/_custom_type_script = "uid://bvixwki5ss1pa"
 
 [node name="HealthBarComponent" type="Sprite3D" parent="." unique_id=1255873212 node_paths=PackedStringArray("health_component", "visual_body")]
+unique_name_in_owner = true
 script = ExtResource("6_yn1h3")
 health_component = NodePath("../HealthComponent")
 visual_body = NodePath("../MeshInstance3D")

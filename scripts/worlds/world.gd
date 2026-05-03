@@ -7,7 +7,7 @@ const CHUNK: PackedScene = preload("uid://dtqtgvf43ympc")
 
 @export_range(10, 1000, 10, "or_greater") var chunk_size: int = 50
 @export_range(3, 100, 2, "or_greater") var render_distance: int = 7
-@export var noises: Array[NoiseComponent] = []
+@export var noises: TerrainNoise
 
 var loaded_chunks: PackedStringArray = PackedStringArray([])
 var last_chunk: WorldChunk = null

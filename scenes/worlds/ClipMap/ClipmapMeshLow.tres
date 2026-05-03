@@ -1,6 +1,23 @@
 [gd_resource type="ClipmapMesh" format=3 uid="uid://miy8w34pfrn1"]
 
+[ext_resource type="Shader" uid="uid://uy8q5gloc3wg" path="res://scenes/worlds/ClipMap/TerrainNoiseShader.tres" id="1_a5tbl"]
+[ext_resource type="Texture2D" uid="uid://l0jtohkyusrf" path="res://scenes/worlds/ClipMap/TerrainNoise.tres" id="2_um3g3"]
+[ext_resource type="FastNoiseLite" uid="uid://bvxpw6st27bsl" path="res://scenes/worlds/ClipMap/new_fast_noise_lite.tres" id="3_sms7i"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wc6m4"]
+noise = ExtResource("3_sms7i")
+as_normal_map = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_um3g3"]
+render_priority = 0
+shader = ExtResource("1_a5tbl")
+shader_parameter/Strength = 69.08
+shader_parameter/Noise = ExtResource("2_um3g3")
+shader_parameter/Offset = Vector2(0, 0)
+shader_parameter/NoiseNormal = SubResource("NoiseTexture2D_wc6m4")
+
 [resource]
 clipmap/number_of_lods = 1
 clipmap/lod_0/size = 200.0
 clipmap/lod_0/subdivisions = 200
+material = SubResource("ShaderMaterial_um3g3")

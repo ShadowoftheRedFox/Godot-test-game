@@ -11,8 +11,9 @@ config_version=5
 [application]
 
 config/name="WTFisTHIS"
-run/main_scene="uid://c2xp34gehb5i1"
-config/features=PackedStringArray("4.6", "Forward Plus")
+config/version="0.0.1"
+run/main_scene="uid://b8brfdyr57ked"
+config/features=PackedStringArray("4.6", "C#", "Forward Plus")
 run/max_fps=60
 config/icon="res://icon.svg"
 settings/stdout/print_fps=true
@@ -106,3 +107,4 @@ common/physics_interpolation=true
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+occlusion_culling/use_occlusion_culling=true

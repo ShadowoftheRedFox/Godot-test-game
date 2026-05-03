@@ -1,29 +1,22 @@
 [gd_scene format=3 uid="uid://s37ls2nh0fp6"]
 
 [ext_resource type="PackedScene" uid="uid://26srdfxbxw6k" path="res://scenes/entities/Player.tscn" id="1_638mw"]
+[ext_resource type="PackedScene" uid="uid://bl1nkfu5cylho" path="res://assets/internal/Environment.tscn" id="1_euvrt"]
 [ext_resource type="Script" uid="uid://bfhwuwg3ko3pf" path="res://scenes/worlds/ClipMap/terrain.gd" id="3_dqmyg"]
 [ext_resource type="ClipmapMesh" uid="uid://miy8w34pfrn1" path="res://scenes/worlds/ClipMap/ClipmapMeshLow.tres" id="3_euvrt"]
-[ext_resource type="Script" uid="uid://cjuqnayg06q4w" path="res://scripts/components/noise_component.gd" id="4_dqmyg"]
-[ext_resource type="Environment" uid="uid://bubfaqibysqev" path="res://assets/PolygonStarter/Materials/WorldEnvironmentLighting.tres" id="5_8i1gt"]
+[ext_resource type="Script" uid="uid://cp2gn5pvymipb" path="res://scripts/resources/terrain_noise.gd" id="4_dqmyg"]
 [ext_resource type="Texture2D" uid="uid://l0jtohkyusrf" path="res://scenes/worlds/ClipMap/TerrainNoise.tres" id="5_odimh"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_q3a2t"]
 
-[sub_resource type="Resource" id="Resource_8i1gt"]
+[sub_resource type="Resource" id="Resource_euvrt"]
 script = ExtResource("4_dqmyg")
-texture = ExtResource("5_odimh")
-strength = 70.0
-metadata/_custom_type_script = "uid://cjuqnayg06q4w"
+textures = Array[NoiseTexture2D]([ExtResource("5_odimh")])
+metadata/_custom_type_script = "uid://cp2gn5pvymipb"
 
 [node name="Test" type="Node3D" unique_id=1179395747]
 
-[node name="Environment" type="Node3D" parent="." unique_id=919520612]
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=1886946351]
-transform = Transform3D(0.4823092, -0.7393391, 0.46984634, 0.46984634, 0.6710101, 0.57357645, -0.7393391, -0.055885643, 0.6710101, 0, 0, 0)
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=244236327]
-environment = ExtResource("5_8i1gt")
+[node name="Environment" parent="." unique_id=279306561 instance=ExtResource("1_euvrt")]
 
 [node name="MinWorldBorder" type="StaticBody3D" parent="." unique_id=575189181]
 
@@ -38,7 +31,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 74.4941, 0)
 mesh = ExtResource("3_euvrt")
 script = ExtResource("3_dqmyg")
 player = NodePath("../Player")
-noises = Array[ExtResource("4_dqmyg")]([SubResource("Resource_8i1gt")])
+noises = SubResource("Resource_euvrt")
 collision = NodePath("StaticBody3D/CollisionShape3D")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Terrain" unique_id=1473538284]

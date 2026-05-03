@@ -1,8 +1,6 @@
 [gd_resource type="NoiseTexture2D" format=3 uid="uid://l0jtohkyusrf"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_yur2r"]
-cellular_distance_function = 1
-metadata/_preview_in_3d_space_ = true
+[ext_resource type="FastNoiseLite" uid="uid://bvxpw6st27bsl" path="res://scenes/worlds/ClipMap/new_fast_noise_lite.tres" id="1_ld8aq"]
 
 [resource]
-noise = SubResource("FastNoiseLite_yur2r")
+noise = ExtResource("1_ld8aq")

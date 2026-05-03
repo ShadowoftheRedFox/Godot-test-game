@@ -7,9 +7,14 @@ func evaluate(noise: Noise, point: Vector3) -> float:
 	
 	return noise_value
 
-# cerate mesh from the given data
-func apply_noise(noises: Array[NoiseComponent], mesh: Mesh, offset: Vector2) -> Mesh:	
-	if noises.size() == 0:
+# create manualy a square mesh, with elevation and stitch
+func manual_mesh() -> Mesh:
+	
+	return null
+
+# create mesh from the given data
+func apply_noise(noises: TerrainNoise, mesh: Mesh, offset: Vector3) -> Mesh:
+	if noises.textures.size() == 0:
 		return mesh
 	
 	# setup
@@ -21,18 +26,31 @@ func apply_noise(noises: Array[NoiseComponent], mesh: Mesh, offset: Vector2) -> 
 	dataTool.clear()
 	dataTool.create_from_surface(array_mesh, 0)
 	var vertex_count: int = dataTool.get_vertex_count()
+	# we suppose the mesh is a square
+	var size: int = int(sqrt(vertex_count))
 	
 	# apply each noise
-	for noise_component: NoiseComponent in noises: 
-		var noise: FastNoiseLite = noise_component.texture.noise
-		var strength: float = noise_component.strength
-		noise.offset = Vector3(offset.x, 0, offset.y)
+	for j: int in noises.textures.size(): 
+		var noise: FastNoiseLite = noises.textures[j].noise
+		noise.offset.x = offset.x
+		noise.offset.z = offset.z
+		noise.frequency = noises.lacunarity ** j
+		
 		for i: int in range(vertex_count):
 			var vertex: Vector3 = dataTool.get_vertex(i)
 			var value: float = evaluate(noise, vertex)
-			vertex.y = value * strength
-			if vertex.y < 0:
-				print("negative!")
+			
+			# TEST trying to stitch the seams of the chunk
+			# we check if the current vertex is on an edge
+			var is_on_front: bool = i % size == 0 
+			var is_on_back: bool = i % size == size - 1
+			var is_on_left: bool = i < size
+			var is_on_right: bool = i + size >= vertex_count
+			var is_on_side: bool = is_on_front or is_on_back or is_on_left or is_on_right
+			
+			vertex.y = value * (noises.persistance ** j) * noises.height
+			#if is_on_side:
+				#vertex.y += 1
 			dataTool.set_vertex(i, vertex)
 	
 	# cleanup

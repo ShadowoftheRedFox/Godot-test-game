@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://b8brfdyr57ked"]
+
+[ext_resource type="Script" uid="uid://el3cckquxur2" path="res://scenes/worlds/test/laboratory.gd" id="1_8srka"]
+[ext_resource type="PackedScene" uid="uid://26srdfxbxw6k" path="res://scenes/entities/Player.tscn" id="1_t08so"]
+[ext_resource type="PackedScene" uid="uid://bl1nkfu5cylho" path="res://assets/internal/Environment.tscn" id="2_67kpa"]
+[ext_resource type="PackedScene" uid="uid://1anjtmyppsfo" path="res://scenes/entities/Prop.tscn" id="5_eclf4"]
+[ext_resource type="ArrayMesh" uid="uid://mpfrov2bagji" path="res://assets/PolygonStarter/Models/extracted/SM_PolygonPrototype_Prop_Crate_03.res" id="6_eclf4"]
+[ext_resource type="Material" uid="uid://bprw8jx500qd0" path="res://assets/PolygonStarter/Materials/PolygonStarter_Mat_01_mat.tres" id="6_nnpde"]
+[ext_resource type="Shape3D" uid="uid://bwjdu52ydxtqp" path="res://assets/internal/CrateShape.tres" id="6_np46q"]
+[ext_resource type="PackedScene" uid="uid://dlwjol7yjo20y" path="res://assets/PolygonStarter/Prefabs/SM_Generic_Small_Rocks_01.tscn" id="7_eclf4"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_bc5xn"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_t0xw0"]
+size = Vector2(1000, 1000)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_dlpac"]
+load_path = "res://.godot/imported/Asphalt_01_basecolor.jpg-94ff7a3d6e879430037a5a6e9f848bdc.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_8srka"]
+load_path = "res://.godot/imported/Asphalt_01_ambientocclusion.jpg-4c7a10b7f88da5ff6f9fdb1e02b96796.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nusnv"]
+load_path = "res://.godot/imported/Asphalt_01_normalogl.jpg-6f3ce153d38a3fa4be8b9c27e1bb795f.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ncp0c"]
+load_path = "res://.godot/imported/Asphalt_01_height.jpg-9c26e4ca2af606fcdc3f57e1367f2e7e.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_q68y3"]
+load_path = "res://.godot/imported/Asphalt_01_metallic.jpg-819a63e4e4c566de90daf279dfeaa5b9.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hfw55"]
+load_path = "res://.godot/imported/Asphalt_01_normal.jpg-0e276728b232cd871ada0bbda29f7d61.s3tc.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_q5557"]
+load_path = "res://.godot/imported/Asphalt_01_roughness.jpg-5356117329e7a05b055630efc3acb6ac.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8jo03"]
+albedo_texture = SubResource("CompressedTexture2D_dlpac")
+metallic_specular = 0.1
+metallic_texture = SubResource("CompressedTexture2D_q68y3")
+roughness_texture = SubResource("CompressedTexture2D_q5557")
+normal_enabled = true
+normal_texture = SubResource("CompressedTexture2D_hfw55")
+bent_normal_enabled = true
+bent_normal_texture = SubResource("CompressedTexture2D_nusnv")
+ao_enabled = true
+ao_texture = SubResource("CompressedTexture2D_8srka")
+heightmap_enabled = true
+heightmap_scale = 2.247
+heightmap_texture = SubResource("CompressedTexture2D_ncp0c")
+uv1_scale = Vector3(50, 50, 50)
+
+[node name="Laboratory" type="Node3D" unique_id=1111460297]
+script = ExtResource("1_8srka")
+
+[node name="Player" parent="." unique_id=319123823 instance=ExtResource("1_t08so")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8172724, 0)
+
+[node name="Environment" parent="." unique_id=279306561 instance=ExtResource("2_67kpa")]
+
+[node name="Room" type="Node3D" parent="." unique_id=1795409838]
+metadata/_edit_lock_ = true
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Room" unique_id=255950994]
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Room/StaticBody3D" unique_id=1701902896]
+shape = SubResource("WorldBoundaryShape3D_bc5xn")
+debug_fill = false
+metadata/_edit_lock_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Room/StaticBody3D" unique_id=574574425]
+cast_shadow = 0
+mesh = SubResource("PlaneMesh_t0xw0")
+surface_material_override/0 = SubResource("StandardMaterial3D_8jo03")
+metadata/_edit_lock_ = true
+
+[node name="SM_Generic_Small_Rocks_01" parent="Room" unique_id=119245510 instance=ExtResource("7_eclf4")]
+metadata/_edit_lock_ = true
+
+[node name="Prop" parent="." unique_id=134364856 instance=ExtResource("5_eclf4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.09669495, 1.7073057, -2.6938891)
+shape = ExtResource("6_np46q")
+mesh = ExtResource("6_eclf4")
+material_override = ExtResource("6_nnpde")
