@@ -3,6 +3,10 @@ class_name WorldChunk extends MeshInstance3D
 var ntg: NoiseTerrainGenerator = NoiseTerrainGenerator.new()
 
 var world_controller: WorldController = null
+# maximum distance from world chunk (squared)
+var max_dist: float = 0.0
+
+
 var lod: int = 1
 # same as name, but not transformed as StringName, because it somehow creates problem
 var id: String = ""
@@ -11,6 +15,7 @@ var id: String = ""
 @onready var label_3d: Label3D = $Label3D
 
 func _ready() -> void:
+	max_dist = world_controller.render_distance * world_controller.render_distance * world_controller.chunk_size * world_controller.chunk_size / 2.0
 	assert(world_controller != null, "No world controller")
 
 func create_chunk(pos: Vector3, chunk_name: String) -> void:
@@ -48,21 +53,24 @@ func _process(_delta: float) -> void:
 	var dist: int = ceili(player_position.distance_squared_to(chunk_position))
 	# distance from the chunk, with y
 	var true_dist: int = ceili(world_controller.player.global_position.distance_squared_to(position))
-	# maximum distance from world
-	var rdist: float = world_controller.render_distance * world_controller.render_distance * world_controller.chunk_size * world_controller.chunk_size / 1.25
-	
-	if dist > rdist:
+
+	if dist > max_dist:
 		erase()
 		return
 	
 	# redraw with LOD
-	# - chunk_size to have a minimum distance before LOD
-	# * chunk_size to have the LOD depending on the current chunk size
-	# min() to stop increasing LOD when we hit the maximum usable value
-	var new_LOD: int = min(world_controller.chunk_size - 1, max(1, ceili(float(true_dist - world_controller.chunk_size) / float(rdist) * world_controller.chunk_size)))
+	var new_LOD: int = calc_new_lod(true_dist)
 	if lod != new_LOD:
 		lod = new_LOD
 		create_mesh()
+
+func calc_new_lod(distance_to_player_squared: float) -> int:
+	var max_LOD: int = world_controller.chunk_size - 1
+	var chunk_square: int = world_controller.chunk_size * world_controller.chunk_size
+	var minimum_chunks_before_lod: float = world_controller.distance_before_LOD
+	if distance_to_player_squared <= minimum_chunks_before_lod ** 2:
+		return 1
+	return min(max_LOD, lerp(1, max_LOD, float(distance_to_player_squared / max_dist)))
 
 # called before getting deleted
 func erase() -> void:

@@ -5,8 +5,9 @@ const CHUNK: PackedScene = preload("uid://dtqtgvf43ympc")
 @onready var player: Player = $Player
 @onready var chunks: Node3D = $Chunks
 
-@export_range(10, 1000, 10, "or_greater") var chunk_size: int = 50
+@export_range(10, 1000, 10, "or_greater") var chunk_size: int = 10
 @export_range(3, 100, 2, "or_greater") var render_distance: int = 7
+@export var distance_before_LOD: int = 10
 @export var noises: TerrainNoise
 
 var loaded_chunks: PackedStringArray = PackedStringArray([])

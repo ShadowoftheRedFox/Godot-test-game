@@ -12,27 +12,13 @@ metadata/_preview_in_3d_space_ = true
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_bcryp"]
 noise = SubResource("FastNoiseLite_5hah2")
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_d6lo7"]
-seed = -5
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_g27os"]
-noise = SubResource("FastNoiseLite_d6lo7")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_bcryp"]
-seed = -5
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hu601"]
-noise = SubResource("FastNoiseLite_bcryp")
-
 [sub_resource type="Resource" id="Resource_ihyo5"]
 script = ExtResource("2_bcryp")
-textures = Array[NoiseTexture2D]([SubResource("NoiseTexture2D_bcryp"), SubResource("NoiseTexture2D_g27os"), SubResource("NoiseTexture2D_hu601")])
-height = 29.194
+textures = Array[NoiseTexture2D]([SubResource("NoiseTexture2D_bcryp")])
 metadata/_custom_type_script = "uid://cp2gn5pvymipb"
 
 [node name="World" type="Node3D" unique_id=1385780268]
 script = ExtResource("1_rnjhf")
-chunk_size = 10
 noises = SubResource("Resource_ihyo5")
 
 [node name="Player" parent="." unique_id=319123823 instance=ExtResource("1_88g73")]

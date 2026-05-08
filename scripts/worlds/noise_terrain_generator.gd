@@ -2,7 +2,7 @@ class_name NoiseTerrainGenerator
 
 # clamp value from [-1,1] to [0, 1]
 func evaluate(noise: Noise, point: Vector3) -> float:
-	var noise_value: float = noise.get_noise_3d(point.x, point.y, point.z)
+	var noise_value: float = noise.get_noise_3d(point.x, 0, point.z)
 	noise_value = (noise_value + 1) / 2.0
 	
 	return noise_value
@@ -32,25 +32,33 @@ func apply_noise(noises: TerrainNoise, mesh: Mesh, offset: Vector3) -> Mesh:
 	# apply each noise
 	for j: int in noises.textures.size(): 
 		var noise: FastNoiseLite = noises.textures[j].noise
-		noise.offset.x = offset.x
-		noise.offset.z = offset.z
-		noise.frequency = noises.lacunarity ** j
+		noise.offset.x = offset.x / noises.scale
+		noise.offset.z = offset.z / noises.scale
 		
 		for i: int in range(vertex_count):
+			var amplitude: float = 1.0
+			var frequency: float = 1.0
 			var vertex: Vector3 = dataTool.get_vertex(i)
-			var value: float = evaluate(noise, vertex)
-			
-			# TEST trying to stitch the seams of the chunk
-			# we check if the current vertex is on an edge
-			var is_on_front: bool = i % size == 0 
-			var is_on_back: bool = i % size == size - 1
-			var is_on_left: bool = i < size
-			var is_on_right: bool = i + size >= vertex_count
-			var is_on_side: bool = is_on_front or is_on_back or is_on_left or is_on_right
-			
-			vertex.y = value * (noises.persistance ** j) * noises.height
-			#if is_on_side:
-				#vertex.y += 1
+		
+			for o: int in range(noises.octaves):
+				var value: float = evaluate(noise, vertex / noises.scale * frequency)
+				
+				"""
+				# TEST trying to stitch the seams of the chunk
+				# we check if the current vertex is on an edge
+				var is_on_front: bool = i % size == 0 
+				var is_on_back: bool = i % size == size - 1
+				var is_on_left: bool = i < size
+				var is_on_right: bool = i + size >= vertex_count
+				var is_on_side: bool = is_on_front or is_on_back or is_on_left or is_on_right
+				if is_on_side:
+					vertex.y += 1
+				"""
+				
+				vertex.y += value * amplitude
+				amplitude *= noises.persistance
+				frequency *= noises.lacunarity
+				
 			dataTool.set_vertex(i, vertex)
 	
 	# cleanup
