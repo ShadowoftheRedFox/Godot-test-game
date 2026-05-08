@@ -1,11 +1,10 @@
-class_name Player extends CharacterBody3D
+class_name Player extends Entity
 
 @onready var input_component: InputComponent = $InputComponent
-@onready var move_component: MoveComponent = %MoveComponent
-@onready var health_component: HealthComponent = %HealthComponent
 @onready var camera_component: CameraComponent = %CameraComponent
 
 func _ready() -> void:
+	PlayerState.player = self
 	camera_component.character = self
 
 func _physics_process(delta: float) -> void:
@@ -31,7 +30,7 @@ func _physics_process(delta: float) -> void:
 	move_component.update(delta)
 
 # shoot a ray from the middle of the screen in the direction of the camera
-func shoot(damage: int) -> void:
+func shoot(value: int) -> void:
 	var camera: Camera3D = camera_component.camera
 	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
 	var window_half_size: Vector2 = (get_viewport() as Window).size / 2.0
@@ -46,4 +45,13 @@ func shoot(damage: int) -> void:
 
 	if result:
 		@warning_ignore("unsafe_cast")
-		(result.collider as CollisionObject3D).emit_signal("hit", damage)
+		(result.collider as CollisionObject3D).emit_signal("hit", value)
+		
+func _on_damage(value: int) -> void:
+	health_component.damage(value)
+
+func _on_heal(value: int) -> void:
+	health_component.heal(value)
+
+func _on_effect() -> void:
+	print("Got effect")
