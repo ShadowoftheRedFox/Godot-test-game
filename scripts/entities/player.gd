@@ -11,7 +11,9 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	input_component.update()
 	
-	if input_component.backs:
+	# TODO main menu
+	# quit the game if we want the main menu
+	if input_component.in_main_menu:
 		get_tree().quit()
 	
 	move_component.direction = input_component.direction
@@ -24,12 +26,8 @@ func _physics_process(delta: float) -> void:
 	if input_component.special_up or input_component.special_down:
 		shoot(-5 if input_component.special_up else 5)
 	
-	# show mouse if interaction
-	if input_component.interacts:
-		input_component.hide_mouse = not input_component.hide_mouse
-	
-	# show GUI if we show mouse
-	gui.visible = not input_component.hide_mouse
+	# show inventory if we show mouse
+	gui.visible = input_component.in_inventory
 	
 	move_component.update(delta)
 

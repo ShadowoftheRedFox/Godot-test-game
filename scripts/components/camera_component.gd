@@ -13,6 +13,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		move_camera()
 
 func move_camera() -> void:
+	# don't move camera if the mouse is not captured
 	if camera == null or Input.mouse_mode != Input.MouseMode.MOUSE_MODE_CAPTURED:
 		return
 	
