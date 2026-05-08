@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b8brfdyr57ked"]
 
 [ext_resource type="Script" uid="uid://el3cckquxur2" path="res://scenes/worlds/test/laboratory.gd" id="1_8srka"]
-[ext_resource type="PackedScene" uid="uid://26srdfxbxw6k" path="res://scenes/entities/Player.tscn" id="1_t08so"]
+[ext_resource type="PackedScene" uid="uid://26srdfxbxw6k" path="res://scenes/entities/player/Player.tscn" id="1_t08so"]
 [ext_resource type="PackedScene" uid="uid://bl1nkfu5cylho" path="res://assets/internal/Environment.tscn" id="2_67kpa"]
 [ext_resource type="PackedScene" uid="uid://1anjtmyppsfo" path="res://scenes/entities/Prop.tscn" id="5_eclf4"]
 [ext_resource type="ArrayMesh" uid="uid://mpfrov2bagji" path="res://assets/PolygonStarter/Models/extracted/SM_PolygonPrototype_Prop_Crate_03.res" id="6_eclf4"]

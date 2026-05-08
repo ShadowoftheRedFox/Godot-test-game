@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cnwofbmc0mhff"]
 
-[ext_resource type="PackedScene" uid="uid://26srdfxbxw6k" path="res://scenes/entities/Player.tscn" id="1_88g73"]
+[ext_resource type="PackedScene" uid="uid://26srdfxbxw6k" path="res://scenes/entities/player/Player.tscn" id="1_88g73"]
 [ext_resource type="Script" uid="uid://cqiafggmdvg12" path="res://scripts/worlds/world.gd" id="1_rnjhf"]
 [ext_resource type="Script" uid="uid://cp2gn5pvymipb" path="res://scripts/resources/terrain_noise.gd" id="2_bcryp"]
 [ext_resource type="PackedScene" uid="uid://bl1nkfu5cylho" path="res://assets/internal/Environment.tscn" id="3_dmbvu"]

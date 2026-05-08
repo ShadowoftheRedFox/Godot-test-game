@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://b50byu54aqqsv"]
+
+[node name="PlayerGui" type="MarginContainer" unique_id=333286146]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=961476596]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer" unique_id=837613590]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Hello world"

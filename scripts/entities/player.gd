@@ -2,6 +2,7 @@ class_name Player extends Entity
 
 @onready var input_component: InputComponent = $InputComponent
 @onready var camera_component: CameraComponent = %CameraComponent
+@onready var gui: CanvasLayer = $GUI
 
 func _ready() -> void:
 	PlayerState.player = self
@@ -26,6 +27,9 @@ func _physics_process(delta: float) -> void:
 	# show mouse if interaction
 	if input_component.interacts:
 		input_component.hide_mouse = not input_component.hide_mouse
+	
+	# show GUI if we show mouse
+	gui.visible = not input_component.hide_mouse
 	
 	move_component.update(delta)
 
