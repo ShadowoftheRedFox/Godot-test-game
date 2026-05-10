@@ -45,6 +45,10 @@ func _on_resume_button() -> void:
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2iu3n"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
 bg_color = Color(0.3491902, 0.3491902, 0.3491902, 0.4)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
@@ -321,46 +325,39 @@ script = SubResource("GDScript_2iu3n")
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_2iu3n")
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=906272184]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer" unique_id=273700661]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer" unique_id=273700661]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=582909382]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer" unique_id=582909382]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 
-[node name="Resume" type="Button" parent="PanelContainer/MarginContainer/HBoxContainer/VBoxContainer" unique_id=240082239]
+[node name="Resume" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer" unique_id=240082239]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Resume"
 
-[node name="Settings" type="Button" parent="PanelContainer/MarginContainer/HBoxContainer/VBoxContainer" unique_id=473599105]
+[node name="Settings" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer" unique_id=473599105]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Settings"
 
-[node name="Save" type="Button" parent="PanelContainer/MarginContainer/HBoxContainer/VBoxContainer" unique_id=1443021867]
+[node name="Save" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer" unique_id=1443021867]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Save"
 
-[node name="Quit" type="Button" parent="PanelContainer/MarginContainer/HBoxContainer/VBoxContainer" unique_id=941610530]
+[node name="Quit" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer" unique_id=941610530]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 10
 text = "Quit"
 
-[node name="SubMenu" type="Control" parent="PanelContainer/MarginContainer/HBoxContainer" unique_id=241023671]
+[node name="SubMenu" type="Control" parent="PanelContainer/HBoxContainer" unique_id=241023671]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SettingsMenu" type="Control" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu" unique_id=1972416903]
+[node name="SettingsMenu" type="Control" parent="PanelContainer/HBoxContainer/SubMenu" unique_id=1972416903]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -371,7 +368,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_g0ahc")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu" unique_id=475921315]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu" unique_id=475921315]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -379,51 +376,51 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer" unique_id=1076754154]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer" unique_id=1076754154]
 layout_mode = 2
 alignment = 1
 
-[node name="SettingsGeneral" type="Button" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/HBoxContainer" unique_id=314126622]
+[node name="SettingsGeneral" type="Button" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/HBoxContainer" unique_id=314126622]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 text = "General"
 
-[node name="SettingsSound" type="Button" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/HBoxContainer" unique_id=1170862106]
+[node name="SettingsSound" type="Button" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/HBoxContainer" unique_id=1170862106]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 text = "Sound"
 
-[node name="SettingsGraphic" type="Button" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/HBoxContainer" unique_id=1269522051]
+[node name="SettingsGraphic" type="Button" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/HBoxContainer" unique_id=1269522051]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 text = "Graphic"
 
-[node name="SettingsControl" type="Button" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/HBoxContainer" unique_id=693145996]
+[node name="SettingsControl" type="Button" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/HBoxContainer" unique_id=693145996]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
 text = "Control"
 
-[node name="SettingsGeneralMenu" type="Control" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer" unique_id=1725711045]
+[node name="SettingsGeneralMenu" type="Control" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer" unique_id=1725711045]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="SettingsSoundMenu" type="Control" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer" unique_id=253096903]
+[node name="SettingsSoundMenu" type="Control" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer" unique_id=253096903]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsSoundMenu" unique_id=887056870]
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsSoundMenu" unique_id=887056870]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -432,13 +429,13 @@ grow_horizontal = 2
 grow_vertical = 2
 columns = 2
 
-[node name="GeneralSoundLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsSoundMenu/GridContainer" unique_id=985941263]
+[node name="GeneralSoundLabel" type="Label" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsSoundMenu/GridContainer" unique_id=985941263]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "General sound: "
 
-[node name="GeneralSound" type="HSlider" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsSoundMenu/GridContainer" unique_id=1998681669]
+[node name="GeneralSound" type="HSlider" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsSoundMenu/GridContainer" unique_id=1998681669]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -449,13 +446,13 @@ ticks_on_borders = true
 ticks_position = 3
 script = SubResource("GDScript_3idyw")
 
-[node name="SoundEffectLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsSoundMenu/GridContainer" unique_id=1661811598]
+[node name="SoundEffectLabel" type="Label" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsSoundMenu/GridContainer" unique_id=1661811598]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Sound effect : "
 
-[node name="SoundEffect" type="HSlider" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsSoundMenu/GridContainer" unique_id=1263725109]
+[node name="SoundEffect" type="HSlider" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsSoundMenu/GridContainer" unique_id=1263725109]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -466,13 +463,13 @@ ticks_on_borders = true
 ticks_position = 3
 script = SubResource("GDScript_bkx05")
 
-[node name="SettingsGraphicMenu" type="Control" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer" unique_id=2142950343]
+[node name="SettingsGraphicMenu" type="Control" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer" unique_id=2142950343]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="GridContainer" type="GridContainer" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsGraphicMenu" unique_id=2095681690]
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsGraphicMenu" unique_id=2095681690]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -481,13 +478,13 @@ grow_horizontal = 2
 grow_vertical = 2
 columns = 2
 
-[node name="RenderDistanceLabel" type="Label" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsGraphicMenu/GridContainer" unique_id=903043887]
+[node name="RenderDistanceLabel" type="Label" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsGraphicMenu/GridContainer" unique_id=903043887]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Render distance : "
 
-[node name="RenderDistance" type="HSlider" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsGraphicMenu/GridContainer" unique_id=1096888655]
+[node name="RenderDistance" type="HSlider" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsGraphicMenu/GridContainer" unique_id=1096888655]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -501,7 +498,7 @@ ticks_on_borders = true
 ticks_position = 3
 script = SubResource("GDScript_tl47v")
 
-[node name="SettingsControlMenu" type="Control" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer" unique_id=992057515]
+[node name="SettingsControlMenu" type="Control" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer" unique_id=992057515]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -521,7 +518,7 @@ action_name_map = Dictionary[String, String]({
 "move_up": "Up"
 })
 
-[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu" unique_id=1410058613]
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu" unique_id=1410058613]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -531,18 +528,18 @@ grow_vertical = 2
 follow_focus = true
 horizontal_scroll_mode = 3
 
-[node name="MainContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu/ScrollContainer" unique_id=1907726125]
+[node name="MainContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu/ScrollContainer" unique_id=1907726125]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ControlReset" type="Button" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu/ScrollContainer/MainContainer" unique_id=1013936039]
+[node name="ControlReset" type="Button" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu/ScrollContainer/MainContainer" unique_id=1013936039]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Reset"
 
-[node name="SaveMenu" type="Control" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu" unique_id=1434823122]
+[node name="SaveMenu" type="Control" parent="PanelContainer/HBoxContainer/SubMenu" unique_id=1434823122]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -552,4 +549,4 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[connection signal="pressed" from="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu/ScrollContainer/MainContainer/ControlReset" to="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu" method="_on_control_reset_pressed"]
+[connection signal="pressed" from="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu/ScrollContainer/MainContainer/ControlReset" to="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu" method="_on_control_reset_pressed"]
