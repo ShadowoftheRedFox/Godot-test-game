@@ -41,9 +41,9 @@ func _shoot(value: int) -> void:
 	var from: Vector3 = camera.project_ray_origin(window_half_size)
 	var to: Vector3 = from + camera.project_ray_normal(window_half_size) * 1000
 
-	var result: Dictionary = space_state.intersect_ray(PhysicsRayQueryParameters3D.create(from, to, 
-		0xFFFFFFFF,		# all masks
-		[get_rid()])	# ignore self
+	var result: Dictionary = space_state.intersect_ray(PhysicsRayQueryParameters3D.create(from, to,
+		0xFFFFFFFF, # all masks
+		[get_rid()]) # ignore self
 	)
 
 	if result:

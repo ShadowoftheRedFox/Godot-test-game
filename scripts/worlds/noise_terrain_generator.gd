@@ -1,4 +1,4 @@
-class_name NoiseTerrainGenerator 
+class_name NoiseTerrainGenerator
 
 # clamp value from [-1,1] to [0, 1]
 func evaluate(noise: Noise, point: Vector3) -> float:
@@ -9,7 +9,6 @@ func evaluate(noise: Noise, point: Vector3) -> float:
 
 # create manualy a square mesh, with elevation and stitch
 func manual_mesh() -> Mesh:
-	
 	return null
 
 # create mesh from the given data
@@ -30,7 +29,7 @@ func apply_noise(noises: TerrainNoise, mesh: Mesh, offset: Vector3) -> Mesh:
 	var size: int = int(sqrt(vertex_count))
 	
 	# apply each noise
-	for j: int in noises.textures.size(): 
+	for j: int in noises.textures.size():
 		var noise: FastNoiseLite = noises.textures[j].noise
 		noise.offset.x = offset.x / noises.scale
 		noise.offset.z = offset.z / noises.scale

@@ -3,7 +3,7 @@ class_name DeathAnimationComponent extends Node
 enum DeathAnimations {
 	NONE,
 	DESINTEGRATION
-} 
+}
 
 @export var health_component: HealthComponent
 @export var mesh: MeshInstance3D

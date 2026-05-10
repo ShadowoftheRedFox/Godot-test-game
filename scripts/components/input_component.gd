@@ -18,7 +18,7 @@ var in_main_menu: bool = false
 
 func update() -> void:
 	# toggle with the input
-	in_main_menu = not in_main_menu if  Input.is_action_just_pressed("action_menu") else in_main_menu
+	in_main_menu = not in_main_menu if Input.is_action_just_pressed("action_menu") else in_main_menu
 	in_inventory = not in_inventory if Input.is_action_just_pressed("action_inventory") else in_inventory
 	
 	# for quick quit in dev mode
@@ -49,7 +49,7 @@ func update() -> void:
 	special_down = Input.is_action_just_pressed("action_special_down")
 	interacts = Input.is_action_just_pressed("action_interact")
 
-func _reset()->void:
+func _reset() -> void:
 	# set all inputs to their "default" value
 	direction = Vector2.ZERO
 	mouse_direction = Vector2.ZERO

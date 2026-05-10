@@ -245,11 +245,15 @@ func _ready() -> void:
 	for action: StringName in actions:
 		# create menu nodes
 		var label: Label = Label.new()
-		var button: Button = Button.new()
+		var button: InputButton = InputButton.new(action)
 		
 		# set the name in nodes tree
 		label.name = action.to_camel_case() + \"Label\"
 		button.name = action.to_camel_case() + \"Button\"
+		
+		# disable if it's the main menu
+		if action == \"action_menu\":
+			button.disabled = true
 		
 		# set size in grid (expand and center
 		label.size_flags_horizontal = Control.SIZE_EXPAND | Control.SIZE_SHRINK_CENTER
@@ -257,10 +261,6 @@ func _ready() -> void:
 		
 		# set the \"pretty\" name for the label
 		label.text = action_name_map.get(action, action)
-		# set the key value in the button (on the keyborad, not physical)
-		# TODO handle multiple action key?
-		var event: InputEventKey = InputMap.action_get_events(action)[0]
-		button.text = _get_key_name(event)
 		
 		# add the nodes to the grid corresponding to it's category
 		var category: String = action.split(\"_\")[0]
@@ -303,8 +303,6 @@ func _get_key_name(event: InputEvent) -> String:
 ## Received when the reset button is pressed
 func _on_control_reset_pressed() -> void:
 	InputMap.load_from_project_settings()
-	# TODO also reset button label
-	# TODO handle with a spcial button node?? 
 "
 
 [node name="InGameMainMenu" type="MarginContainer" unique_id=2037458206]

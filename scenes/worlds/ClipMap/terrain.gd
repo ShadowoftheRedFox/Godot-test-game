@@ -32,7 +32,7 @@ func apply_noise() -> void:
 func create_shape() -> void:
 	var size: int = 200
 	var heights: PackedFloat32Array = PackedFloat32Array()
-	heights.resize(size*size)
+	heights.resize(size * size)
 
 	for x: int in range(size):
 		for y: int in range(size):
@@ -40,7 +40,7 @@ func create_shape() -> void:
 			noise.frequency = noises.lacunarity
 			noise.offset = Vector3(offset.x + x, 0, offset.y + y)
 			var h: float = noise.get_noise_2d(x, y)
-			h = (h + 1.0) * 0.5  # normalize to 0–1
+			h = (h + 1.0) * 0.5 # normalize to 0–1
 			heights[x * size + y] = h * noises.persistance
 	
 	var map_shape: HeightMapShape3D = HeightMapShape3D.new()
@@ -70,7 +70,7 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("action_special_down"):
 		if ratio <= 1:
 			ratio = max(0, ratio - 0.1)
-		else: 
+		else:
 			ratio -= 1
 		print("Ratio: " + str(ratio))
 
@@ -95,5 +95,3 @@ func snap() -> void:
 	offset.y = player_pos.z / ratio
 	update()
 	snap_timer.start()
-	
-	
