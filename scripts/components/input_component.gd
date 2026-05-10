@@ -21,6 +21,10 @@ func update() -> void:
 	in_main_menu = not in_main_menu if  Input.is_action_just_pressed("action_menu") else in_main_menu
 	in_inventory = not in_inventory if Input.is_action_just_pressed("action_inventory") else in_inventory
 	
+	# for quick quit in dev mode
+	if in_main_menu and Input.is_key_pressed(KEY_CTRL):
+		GameState.quit_game()
+	
 	# can't be both menu at same time, so if both are open, main menu takes precedence
 	if in_inventory and in_main_menu:
 		in_inventory = false

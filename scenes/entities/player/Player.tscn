@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://bvixwki5ss1pa" path="res://scripts/components/health_component.gd" id="4_yjynp"]
 [ext_resource type="Script" uid="uid://ce4h2mdshhcdv" path="res://scripts/components/camera_component.gd" id="5_j1g85"]
 [ext_resource type="PackedScene" uid="uid://b50byu54aqqsv" path="res://scenes/entities/player/PlayerGUI.tscn" id="6_hgjck"]
+[ext_resource type="PackedScene" uid="uid://b30nyqm72dwjv" path="res://scenes/entities/player/InGameMainMenu.tscn" id="7_ppr6r"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2m2ha"]
 
@@ -56,6 +57,9 @@ camera = NodePath("../CameraAnchor/Camera3D")
 metadata/_custom_type_script = "uid://ce4h2mdshhcdv"
 
 [node name="GUI" type="CanvasLayer" parent="." unique_id=2003209770]
-visible = false
 
 [node name="PlayerGui" parent="GUI" unique_id=333286146 instance=ExtResource("6_hgjck")]
+visible = false
+
+[node name="InGameMainMenu" parent="GUI" unique_id=2037458206 instance=ExtResource("7_ppr6r")]
+visible = false
