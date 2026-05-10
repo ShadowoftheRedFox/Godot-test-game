@@ -362,6 +362,7 @@ size_flags_horizontal = 3
 
 [node name="SettingsMenu" type="Control" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu" unique_id=1972416903]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -502,6 +503,7 @@ script = SubResource("GDScript_tl47v")
 
 [node name="SettingsControlMenu" type="Control" parent="PanelContainer/MarginContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer" unique_id=992057515]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 script = SubResource("GDScript_swycs")

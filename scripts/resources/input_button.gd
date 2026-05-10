@@ -62,6 +62,8 @@ func _update_input_map(key: Key, location: KeyLocation = KeyLocation.KEY_LOCATIO
 	InputMap.action_add_event(action, event)
 	_update_text()
 	key_changed.emit(event.physical_keycode)
+	# save changes
+	GameState.save_parameters()
 
 ## Display the name if the action's key
 func _get_key_name() -> String:
