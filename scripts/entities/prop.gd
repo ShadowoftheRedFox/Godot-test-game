@@ -40,4 +40,5 @@ func _on_death() -> void:
 	if death_animation_component == null:
 		queue_free()
 	
-	death_animation_component._on_death()
+	if death_animation_component != null:
+		death_animation_component._on_death()
