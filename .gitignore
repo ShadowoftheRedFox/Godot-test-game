@@ -7,3 +7,6 @@
 
 # IDE files
 .vscode
+
+# temporary dll files
+/addons/**/~*.dll
