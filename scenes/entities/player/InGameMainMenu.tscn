@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b30nyqm72dwjv"]
 
 [sub_resource type="GDScript" id="GDScript_2iu3n"]
-script/source = "class_name InGameMaineMenu extends MarginContainer
+script/source = "class_name InGameMainMenu extends MarginContainer
 
 # Main menu button
 @onready var resume: Button = %Resume
@@ -244,6 +244,10 @@ func _ready() -> void:
 		main_container.add_child(label)
 		main_container.add_child(grid)
 		grid_categories.push_back(grid)
+		
+		# add separator between categories, only if not the last category
+		if categories.find(category) != categories.size() - 1:
+			main_container.add_child(HSeparator.new())
 	
 	# add buttons and labels for the corresponding grid container
 	for action: StringName in actions:
@@ -272,8 +276,6 @@ func _ready() -> void:
 		var grid: GridContainer = grid_categories[grid_index]
 		grid.add_child(label)
 		grid.add_child(button)
-		
-		# TODO connect the button to listen for new key when clicked
 
 ## Return the name of the grid depending of the name of the category
 func _get_grid_name(category: String) -> String:
@@ -532,7 +534,6 @@ horizontal_scroll_mode = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
 
 [node name="ControlReset" type="Button" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu/ScrollContainer/MainContainer" unique_id=1013936039]
 unique_name_in_owner = true

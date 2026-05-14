@@ -4,7 +4,7 @@ extends Reactive
 var value: Array:
 	set(v):
 		value = v
-		reactive_changed.emit(self )
+		reactive_changed.emit(self)
 		return value
 
 func _init(initial_value: Array = []) -> void:

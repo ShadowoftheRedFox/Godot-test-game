@@ -1,4 +1,4 @@
-class_name Item
+class_name InventoryItem extends Resource
 
 ## Class of the item, to have different behavior
 enum ItemClass {

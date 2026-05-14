@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://b50byu54aqqsv"]
 
+[ext_resource type="Script" uid="uid://c3c88kv0jtfjv" path="res://scripts/game/player_gui.gd" id="1_1uqnm"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gunmw"]
 content_margin_left = 10.0
 content_margin_top = 10.0
@@ -17,11 +19,18 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+script = ExtResource("1_1uqnm")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=961476596]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_gunmw")
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer" unique_id=1967086975]
+unique_name_in_owner = true
+layout_mode = 2
+
+[connection signal="visibility_changed" from="PanelContainer/GridContainer" to="." method="_on_grid_container_visibility_changed"]

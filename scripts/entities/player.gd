@@ -1,9 +1,12 @@
 class_name Player extends Entity
 
-@onready var input_component: InputComponent = $InputComponent
+@onready var input_component: InputComponent = %InputComponent
 @onready var camera_component: CameraComponent = %CameraComponent
-@onready var player_gui: MarginContainer = $GUI/PlayerGui
-@onready var in_game_main_menu: MarginContainer = $GUI/InGameMainMenu
+
+@onready var inventory: Inventory = %Inventory
+
+@onready var player_gui: MarginContainer = %PlayerGui
+@onready var in_game_main_menu: MarginContainer = %InGameMainMenu
 
 func _ready() -> void:
 	GameState.player = self
