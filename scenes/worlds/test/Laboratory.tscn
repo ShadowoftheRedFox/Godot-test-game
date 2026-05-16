@@ -88,5 +88,5 @@ mesh = ExtResource("6_eclf4")
 material_override = ExtResource("6_nnpde")
 
 [node name="Spawner" parent="." unique_id=601974945 instance=ExtResource("9_8srka")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.511984, 2.120305, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.512, 0.5, 0)
 scene = ExtResource("10_8srka")
