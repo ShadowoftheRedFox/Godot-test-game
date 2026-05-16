@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://d4kj4whqt3giv" path="res://scripts/components/move_component.gd" id="3_24gqh"]
 [ext_resource type="Script" uid="uid://bvixwki5ss1pa" path="res://scripts/components/health_component.gd" id="4_yjynp"]
 [ext_resource type="Script" uid="uid://ce4h2mdshhcdv" path="res://scripts/components/camera_component.gd" id="5_j1g85"]
-[ext_resource type="PackedScene" uid="uid://b50byu54aqqsv" path="res://scenes/entities/player/PlayerGUI.tscn" id="6_hgjck"]
+[ext_resource type="PackedScene" uid="uid://b50byu54aqqsv" path="res://scenes/entities/player/InventoryGUI.tscn" id="6_hgjck"]
 [ext_resource type="PackedScene" uid="uid://b30nyqm72dwjv" path="res://scenes/entities/player/InGameMainMenu.tscn" id="7_ppr6r"]
 [ext_resource type="Script" uid="uid://dfe0gnda2agej" path="res://scripts/game/inventory/inventory.gd" id="8_rx1o7"]
 
@@ -14,6 +14,7 @@
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_g13of"]
 
 [node name="Player" type="CharacterBody3D" unique_id=319123823 node_paths=PackedStringArray("move_component", "health_component")]
+process_mode = 3
 script = ExtResource("1_g13of")
 move_component = NodePath("MoveComponent")
 health_component = NodePath("HealthComponent")
@@ -64,11 +65,12 @@ metadata/_custom_type_script = "uid://dfe0gnda2agej"
 
 [node name="GUI" type="CanvasLayer" parent="." unique_id=2003209770]
 
-[node name="PlayerGui" parent="GUI" unique_id=333286146 node_paths=PackedStringArray("_player_inventory") instance=ExtResource("6_hgjck")]
+[node name="InventoryGui" parent="GUI" unique_id=333286146 node_paths=PackedStringArray("_player_inventory") instance=ExtResource("6_hgjck")]
 unique_name_in_owner = true
 visible = false
 _player_inventory = NodePath("../../Inventory")
 
 [node name="InGameMainMenu" parent="GUI" unique_id=2037458206 instance=ExtResource("7_ppr6r")]
 unique_name_in_owner = true
+process_mode = 2
 visible = false

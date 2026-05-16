@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="InventoryItem" format=3 uid="uid://5y1ymce5c2nq"]
+
+[ext_resource type="Script" uid="uid://061snkpdro2h" path="res://scripts/game/inventory/inventory_item.gd" id="1_skrfn"]
+
+[resource]
+script = ExtResource("1_skrfn")
+item_color_class = Dictionary[int, Color]({
+1: Color(0.5842719, 0.63893527, 3.85046e-07, 1),
+2: Color(0, 0.627451, 1, 1)
+})
+metadata/_custom_type_script = "uid://061snkpdro2h"

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b50byu54aqqsv"]
 
-[ext_resource type="Script" uid="uid://c3c88kv0jtfjv" path="res://scripts/game/player_gui.gd" id="1_1uqnm"]
+[ext_resource type="Script" uid="uid://c3c88kv0jtfjv" path="res://scripts/game/gui/inventory_gui.gd" id="1_1uqnm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gunmw"]
 content_margin_left = 10.0
@@ -32,5 +32,8 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_gunmw")
 [node name="GridContainer" type="GridContainer" parent="PanelContainer" unique_id=1967086975]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="visibility_changed" from="PanelContainer/GridContainer" to="." method="_on_grid_container_visibility_changed"]

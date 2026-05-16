@@ -7,7 +7,9 @@ var player: Player
 var base_attack: int = 5;
 
 ## Save manager script that handle save/load of files for the game
-var SM: SaveManager = SaveManager.new() 
+var SM: SaveManager = SaveManager.new()
+## Constant manager for global constant
+var CONST: ConstantManager = ConstantManager.new()
 
 func _ready() -> void:
 	# load parameters

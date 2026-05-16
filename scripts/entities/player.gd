@@ -5,7 +5,7 @@ class_name Player extends Entity
 
 @onready var inventory: Inventory = %Inventory
 
-@onready var player_gui: MarginContainer = %PlayerGui
+@onready var player_gui: MarginContainer = %InventoryGui
 @onready var in_game_main_menu: MarginContainer = %InGameMainMenu
 
 func _ready() -> void:
@@ -25,7 +25,7 @@ func _physics_process(delta: float) -> void:
 	move_component.wants_fly_up = input_component.fly_up
 	move_component.wants_fly_down = input_component.fly_down
 	
-	# TEMP shoot
+	# TODO better shoot
 	if input_component.special_up or input_component.special_down:
 		_shoot(-5 if input_component.special_up else 5)
 	

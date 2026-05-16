@@ -19,6 +19,11 @@ func _ready() -> void:
 	settings.pressed.connect(_on_settings_button)
 	save.pressed.connect(_on_save_button)
 	quit.pressed.connect(_on_quit_button)
+	visibility_changed.connect(_game_pause)
+
+## Pause the tree when this menu is visible
+func _game_pause() -> void:
+	get_tree().paused = visible
 
 func _reset() -> void:
 	settings_menu.hide()

@@ -1,3 +1,4 @@
+## Handle file IO for saves and loads
 class_name SaveManager
 
 const PARAMETERS_SAVE_PATH: String = "user://system/parameters"
