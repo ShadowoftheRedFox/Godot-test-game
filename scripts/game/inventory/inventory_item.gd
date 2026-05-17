@@ -24,8 +24,8 @@ enum ItemRarity {
 
 ## Name of the item
 @export var item_name: String = ""
-## Image displayed in inventory
-@export var item_image: Image = null
+## Mesh of the item
+@export var item_mesh: Mesh = null
 ## If the item can be placed in world, this scene is what will be instantiated
 @export var item_physical: PackedScene = null
 ## Class of the item, to have different behavior

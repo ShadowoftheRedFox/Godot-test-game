@@ -2,13 +2,13 @@ class_name InventorySlot extends Node
 
 ## The panel that shows the slot
 @onready var _panel: Panel = $Panel
-## The texture rect that will show the items.
-@onready var _visual: TextureRect = $Panel/Visual
-## The inner texture of the _visual node
-var _texture: ImageTexture = null
+## The control that will show the items.
+@onready var _visual: SubViewportContainer = $Panel/Visual
+## The subviewport to show the 3D object in 2D controls
+@onready var _sub_viewport: SubViewport = $Panel/Visual/SubViewport
 
 ## Item contained inside the slot
-var _item: InventoryItem = null
+@export var _item: InventoryItem = null
 ## Position inside the inventory
 var _pos_in_inventory: Vector2i = Vector2i.ZERO
 ## Reference to the inventory that own this slot
@@ -17,10 +17,6 @@ var _inventory: Inventory = null
 func _ready() -> void:
 	assert(_inventory != null, "inventory reference is null")
 	assert(_pos_in_inventory.x * _pos_in_inventory.y >= 0, "position in inventory is not positive")
-	
-	_texture = ImageTexture.new()
-	_texture.draw_rect(_texture.get_rid(), Rect2(0.0, 0.0, 50.0, 50.0), false)
-	_visual.texture = _texture
 	
 	# create a style override for the pannel for singular slot color control
 	var stylebox: StyleBoxFlat = StyleBoxFlat.new()
@@ -44,7 +40,6 @@ func set_item(item: InventoryItem, player_interaction: bool = true) -> bool:
 	_item = item
 	_panel.tooltip_text = item.item_name
 	_panel.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	# TODO change bg coulour with item rarity
 	_update_visual()
 	return true
 
@@ -60,17 +55,33 @@ func remove_item() -> InventoryItem:
 
 ## Update the visual of the slot.
 func _update_visual() -> void:
-	# we set item related data here because _visual gets hidden when the item is removed
+	_update_body_in_subviewport()
 	if has_item():
 		_visual.show()
-		# TODO show a 3D image of the object, like in the editor with material
-		_texture.update(_item.item_image)
 		# set the tooltip color
 		@warning_ignore("unsafe_call_argument")
-		_visual.theme.set_color("font_color", "TooltipLabel", GameState.CONST.ITEM_CLASS_COLOR.get(_item.item_class, Color.WHITE))
-		_visual.tooltip_text = _item.item_name
+		_panel.theme.set_color("font_color", "TooltipLabel", GameState.CONST.ITEM_CLASS_COLOR.get(_item.item_class, Color.WHITE))
+		_panel.tooltip_text = _item.item_name
 	else:
+		# TODO default color
+		_panel.tooltip_text = ""
 		_visual.hide()
+
+## Add or remove the visual in the subviewport
+func _update_body_in_subviewport() -> void:
+	const NODE_NAME: String = "SV_INVENTORY_ITEM"
+	# find the node from name and free it
+	if not has_item():
+		_sub_viewport.find_child(NODE_NAME, false, true).queue_free()
+		return
+	
+	# add a node with the correct mesh and name
+	var minstance: MeshInstance3D = MeshInstance3D.new()
+	minstance.mesh = _item.item_mesh
+	minstance.name = NODE_NAME
+	_sub_viewport.add_child(minstance)
+	# we don't need to move the mesh around, the cameara is placed to see where it appears
+	print("Added mesh of " + _item.item_name)
 
 func _on_hover(inside: bool) -> void:
 	var stylebox: StyleBoxFlat = _panel.get_theme_stylebox("panel")

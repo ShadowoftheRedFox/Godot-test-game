@@ -1,20 +1,28 @@
 [gd_scene format=3 uid="uid://dnsinxvoqcmqu"]
 
 [ext_resource type="Script" uid="uid://c0bs62jdow10e" path="res://scripts/game/inventory/inventory_slot.gd" id="1_lo36e"]
+[ext_resource type="Resource" uid="uid://nfhxb5ipgdms" path="res://scripts/game/inventory/item/item_iron.tres" id="2_ug1fi"]
+
+[sub_resource type="Theme" id="Theme_4q6kb"]
 
 [node name="InventorySlot" type="Control" unique_id=1421058199]
-custom_minimum_size = Vector2(50, 50)
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("1_lo36e")
+_item = ExtResource("2_ug1fi")
 
 [node name="Panel" type="Panel" parent="." unique_id=1225431109]
 custom_minimum_size = Vector2(50, 50)
@@ -24,16 +32,37 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = SubResource("Theme_4q6kb")
 
-[node name="Visual" type="TextureRect" parent="Panel" unique_id=506175935]
+[node name="Visual" type="SubViewportContainer" parent="Panel" unique_id=2145272099]
+custom_minimum_size = Vector2(50, 50)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 436.12915
+offset_bottom = 436.1289
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-stretch_mode = 5
+scale = Vector2(0.155, 0.155)
+
+[node name="SubViewport" type="SubViewport" parent="Panel/Visual" unique_id=728769967]
+own_world_3d = true
+transparent_bg = true
+handle_input_locally = false
+gui_disable_input = true
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="Panel/Visual/SubViewport" unique_id=1851796943]
+transform = Transform3D(0.70710677, 0.4096136, -0.5763824, 0, 0.8151278, 0.57928115, 0.70710677, -0.4096136, 0.5763824, -2, 2, 2)
+projection = 1
+current = true
+size = 2.0
+far = 10.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Panel/Visual/SubViewport" unique_id=134240512]
+transform = Transform3D(0.25881907, 0.1344309, -0.95652544, 0, 0.99026805, 0.1391731, 0.9659258, -0.036020655, 0.25630027, 0, 0, 0)
+light_bake_mode = 1
 
 [connection signal="mouse_entered" from="Panel" to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="Panel" to="." method="_on_mouse_exited"]
