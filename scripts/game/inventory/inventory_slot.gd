@@ -1,14 +1,17 @@
 class_name InventorySlot extends Node
 
+## Fires when the slot item is updated
+signal _item_updated
+
 ## The panel that shows the slot
 @onready var _panel: Panel = $Panel
 ## The control that will show the items.
 @onready var _visual: SubViewportContainer = $Panel/Visual
 ## The subviewport to show the 3D object in 2D controls
 @onready var _sub_viewport: SubViewport = $Panel/Visual/SubViewport
+## Label to display the amount
+@onready var _label: Label = $Panel/Label
 
-## Item contained inside the slot
-@export var _item: InventoryItem = null
 ## Position inside the inventory
 var _pos_in_inventory: Vector2i = Vector2i.ZERO
 ## Reference to the inventory that own this slot
@@ -17,6 +20,12 @@ var _inventory: Inventory = null
 func _ready() -> void:
 	assert(_inventory != null, "inventory reference is null")
 	assert(_pos_in_inventory.x * _pos_in_inventory.y >= 0, "position in inventory is not positive")
+
+	# listen to udpates
+	_item_updated.connect(_on_item_updated)
+
+	# adds itself to the inventory
+	_inventory._add_slot.emit(self)
 	
 	# create a style override for the pannel for singular slot color control
 	var stylebox: StyleBoxFlat = StyleBoxFlat.new()
@@ -28,42 +37,51 @@ func _ready() -> void:
 	
 	_update_visual()
 
+func _get_index_in_inventory() -> int:
+	return _inventory.size.x * _pos_in_inventory.y + _pos_in_inventory.x
+
+func _get_item() -> InventoryItem:
+	if _inventory.items.size() <= _get_index_in_inventory():
+		return null
+	return _inventory.items[_get_index_in_inventory()]
+
+func _get_item_amount() -> int:
+	return _inventory.items_amount[_get_index_in_inventory()]
+
 ## Return true if the slot has an item inside
-func has_item() -> bool:
-	return _item != null
+func _has_item() -> bool:
+	return _get_item() != null
 
-## Put an item inside, return true if the operation succeeded,
-## false otherwise (an item is inside, or inventory is locked).
-func set_item(item: InventoryItem, player_interaction: bool = true) -> bool:
-	if has_item() or (not _inventory.player_editable and player_interaction):
-		return false
-	_item = item
-	_panel.tooltip_text = item.item_name
+func _on_item_updated() -> void:
+	if _has_item():
+		_set_item()
+	else:
+		_remove_item()
+
+func _set_item() -> void:
+	_panel.tooltip_text = _get_item().item_name
 	_panel.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	_label.text = str(_get_item_amount())
 	_update_visual()
-	return true
 
-## Remove the item from the slot, and returns it. If no item,
-## it returns null.
-func remove_item() -> InventoryItem:
-	var temp: InventoryItem = _item
-	_item = null
+func _remove_item() -> void:
 	_panel.tooltip_text = ""
-	_update_visual()
 	_panel.mouse_default_cursor_shape = Control.CURSOR_CAN_DROP
-	return temp
+	_label.text = ""
+	_update_visual()
 
 ## Update the visual of the slot.
 func _update_visual() -> void:
 	_update_body_in_subviewport()
-	if has_item():
+	if _has_item():
 		_visual.show()
 		# set the tooltip color
 		@warning_ignore("unsafe_call_argument")
-		_panel.theme.set_color("font_color", "TooltipLabel", GameState.CONST.ITEM_CLASS_COLOR.get(_item.item_class, Color.WHITE))
-		_panel.tooltip_text = _item.item_name
+		_panel.theme.set_color("font_color", "TooltipLabel", InventoryItem.ITEM_CLASS_COLOR.get(_get_item().item_class, Color.WHITE))
+		_panel.tooltip_text = _get_item().item_name
 	else:
-		# TODO default color
+		@warning_ignore("unsafe_call_argument")
+		_panel.theme.set_color("font_color", "TooltipLabel", Color.WHITE)
 		_panel.tooltip_text = ""
 		_visual.hide()
 
@@ -71,28 +89,30 @@ func _update_visual() -> void:
 func _update_body_in_subviewport() -> void:
 	const NODE_NAME: String = "SV_INVENTORY_ITEM"
 	# find the node from name and free it
-	if not has_item():
-		_sub_viewport.find_child(NODE_NAME, false, true).queue_free()
+	if not _has_item():
+		var node: Node = _sub_viewport.find_child(NODE_NAME, false, true)
+		if node != null:
+			node.queue_free()
 		return
 	
 	# add a node with the correct mesh and name
 	var minstance: MeshInstance3D = MeshInstance3D.new()
-	minstance.mesh = _item.item_mesh
+	minstance.mesh = _get_item().item_mesh
 	minstance.name = NODE_NAME
 	_sub_viewport.add_child(minstance)
 	# we don't need to move the mesh around, the cameara is placed to see where it appears
-	print("Added mesh of " + _item.item_name)
+	print("Added mesh of " + _get_item().item_name)
 
 func _on_hover(inside: bool) -> void:
 	var stylebox: StyleBoxFlat = _panel.get_theme_stylebox("panel")
 	# bg color with item rarity
 	var color: Color = Color(0.1, 0.1, 0.1, 0.6)
 	if inside:
-		if has_item():
-			color = GameState.CONST.ITEM_CLASS_COLOR.get(_item.item_rarity, Color(0.2, 0.2, 0.2, 0.6))
+		if _has_item():
+			color = InventoryItem.ITEM_CLASS_COLOR.get(_get_item().item_rarity, Color(0.2, 0.2, 0.2, 0.6))
 		else:
 			color = Color(0.2, 0.2, 0.2, 0.6)
-	stylebox.bg_color = color 
+	stylebox.bg_color = color
 
 func _on_mouse_entered() -> void:
 	_on_hover(true)
