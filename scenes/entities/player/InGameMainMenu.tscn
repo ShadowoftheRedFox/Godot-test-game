@@ -119,8 +119,6 @@ script/source = "extends HSlider
 @onready var general_sound_label: Label = %GeneralSoundLabel
 
 func _ready() -> void:
-	# auto calculate tick count
-	# min and max value are multiplied by step
 	# TODO load from save the stocked value
 	_update_sound()
 	
@@ -144,8 +142,6 @@ script/source = "extends HSlider
 @onready var sound_effect_label: Label = %SoundEffectLabel
 
 func _ready() -> void:
-	# auto calculate tick count
-	# min and max value are multiplied by step
 	# TODO load from save the stocked value
 	_update_sound()
 	
@@ -316,6 +312,30 @@ func _on_control_reset_pressed() -> void:
 	InputMap.load_from_project_settings()
 "
 
+[sub_resource type="GDScript" id="GDScript_14e5g"]
+resource_name = "MouseSensitivity"
+script/source = "extends HSlider
+
+@onready var mouse_sensitivity: Label = %MouseSensitivity
+
+func _ready() -> void:
+	# TODO load from save the stocked value
+	_update_setting()
+	
+	# set the value and events
+	mouse_sensitivity.text = \"Mouse sensitivity : \" + str(value) + \"%\"
+	value_changed.connect(_on_value_changed)
+
+func _on_value_changed(has_changed: bool) -> void:
+	if has_changed:
+		mouse_sensitivity.text = \"Mouse sensitivity : \" + str(value) + \"%\"
+		_update_setting()
+
+## Update the mouse setting
+func _update_setting() -> void:
+	pass # TODO
+"
+
 [node name="InGameMainMenu" type="MarginContainer" unique_id=2037458206]
 anchors_preset = 15
 anchor_right = 1.0
@@ -366,7 +386,6 @@ size_flags_horizontal = 3
 
 [node name="SettingsMenu" type="Control" parent="PanelContainer/HBoxContainer/SubMenu" unique_id=1972416903]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -507,7 +526,6 @@ script = SubResource("GDScript_tl47v")
 
 [node name="SettingsControlMenu" type="Control" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer" unique_id=992057515]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 script = SubResource("GDScript_swycs")
@@ -539,6 +557,23 @@ horizontal_scroll_mode = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu/ScrollContainer/MainContainer" unique_id=1377649758]
+layout_mode = 2
+
+[node name="MouseSensitivity" type="Label" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu/ScrollContainer/MainContainer/HBoxContainer" unique_id=1197818953]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Move sensitivity: "
+
+[node name="HSlider" type="HSlider" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu/ScrollContainer/MainContainer/HBoxContainer" unique_id=1067477996]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 200.0
+step = 0.1
+value = 100.0
+script = SubResource("GDScript_14e5g")
 
 [node name="ControlReset" type="Button" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu/ScrollContainer/MainContainer" unique_id=1013936039]
 unique_name_in_owner = true

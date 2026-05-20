@@ -7,6 +7,9 @@
 
 # IDE files
 .vscode
+dotnet-tools.json
+*.csproj
+*.sln
 
 # temporary dll files
 /addons/**/~*.dll
