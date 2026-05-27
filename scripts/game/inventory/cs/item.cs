@@ -4,20 +4,16 @@ using Godot;
 
 namespace Items
 {
-    public abstract class AbstractItem(
-        string Name,
-        AbstractItem.ItemClass Class,
-        AbstractItem.ItemRarity Rarity
-    )
+    public abstract class AbstractItem
     {
-        public enum ItemClass
+        public enum ItemClass : uint
         {
             UNSCPECIFIED,
             BUILDING,
             TOOL,
         }
 
-        public enum ItemRarity
+        public enum ItemRarity : uint
         {
             UNSCPECIFIED,
 
@@ -61,12 +57,48 @@ namespace Items
         };
 
         [Export]
-        public string Name { get; set; } = Name;
+        public string Name { get; set; }
 
         [Export]
-        public ItemClass Class { get; set; } = Class;
+        public ItemClass Class { get; set; }
 
         [Export]
-        public ItemRarity Rarity { get; set; } = Rarity;
+        public ItemRarity Rarity { get; set; }
+
+        private int Hash;
+
+        public AbstractItem(
+        string Name,
+        ItemClass Class,
+        ItemRarity Rarity
+    )
+        {
+            HashCode hash = new();
+            this.Name = Name;
+            hash.Add(this.Name.Hash());
+            this.Class = Class;
+            hash.Add(this.Class.GetHashCode());
+            this.Rarity = Rarity;
+            hash.Add(this.Rarity.GetHashCode());
+
+            this.Hash = hash.ToHashCode();
+        }
+
+        public override string ToString()
+        {
+            return "(" + this.GetHashCode().ToString() + ") " + this.Name;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            if (obj.GetType() != this.GetType()) return false;
+            return this.GetHashCode() == obj.GetHashCode();
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Hash;
+        }
     }
 }
