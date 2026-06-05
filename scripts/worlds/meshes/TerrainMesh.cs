@@ -1,5 +1,7 @@
 using Godot;
 
+//TODO biomes with "wave function collapse"
+
 public class TerrainMesh
 {
     public Mesh mesh;

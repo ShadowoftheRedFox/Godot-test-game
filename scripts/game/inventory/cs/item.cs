@@ -4,7 +4,11 @@ using Godot;
 
 namespace Items
 {
-    public abstract class AbstractItem
+    public abstract class AbstractItem(
+        string Name,
+        AbstractItem.ItemClass Class,
+        AbstractItem.ItemRarity Rarity
+    )
     {
         public enum ItemClass : uint
         {
@@ -27,8 +31,18 @@ namespace Items
             UNIQUE,
         }
 
+        public static readonly Dictionary<ItemClass, Color> CLASS_COLOR = new()
+        {
+            // Color.WHITE,
+            { ItemClass.UNSCPECIFIED, new Color(1, 1, 1) },
+            // Color.YELLOW,
+            { ItemClass.BUILDING, new Color(0, 1, 1) },
+            // Color.SKY_BLUE,
+            { ItemClass.TOOL, new Color(0.5294118f, 0.80784315f, 0.92156863f) },
+        };
+
         public const float RARITY_COLOR_ALPHA = 0.6f;
-        public readonly Dictionary<ItemRarity, Color> RARITY_COLOR = new()
+        public static readonly Dictionary<ItemRarity, Color> RARITY_COLOR = new()
         {
             // Color.HOT_PINK,
             { ItemRarity.UNSCPECIFIED, new Color(1, 0.4117647f, 0.7058824f, RARITY_COLOR_ALPHA) },
@@ -57,48 +71,67 @@ namespace Items
         };
 
         [Export]
-        public string Name { get; set; }
+        public string Name { get; set; } = Name;
 
         [Export]
-        public ItemClass Class { get; set; }
+        public ItemClass Class { get; set; } = Class;
 
         [Export]
-        public ItemRarity Rarity { get; set; }
+        public ItemRarity Rarity { get; set; } = Rarity;
 
-        private int Hash;
-
-        public AbstractItem(
-        string Name,
-        ItemClass Class,
-        ItemRarity Rarity
-    )
+        /// <summary>
+        /// Get the color of the current class.
+        /// </summary>
+        /// <returns>The class color.</returns>
+        public Color GetClassColor()
         {
-            HashCode hash = new();
-            this.Name = Name;
-            hash.Add(this.Name.Hash());
-            this.Class = Class;
-            hash.Add(this.Class.GetHashCode());
-            this.Rarity = Rarity;
-            hash.Add(this.Rarity.GetHashCode());
-
-            this.Hash = hash.ToHashCode();
+            CLASS_COLOR.TryGetValue(Class, out Color color);
+            return color;
         }
+
+        /// <summary>
+        /// Get the color of the current rarirty.
+        /// </summary>
+        /// <returns>The rarirty color.</returns>
+        public Color GetRarityColor()
+        {
+            RARITY_COLOR.TryGetValue(Rarity, out Color color);
+            return color;
+        }
+
+        /// <summary>
+        /// Get the mesh of the item. Used to show the item.
+        /// </summary>
+        /// <returns>The item mesh.</returns>
+        public abstract Mesh GetMesh();
 
         public override string ToString()
         {
-            return "(" + this.GetHashCode().ToString() + ") " + this.Name;
+            return Name;
+        }
+
+        public static bool operator ==(AbstractItem A, AbstractItem B)
+        {
+            return A.Equals(B);
+        }
+
+        public static bool operator !=(AbstractItem A, AbstractItem B)
+        {
+            return !A.Equals(B);
         }
 
         public override bool Equals(object obj)
         {
-            if (obj == null) return false;
-            if (obj.GetType() != this.GetType()) return false;
-            return this.GetHashCode() == obj.GetHashCode();
+            if (obj == null)
+                return false;
+            if (obj.GetType() != GetType())
+                return false;
+            return GetHashCode() == obj.GetHashCode();
         }
 
         public override int GetHashCode()
         {
-            return this.Hash;
+            return HashCode.Combine(Name, Class, Rarity);
         }
     }
 }
