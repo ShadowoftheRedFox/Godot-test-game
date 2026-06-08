@@ -2,7 +2,8 @@
 
 [sub_resource type="GDScript" id="GDScript_atce0"]
 resource_name = "spawner"
-script/source = "class_name SceneSpawner extends Area3D
+script/source = "@tool
+class_name SceneSpawner extends Area3D
 
 ## The packed scene name
 var _scene_type: String = \"\"
@@ -17,6 +18,9 @@ var _scene_type: String = \"\"
 var _amount_spawned: int = 0
 ## Seconds before another spawn. 0 means instant.
 @export_range(0.0, 60.0, 0.1, \"or_greater\") var delay: float = 0.0
+@warning_ignore(\"unused_private_class_variable\")
+@export_tool_button(\"Manual spawn\", \"InputEventAction\") var _spawn_action: Callable = _spawn
+
 # TODO timer, when a body exit, queue a spawn with the timer, 
 #      but don't queue another one if the scene enter and quit the area again
 # TODO enum for the type of spawn technic used:

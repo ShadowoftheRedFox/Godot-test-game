@@ -8,8 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://b50byu54aqqsv" path="res://scenes/entities/player/InventoryGUI.tscn" id="6_hgjck"]
 [ext_resource type="Script" uid="uid://061snkpdro2h" path="res://scripts/game/inventory/inventory_item.gd" id="7_20ow7"]
 [ext_resource type="PackedScene" uid="uid://b30nyqm72dwjv" path="res://scenes/entities/player/InGameMainMenu.tscn" id="7_ppr6r"]
+[ext_resource type="Resource" uid="uid://nfhxb5ipgdms" path="res://scripts/game/inventory/item_resource/item_iron.tres" id="8_20ow7"]
 [ext_resource type="Script" uid="uid://dfe0gnda2agej" path="res://scripts/game/inventory/inventory.gd" id="8_rx1o7"]
-[ext_resource type="Resource" uid="uid://nfhxb5ipgdms" path="res://scripts/game/inventory/item/item_iron.tres" id="8_ujgbh"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2m2ha"]
 
@@ -63,16 +63,16 @@ metadata/_custom_type_script = "uid://ce4h2mdshhcdv"
 [node name="Inventory" type="Node" parent="." unique_id=784841100]
 unique_name_in_owner = true
 script = ExtResource("8_rx1o7")
-items = Array[ExtResource("7_20ow7")]([ExtResource("8_ujgbh")])
-items_amount = Array[int]([1])
+items = Array[ExtResource("7_20ow7")]([ExtResource("8_20ow7")])
+amounts = Array[int]([7])
 metadata/_custom_type_script = "uid://dfe0gnda2agej"
 
 [node name="GUI" type="CanvasLayer" parent="." unique_id=2003209770]
 
-[node name="InventoryGui" parent="GUI" unique_id=333286146 node_paths=PackedStringArray("_player_inventory") instance=ExtResource("6_hgjck")]
+[node name="InventoryGui" parent="GUI" unique_id=333286146 node_paths=PackedStringArray("inventory") instance=ExtResource("6_hgjck")]
 unique_name_in_owner = true
 visible = false
-_player_inventory = NodePath("../../Inventory")
+inventory = NodePath("../../Inventory")
 
 [node name="InGameMainMenu" parent="GUI" unique_id=2037458206 instance=ExtResource("7_ppr6r")]
 unique_name_in_owner = true

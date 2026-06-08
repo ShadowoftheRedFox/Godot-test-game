@@ -11,8 +11,8 @@ enum ItemClass {
 ## Unspecified means it doesn't spawn
 enum ItemRarity {
 	UNSCPECIFIED,
-	
-	COMMON, 
+
+	COMMON,
 	UNCOMMON,
 	RARE,
 	EPIC,
@@ -64,4 +64,21 @@ const ITEM_CLASS_COLOR: Dictionary[ItemClass, Color] = {
 @export var item_class: ItemClass = ItemClass.UNSCPECIFIED
 ## Rarity of the item, it will whange its spawn rate. Unspecified means it doesn't spawn
 @export var item_rarity: ItemRarity = ItemRarity.UNSCPECIFIED
-# TODO item size and shape in inventory? 
+# TODO item size and shape in inventory?
+
+## Get the color for the current item class
+func get_class_color() -> Color:
+	return ITEM_CLASS_COLOR.get(item_class, ITEM_CLASS_COLOR.get(ItemClass.UNSCPECIFIED))
+
+## Get the color for the current item rarity
+func get_rarity_color() -> Color:
+	return ITEM_RARITY_COLOR.get(item_rarity, ITEM_RARITY_COLOR.get(ItemRarity.UNSCPECIFIED))
+
+## Return true is the given object is the same item as this one
+func equals(other: Object) -> bool:
+	if other == null || !is_instance_of(other, InventoryItem):
+		return false
+
+	var item: InventoryItem = other
+
+	return item.item_class == item_class && item.item_rarity == item_rarity && item.item_name == item_name

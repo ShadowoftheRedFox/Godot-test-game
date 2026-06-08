@@ -135,7 +135,7 @@ namespace Inventory
             {
                 var pair = Items[i];
                 // not the same item or no space left
-                if (pair.item != Item || pair.amount >= MaxItemPerSlot)
+                if (pair.amount >= MaxItemPerSlot || pair.item != Item)
                     continue;
 
                 int spaceLeft = MaxItemPerSlot - pair.amount;
@@ -188,7 +188,7 @@ namespace Inventory
 
             // if amount if greater than max item, we will have leftover
             int leftOver = 0;
-            if (Amount >= MaxItemPerSlot)
+            if (Amount > MaxItemPerSlot)
             {
                 leftOver = Amount - MaxItemPerSlot;
                 Amount = MaxItemPerSlot;
@@ -270,7 +270,7 @@ namespace Inventory
         /// <returns>The amount of items moved.</returns>
         public int MoveOwnItem(int Source, int Destination)
         {
-            return MoveOwnItem(Source, this, Destination);
+            return MoveItem(Source, this, Destination);
         }
 
         /// <summary>
@@ -280,14 +280,14 @@ namespace Inventory
         /// <param name="OtherDestination">The destination inventory.</param>
         /// <param name="Destination">The destination slot position.</param>
         /// <returns>The amount of items moved.</returns>
-        public int MoveOwnItem(int Source, AbstractInventory OtherDestination, int Destination)
+        public int MoveItem(int Source, AbstractInventory OtherDestination, int Destination)
         {
             if (
                 OtherDestination == null
                 || Source < 0
                 || Destination < 0
                 || Size.X * Size.Y <= Source
-                || Size.X * Size.Y <= Destination
+                || OtherDestination.Size.X * OtherDestination.Size.Y <= Destination
             )
                 return 0;
 
@@ -303,7 +303,7 @@ namespace Inventory
             // same pair, add to destination
             if (itemSource == itemDestination)
             {
-                int spaceLeft = MaxItemPerSlot - amountDestination;
+                int spaceLeft = OtherDestination.MaxItemPerSlot - amountDestination;
                 if (amountSource <= spaceLeft) // anough to empty the source
                 {
                     amountDestination += amountSource;

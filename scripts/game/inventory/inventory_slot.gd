@@ -1,7 +1,4 @@
-class_name InventorySlot extends Node
-
-## Fires when the slot item is updated
-signal _item_updated
+class_name InventorySlot extends Control
 
 ## The panel that shows the slot
 @onready var _panel: Panel = $Panel
@@ -14,45 +11,52 @@ signal _item_updated
 
 ## Position inside the inventory
 var _pos_in_inventory: Vector2i = Vector2i.ZERO
+## Actual index of the position in the inventory.
+var _index: int = -1
 ## Reference to the inventory that own this slot
 var _inventory: Inventory = null
 
 func _ready() -> void:
-	assert(_inventory != null, "inventory reference is null")
-	assert(_pos_in_inventory.x * _pos_in_inventory.y >= 0, "position in inventory is not positive")
+	assert(_inventory != null, "inventory must not be null")
+	assert(_pos_in_inventory.x * _pos_in_inventory.y >= 0 \
+	 && _pos_in_inventory.x < _inventory.size.x \
+	 && _pos_in_inventory.y < _inventory.size.y, \
+	 "position in inventory is out of range")
+
+	# calculate the true index in advance
+	_index = _pos_in_inventory.y * _inventory.size.x + _pos_in_inventory.x
+	name = "slot" + str(_index)
 
 	# listen to udpates
-	_item_updated.connect(_on_item_updated)
+	_inventory.items_updated.connect(_on_item_updated)
 
-	# adds itself to the inventory
-	_inventory._add_slot.emit(self)
-	
 	# create a style override for the pannel for singular slot color control
 	var stylebox: StyleBoxFlat = StyleBoxFlat.new()
-	# set default values 
+	# set default values
 	stylebox.bg_color = Color(0.1, 0.1, 0.1, 0.6)
 	stylebox.set_content_margin_all(5)
 	stylebox.set_corner_radius_all(10)
 	_panel.add_theme_stylebox_override("panel", stylebox)
-	
-	_update_visual()
 
-func _get_index_in_inventory() -> int:
-	return _inventory.size.x * _pos_in_inventory.y + _pos_in_inventory.x
+	_on_item_updated(_index)
 
 func _get_item() -> InventoryItem:
-	if _inventory.items.size() <= _get_index_in_inventory():
+	if _inventory.items.size() <= _index:
 		return null
-	return _inventory.items[_get_index_in_inventory()]
+	return _inventory.items[_index]
 
-func _get_item_amount() -> int:
-	return _inventory.items_amount[_get_index_in_inventory()]
+func _get_amount() -> int:
+	return _inventory.amounts[_index]
 
 ## Return true if the slot has an item inside
 func _has_item() -> bool:
 	return _get_item() != null
 
-func _on_item_updated() -> void:
+func _on_item_updated(_position: int) -> void:
+	print("received update, is it me? " + str(_position == _index))
+	if _position != _index:
+		return
+
 	if _has_item():
 		_set_item()
 	else:
@@ -61,7 +65,7 @@ func _on_item_updated() -> void:
 func _set_item() -> void:
 	_panel.tooltip_text = _get_item().item_name
 	_panel.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	_label.text = str(_get_item_amount())
+	_label.text = str(_get_amount())
 	_update_visual()
 
 func _remove_item() -> void:
@@ -94,7 +98,7 @@ func _update_body_in_subviewport() -> void:
 		if node != null:
 			node.queue_free()
 		return
-	
+
 	# add a node with the correct mesh and name
 	var minstance: MeshInstance3D = MeshInstance3D.new()
 	minstance.mesh = _get_item().item_mesh

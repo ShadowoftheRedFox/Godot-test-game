@@ -9,7 +9,7 @@
 [ext_resource type="Shape3D" uid="uid://bwjdu52ydxtqp" path="res://assets/internal/CrateShape.tres" id="6_np46q"]
 [ext_resource type="PackedScene" uid="uid://dlwjol7yjo20y" path="res://assets/PolygonStarter/Prefabs/SM_Generic_Small_Rocks_01.tscn" id="7_eclf4"]
 [ext_resource type="PackedScene" uid="uid://bul45qpgtq0aq" path="res://scenes/entities/Spawner.tscn" id="9_8srka"]
-[ext_resource type="PackedScene" uid="uid://ed0fxwngqe2k" path="res://scenes/entities/item/item_iron.tscn" id="10_8srka"]
+[ext_resource type="PackedScene" uid="uid://c87a8smcje34d" path="res://scenes/entities/item/IronItem.tscn" id="10_8srka"]
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_bc5xn"]
 
@@ -87,6 +87,7 @@ shape = ExtResource("6_np46q")
 mesh = ExtResource("6_eclf4")
 material_override = ExtResource("6_nnpde")
 
-[node name="Spawner" parent="." unique_id=601974945 instance=ExtResource("9_8srka")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.512, 0.5, 0)
+[node name="Spawner" parent="." unique_id=601974945 node_paths=PackedStringArray("parent") instance=ExtResource("9_8srka")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0.5, 0)
 scene = ExtResource("10_8srka")
+parent = NodePath(".")
