@@ -1,6 +1,0 @@
-[gd_resource type="NoiseTexture2D" format=3 uid="uid://l0jtohkyusrf"]
-
-[ext_resource type="FastNoiseLite" uid="uid://bvxpw6st27bsl" path="res://scenes/worlds/ClipMap/new_fast_noise_lite.tres" id="1_ld8aq"]
-
-[resource]
-noise = ExtResource("1_ld8aq")

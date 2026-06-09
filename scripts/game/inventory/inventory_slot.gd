@@ -53,7 +53,6 @@ func _has_item() -> bool:
 	return _get_item() != null
 
 func _on_item_updated(_position: int) -> void:
-	print("received update, is it me? " + str(_position == _index))
 	if _position != _index:
 		return
 

@@ -48,7 +48,6 @@ func add_item(item: InventoryItem, amount: int, position: int = 0) -> int:
 		return 0
 	if item == null:
 		return amount
-	print("adding " + item.item_name)
 
 	# loop from position to the end of out array
 	for i: int in range(position, items.size()):
@@ -66,7 +65,6 @@ func add_item(item: InventoryItem, amount: int, position: int = 0) -> int:
 		if space_left >= amount:
 			amounts[i] += amount
 			amount = 0
-			break
 		else:
 			# fill the space left, and goes to the next slot
 			amount -= space_left
@@ -75,6 +73,9 @@ func add_item(item: InventoryItem, amount: int, position: int = 0) -> int:
 		# update our item in case it was null
 		items[i] = item
 		items_updated.emit(i)
+
+		if amount == 0:
+			return 0
 
 	return amount
 
