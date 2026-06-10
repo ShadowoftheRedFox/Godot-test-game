@@ -1,0 +1,32 @@
+- [ ] have the chunk generation done and pretty:
+    - [ ] by chunk
+    - [ ] no gap betweem chunk seams (skirt?)
+    - [ ] biomes
+- [ ] environment:
+    - [ ] day night cycle
+    - [ ] weather
+    - [ ] light shader
+    - [ ] sky shader
+    - [ ] pretty clouds
+- [ ] items:
+  - [ ] more items
+  - [ ] more tools
+  - [ ] generic recipes
+  - [ ] items groups
+  - [ ] consummable/interactable items
+- [ ] inventory:
+  - [ ] managing inventory with click
+  - [ ] sort button (group -> by name)
+  - [ ] toolbar/way to quick use items
+- [ ] building:
+  - [ ] POC
+  - [ ] snap to grid or free
+  - [ ] interactable
+- [ ] general:
+  - [ ] save settings
+  - [ ] apply mouse sensitivity
+  - [ ] test if player turning around is not bayblading
+  - [ ] run+crouch = slide?
+  - [ ] sound/music
+  - [ ] mobs
+  - [ ] folder by kindred and not type (aka no scenes, scripts folder, instead: inventory, item, player, entities, world, building...)
