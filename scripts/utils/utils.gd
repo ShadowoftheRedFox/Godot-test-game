@@ -3,4 +3,11 @@ class_name Utils
 
 ## Check if the given string is not blank, meaning contains only whitespace (space, \n and \r) or is empty
 static func _is_blank(str_value: String) -> bool:
-	return str_value.remove_chars(" \n\r").is_empty()
+	return str_value.strip_escapes().is_empty()
+
+## Join the givenn array with the given delimitor
+static func join(array: Array[Variant], delimitor: String = ", ") -> String:
+	if array == null || len(array) == 0:
+		return ""
+	
+	return array.reduce(func(line:String, el: Variant) -> String: return line + delimitor + str(el));

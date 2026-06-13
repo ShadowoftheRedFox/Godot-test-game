@@ -12,7 +12,9 @@ func _init() -> void:
 	description = "Display the list of available commands."
 	summary = description
 	# register commands
-	register(CommandGive.new())
+	register(CommandGiveItem.new())
+	register(CommandClearItem.new())
+	register(CommandTime.new())
 
 ## Receive a new command text to parse.
 ## Multiple commands are separated with a new line.
@@ -32,6 +34,16 @@ func _get_command_line(line: String) -> void:
 
 	execute(line)
 
+func autocomplete(partial: String) -> bool:
+	if super.autocomplete(partial):
+		return true
+
+	# TODO only try to autocomplete paramters
+
+	return false
+
+
 func _execute_parameters(line: String) -> void:
+	# if we're reaching here, we have found the sub command
 	var parameter: String = line.split(" ", false, 1)[0]
 	help("Unknown command \"" + parameter + "\"")

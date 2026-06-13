@@ -12,18 +12,29 @@ func _ready() -> void:
 	edit.text_submitted.connect(_on_submitted)
 	GameState.CONSOLE.NewContent.connect(_on_new_content)
 	# TODO install effects
+	
+func _input(event: InputEvent) -> void:
+	# don't trigger when the menu is not visible or not focused on the edit
+	if !visible || !edit.has_focus():
+		return
+	# trigger command autocomplete when pressing tab
+	if event is InputEventKey && (event as InputEventKey).keycode == KEY_TAB && (event as InputEventKey).is_released():
+		GameState.CONSOLE.autocomplete(edit.text.strip_escapes())
 
 func on_visibility_changed() -> void:
 	_reset()
+	edit.grab_focus()
 
 func _reset() -> void:
 	edit.clear()
 
+## send the text to the console to parse the command
 func _on_submitted(text: String) -> void:
 	GameState.CONSOLE.get_command(text);
 	# TODO history of inputted text
 	edit.text = \"\"
 
+## listen to console response and display it
 func _on_new_content(text: String) -> void:
 	var fullText: String = console.text + \"\\n\" + text
 	var length: int = len(fullText)
@@ -72,7 +83,9 @@ unique_name_in_owner = true
 process_mode = 3
 layout_mode = 2
 size_flags_vertical = 3
-focus_mode = 2
+focus_next = NodePath("../ConsoleEdit")
+focus_previous = NodePath("../ConsoleEdit")
+focus_behavior_recursive = 2
 bbcode_enabled = true
 scroll_following = true
 scroll_following_visible_characters = true
@@ -85,9 +98,13 @@ selection_enabled = true
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 8
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+focus_behavior_recursive = 2
 placeholder_text = "Type \"?\" for help."
 keep_editing_on_text_submit = true
 emoji_menu_enabled = false
 backspace_deletes_composite_character_enabled = true
 clear_button_enabled = true
+deselect_on_focus_loss_enabled = false
 caret_blink = true

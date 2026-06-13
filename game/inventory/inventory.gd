@@ -79,6 +79,13 @@ func add_item(item: InventoryItem, amount: int, position: int = 0) -> int:
 
 	return amount
 
+## Remove all items from the inventory.
+func clear() -> void:
+	for i: int in range(0, items.size()):
+		items[i] = null
+		amounts[i] = 0
+		items_updated.emit(i)
+
 ## Remove the given amount of item at the given position.
 ## Return the amount left that could not be removed at this position.
 func remove_position(amount: int, position: int) -> int:
@@ -97,17 +104,18 @@ func remove_position(amount: int, position: int) -> int:
 	# remove the max amount from this slot and add the leftovers
 	return leftover + remove_item(items[position], amount)
 
-## Remove the given amount of the given item in the inventory.
+## Remove the given item in the inventory.
+## If amount is -1 (the default), remove all of this items from this inventory.
 ## Return the amount left that could not be removed.
 ## Position is optional. If supplied, will try to remove item starting from
 ## this position.
-func remove_item(item: InventoryItem, amount: int, position: int = 0) -> int:
-	if amount <= 0:
+func remove_item(item: InventoryItem, amount: int = -1, position: int = 0) -> int:
+	if amount != -1 && amount <= 0:
 		return 0
 	if item == null \
 	|| position < 0 \
 	|| size.x * size.y <= position:
-		return amount
+		return max(1, amount)
 
 	# loop from position to the end of out array
 	for i: int in range(position, items.size()):
@@ -118,8 +126,12 @@ func remove_item(item: InventoryItem, amount: int, position: int = 0) -> int:
 		if current_amount == 0 || !item.equals(current_item):
 			continue
 
+		# if amout is -1, remove all items regardless
+		if amount == -1:
+			amounts[i] = 0
+			items[i] = null
 		# if more amount than the one to remove, empty the slot
-		if current_amount >= amount:
+		elif current_amount >= amount:
 			amounts[i] -= amount
 			amount = 0
 			items[i] = null

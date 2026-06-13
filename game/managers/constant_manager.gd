@@ -23,5 +23,8 @@ const CONSOLE_MAX_LENGTH: int = 10000
 ## Contains all item names in the game.
 var ITEM_NAMES: Array[StringName] = []
 
-## Folder containing all the item resources
+## Folder containing all the item resources.
 const ITEM_FOLDER: String = "res://game/inventory/item/item_resource/"
+
+# The length of the day.
+const DAY_LENGTH: int = 2400

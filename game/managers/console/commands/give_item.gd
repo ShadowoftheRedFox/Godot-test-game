@@ -1,4 +1,4 @@
-class_name CommandGive extends ConsoleCommand
+class_name CommandGiveItem extends ConsoleCommand
 
 func _init() -> void:
 	name = "give"
@@ -7,6 +7,8 @@ func _init() -> void:
 	Usage: item_name [amount:int]
 	\titem_name: A valid item name.
 	\tamount: Optional. The amount of item to give. Must be greater than 0."
+
+	requirements = RequirementsFlags.PRIVILEGED
 
 func _execute_parameters(line: String) -> void:
 	# get parameters
@@ -30,13 +32,13 @@ func _execute_parameters(line: String) -> void:
 			return
 		amount = parameters[1].to_int()
 		if amount <= 0:
-			error("Invalid amount given. Expected 1 or more, got " + parameters[1] + "")
+			error("Invalid amount given. Expected 1 or more, got " + parameters[1])
 			return
 
 	# we have out item and our amount, get out item resource
 	var item: InventoryItem = ResourceLoader.load(GameState.CONST.ITEM_FOLDER + item_name + ".tres", "InventoryItem", ResourceLoader.CACHE_MODE_REUSE)
 	if item == null:
-		error("Failedtoloaditem.")
+		error("Failed to load item.")
 		return
 
 	#BUG can't add more than max_items_per_slot in one slot
