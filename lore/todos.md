@@ -1,13 +1,13 @@
 - [ ] have the chunk generation done and pretty:
-    - [ ] by chunk
-    - [ ] no gap betweem chunk seams (skirt?)
-    - [ ] biomes
+	- [ ] by chunk
+	- [ ] no gap betweem chunk seams (skirt?)
+	- [ ] biomes
 - [ ] environment:
-    - [ ] day night cycle
-    - [ ] weather
-    - [ ] light shader
-    - [ ] sky shader
-    - [ ] pretty clouds
+	- [ ] day night cycle
+	- [ ] weather
+	- [ ] light shader
+	- [ ] sky shader
+	- [ ] pretty clouds
 - [ ] items:
   - [ ] more items
   - [ ] more tools
@@ -30,3 +30,14 @@
   - [ ] sound/music
   - [ ] mobs
   - [ ] folder by kindred and not type (aka no scenes, scripts folder, instead: inventory, item, player, entities, world, building...)
+- [ ] console:
+	- [ ] gamerules
+	- [ ] give / clear inventory
+	- [ ] set time of day
+	- [ ] god mode
+	- [ ] change difficulty
+- [ ] code:
+  - [ ] variable in snake case
+  - [ ] constant in upper case snake case
+  - [ ] class in title case
+  - [ ] internal function that should not be touched

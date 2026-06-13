@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://b50byu54aqqsv"]
+
+[ext_resource type="Script" uid="uid://c3c88kv0jtfjv" path="res://game/gui/inventory_gui.gd" id="1_1uqnm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gunmw"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.34901962, 0.34901962, 0.34901962, 0.4)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="PlayerGui" type="MarginContainer" unique_id=333286146]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+script = ExtResource("1_1uqnm")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=961476596]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gunmw")
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer" unique_id=1967086975]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="visibility_changed" from="PanelContainer/GridContainer" to="." method="_on_grid_container_visibility_changed"]

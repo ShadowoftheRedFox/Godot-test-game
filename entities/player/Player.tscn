@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://26srdfxbxw6k"]
+
+[ext_resource type="Script" uid="uid://cu4dw5hrdfbt5" path="res://entities/scripts/player.gd" id="1_g13of"]
+[ext_resource type="Script" uid="uid://blq5m27trpujb" path="res://components/input_component.gd" id="2_o7et6"]
+[ext_resource type="Script" uid="uid://d4kj4whqt3giv" path="res://components/move_component.gd" id="3_24gqh"]
+[ext_resource type="Script" uid="uid://bvixwki5ss1pa" path="res://components/health_component.gd" id="4_yjynp"]
+[ext_resource type="Script" uid="uid://ce4h2mdshhcdv" path="res://components/camera_component.gd" id="5_j1g85"]
+[ext_resource type="PackedScene" uid="uid://b50byu54aqqsv" path="res://entities/player/GUI/InventoryGUI.tscn" id="6_hgjck"]
+[ext_resource type="Script" uid="uid://061snkpdro2h" path="res://game/inventory/item/inventory_item.gd" id="7_20ow7"]
+[ext_resource type="PackedScene" uid="uid://b30nyqm72dwjv" path="res://entities/player/GUI/InGameMainMenu.tscn" id="7_ppr6r"]
+[ext_resource type="Resource" uid="uid://nfhxb5ipgdms" path="res://game/inventory/item/item_resource/ItemIronBlock.tres" id="8_20ow7"]
+[ext_resource type="Script" uid="uid://dfe0gnda2agej" path="res://game/inventory/inventory.gd" id="8_rx1o7"]
+[ext_resource type="PackedScene" uid="uid://fgfsequli1l4" path="res://entities/player/GUI/ConsoleMenu.tscn" id="11_ujgbh"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2m2ha"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_g13of"]
+
+[node name="Player" type="CharacterBody3D" unique_id=319123823 node_paths=PackedStringArray("move_component", "health_component")]
+process_mode = 3
+script = ExtResource("1_g13of")
+move_component = NodePath("MoveComponent")
+health_component = NodePath("HealthComponent")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=455517292]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_2m2ha")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1090582167]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_g13of")
+
+[node name="CameraAnchor" type="Node3D" parent="." unique_id=513150611]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CameraAnchor" unique_id=1612577861]
+current = true
+
+[node name="InputComponent" type="Node" parent="." unique_id=931172106]
+unique_name_in_owner = true
+script = ExtResource("2_o7et6")
+
+[node name="MoveComponent" type="Node" parent="." unique_id=634600859 node_paths=PackedStringArray("body", "model", "camera")]
+unique_name_in_owner = true
+script = ExtResource("3_24gqh")
+body = NodePath("..")
+model = NodePath("../MeshInstance3D")
+camera = NodePath("../CameraAnchor/Camera3D")
+is_able_to_fly = true
+
+[node name="HealthComponent" type="Node" parent="." unique_id=1008136294]
+unique_name_in_owner = true
+script = ExtResource("4_yjynp")
+
+[node name="CameraComponent" type="Node" parent="." unique_id=635656344 node_paths=PackedStringArray("camera")]
+unique_name_in_owner = true
+script = ExtResource("5_j1g85")
+camera = NodePath("../CameraAnchor/Camera3D")
+
+[node name="Inventory" type="Node" parent="." unique_id=784841100]
+unique_name_in_owner = true
+script = ExtResource("8_rx1o7")
+items = Array[ExtResource("7_20ow7")]([ExtResource("8_20ow7")])
+amounts = Array[int]([7])
+
+[node name="GUI" type="CanvasLayer" parent="." unique_id=2003209770]
+
+[node name="InventoryGui" parent="GUI" unique_id=333286146 node_paths=PackedStringArray("inventory") instance=ExtResource("6_hgjck")]
+unique_name_in_owner = true
+visible = false
+inventory = NodePath("../../Inventory")
+
+[node name="MainMenu" parent="GUI" unique_id=2037458206 instance=ExtResource("7_ppr6r")]
+unique_name_in_owner = true
+visible = false
+
+[node name="ConsoleMenu" parent="GUI" unique_id=1704680857 instance=ExtResource("11_ujgbh")]
+unique_name_in_owner = true
+visible = false

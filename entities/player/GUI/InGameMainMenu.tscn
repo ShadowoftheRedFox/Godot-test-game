@@ -1,0 +1,598 @@
+[gd_scene format=3 uid="uid://b30nyqm72dwjv"]
+
+[sub_resource type="GDScript" id="GDScript_2iu3n"]
+script/source = "class_name InGameMainMenu extends MarginContainer
+
+# Main menu button
+@onready var resume: Button = %Resume
+@onready var settings: Button = %Settings
+@onready var save: Button = %Save
+@onready var quit: Button = %Quit
+
+# Main submenu container
+@onready var settings_menu: Control = %SettingsMenu
+@onready var save_menu: Control = %SaveMenu
+
+func _ready() -> void:
+	_reset()
+	resume.pressed.connect(_on_resume_button)
+	settings.pressed.connect(_on_settings_button)
+	save.pressed.connect(_on_save_button)
+	quit.pressed.connect(_on_quit_button)
+	visibility_changed.connect(_game_pause)
+
+## Pause the tree when this menu is visible
+func _game_pause() -> void:
+	_reset()
+	get_tree().paused = visible
+
+func _reset() -> void:
+	settings_menu.hide()
+	settings.flat = false
+	save_menu.hide()
+	save.flat = false
+
+func _on_settings_button() -> void:
+	_reset()
+	settings_menu.show()
+	settings.flat = true
+
+func _on_save_button() -> void:
+	_reset()
+	save_menu.show()
+	save.flat = true
+
+func _on_quit_button() -> void:
+	GameState.quit_game()
+
+func _on_resume_button() -> void:
+	_reset()
+	visible = false
+	GameState.player.resume_main_menu()
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2iu3n"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.3491902, 0.3491902, 0.3491902, 0.4)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="GDScript" id="GDScript_g0ahc"]
+script/source = "class_name SettingsSubMenu extends Control
+
+# Submenu button
+@onready var settings_general: Button = %SettingsGeneral
+@onready var settings_sound: Button = %SettingsSound
+@onready var settings_graphic: Button = %SettingsGraphic
+@onready var settings_control: Button = %SettingsControl
+
+# Submenu containes
+@onready var settings_general_menu: Control = %SettingsGeneralMenu
+@onready var settings_sound_menu: Control = %SettingsSoundMenu
+@onready var settings_graphic_menu: Control = %SettingsGraphicMenu
+@onready var settings_control_menu: Control = %SettingsControlMenu
+
+func _ready() -> void:
+	_reset()
+	settings_general.pressed.connect(_on_general_button)
+	settings_sound.pressed.connect(_on_sound_button)
+	settings_graphic.pressed.connect(_on_graphic_button)
+	settings_control.pressed.connect(_on_control_button)
+
+func _reset() -> void:
+	settings_general_menu.hide()
+	settings_general.flat = false
+	settings_sound_menu.hide()
+	settings_sound.flat = false
+	settings_graphic_menu.hide()
+	settings_graphic.flat = false
+	settings_control_menu.hide()
+	settings_control.flat = false
+
+func _on_general_button() -> void:
+	_reset()
+	settings_general_menu.show()
+	settings_general.flat = true
+
+func _on_sound_button() -> void:
+	_reset()
+	settings_sound_menu.show()
+	settings_sound.flat = true
+
+func _on_graphic_button() -> void:
+	_reset()
+	settings_graphic_menu.show()
+	settings_graphic.flat = true
+
+func _on_control_button() -> void:
+	_reset()
+	settings_control_menu.show()
+	settings_control.flat = true
+"
+
+[sub_resource type="GDScript" id="GDScript_3idyw"]
+script/source = "extends HSlider
+
+@onready var general_sound_label: Label = %GeneralSoundLabel
+
+func _ready() -> void:
+	# TODO load from save the stocked value
+	_update_sound()
+	
+	# set the value and events
+	general_sound_label.text = \"General sound : \" + str(int(value))
+	value_changed.connect(_on_value_changed)
+
+func _on_value_changed(has_changed: bool) -> void:
+	if has_changed:
+		general_sound_label.text = \"General sound : \" + str(int(value))
+		_update_sound()
+
+## Update the sound manager
+func _update_sound() -> void:
+	pass # TODO
+"
+
+[sub_resource type="GDScript" id="GDScript_bkx05"]
+script/source = "extends HSlider
+
+@onready var sound_effect_label: Label = %SoundEffectLabel
+
+func _ready() -> void:
+	# TODO load from save the stocked value
+	_update_sound()
+	
+	# set the value and events
+	sound_effect_label.text = \"Sound effect : \" + str(int(value))
+	value_changed.connect(_on_value_changed)
+
+func _on_value_changed(has_changed: bool) -> void:
+	if has_changed:
+		sound_effect_label.text = \"Sound effect : \" + str(int(value))
+		_update_sound()
+
+## Update the sound manager
+func _update_sound() -> void:
+	pass # TODO
+"
+
+[sub_resource type="GDScript" id="GDScript_tl47v"]
+script/source = "extends HSlider
+
+@onready var render_distance_label: Label = %RenderDistanceLabel
+
+func _ready() -> void:
+	# auto calculate tick count
+	# min and max value are multiplied by step
+	tick_count = int((max_value - min_value + 1) / step)
+	
+	# TODO load from save the stocked value
+	_update_render_distance()
+	
+	# set the value and events
+	render_distance_label.text = \"Render distance : \" + str(int(value))
+	value_changed.connect(_on_value_changed)
+
+func _on_value_changed(has_changed: bool) -> void:
+	if has_changed:
+		render_distance_label.text = \"Render distance : \" + str(int(value))
+		_update_render_distance()
+
+## Update the world controller
+func _update_render_distance() -> void:
+	pass # TODO
+"
+
+[sub_resource type="GDScript" id="GDScript_swycs"]
+script/source = "extends Control
+
+@onready var main_container: VBoxContainer = %MainContainer
+
+## As key, an action, as value the \"pretty\" name of it. 
+@export var action_name_map: Dictionary[String, String] = {}
+
+func _ready() -> void:
+	# map of each action name and it's corresponding key name
+	var actions_map: Dictionary[String, String] = {}
+	
+	for action: StringName in InputMap.get_actions():
+		# if starts with \"ui_\", then it's not out gaùe defined actions
+		if action.begins_with(\"ui_\"):
+			continue
+		
+		actions_map.set(action, _get_key_name(InputMap.action_get_events(action)[0]))
+	
+	# now, create the categories
+	var grid_categories: Array[GridContainer] = []
+	var categories: Array[String] = []
+	
+	# list of action keys
+	var actions: Array[String] = actions_map.keys()
+	
+	# we split action's name by _ keep the first, and make sure it's unique
+	for action: StringName in actions:
+		var category_name: String = action.split(\"_\")[0]
+		if not categories.has(category_name):
+			categories.push_back(category_name)
+	
+	# sort alphabetically the categoris
+	categories.sort()
+	
+	# create the grids
+	for category: String in categories:
+		# create label/grid pair for each categories
+		var label: Label = Label.new() 
+		var grid: GridContainer = GridContainer.new()
+		
+		# name accordingly
+		label.name = category.to_camel_case() + \"Label\"
+		grid.name = _get_grid_name(category)
+		
+		# setup label
+		label.text = category.capitalize()
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.add_theme_font_size_override(\"font_size\", 24)
+		
+		# setup grid
+		grid.columns = 2
+		grid.size_flags_horizontal = Control.SIZE_FILL
+		grid.size_flags_vertical = Control.SIZE_FILL | Control.SIZE_EXPAND
+		
+		# add nodes to tree and array
+		main_container.add_child(label)
+		main_container.add_child(grid)
+		grid_categories.push_back(grid)
+		
+		# add separator between categories, only if not the last category
+		if categories.find(category) != categories.size() - 1:
+			main_container.add_child(HSeparator.new())
+	
+	# add buttons and labels for the corresponding grid container
+	for action: StringName in actions:
+		# create menu nodes
+		var label: Label = Label.new()
+		var button: InputButton = InputButton.new(action)
+		
+		# set the name in nodes tree
+		label.name = action.to_camel_case() + \"Label\"
+		button.name = action.to_camel_case() + \"Button\"
+		
+		# disable if it's the main menu
+		if action == \"action_menu\":
+			button.disabled = true
+		
+		# set size in grid (expand and center
+		label.size_flags_horizontal = Control.SIZE_EXPAND | Control.SIZE_SHRINK_CENTER
+		button.size_flags_horizontal = Control.SIZE_EXPAND | Control.SIZE_EXPAND_FILL
+		
+		# set the \"pretty\" name for the label
+		label.text = action_name_map.get(action, action)
+		
+		# add the nodes to the grid corresponding to it's category
+		var category: String = action.split(\"_\")[0]
+		var grid_index: int = grid_categories.find_custom(_grid_find.bind().bind(category))
+		var grid: GridContainer = grid_categories[grid_index]
+		grid.add_child(label)
+		grid.add_child(button)
+
+## Return the name of the grid depending of the name of the category
+func _get_grid_name(category: String) -> String:
+	return category.to_camel_case() + \"Grid\"
+
+## find the grid for this category
+func _grid_find(grid: GridContainer, category: String) -> bool:
+	return grid.name == _get_grid_name(category)
+
+## gets the correct display name for the events's input key
+func _get_key_name(event: InputEvent) -> String:
+	# we only handle InputEventKey for now
+	if event is not InputEventKey:
+		return \"not yet implemented\"
+	
+	var event_key: InputEventKey = event
+	
+	# handle position (i.e. left or right ctrl)
+	var key_position: String = \"\"
+	if event_key.location != KeyLocation.KEY_LOCATION_UNSPECIFIED:
+		key_position = \"Left \" if event_key.location == KeyLocation.KEY_LOCATION_LEFT else \"Right \"
+
+	# get the key name, if physical, get the actual key label on the keyboard
+	if event_key.keycode != Key.KEY_NONE:
+		return key_position + OS.get_keycode_string(event_key.keycode)
+	else:
+		return key_position + OS.get_keycode_string(
+			DisplayServer.keyboard_get_label_from_physical(event_key.physical_keycode)
+		)	
+
+## Received when the reset button is pressed
+func _on_control_reset_pressed() -> void:
+	InputMap.load_from_project_settings()
+"
+
+[sub_resource type="GDScript" id="GDScript_14e5g"]
+resource_name = "MouseSensitivity"
+script/source = "extends HSlider
+
+@onready var mouse_sensitivity: Label = %MouseSensitivity
+
+func _ready() -> void:
+	# TODO load from save the stocked value
+	_update_setting()
+	
+	# set the value and events
+	mouse_sensitivity.text = \"Mouse sensitivity : \" + str(value) + \"%\"
+	value_changed.connect(_on_value_changed)
+
+func _on_value_changed(has_changed: bool) -> void:
+	if has_changed:
+		mouse_sensitivity.text = \"Mouse sensitivity : \" + str(value) + \"%\"
+		_update_setting()
+
+## Update the mouse setting
+func _update_setting() -> void:
+	pass # TODO
+"
+
+[node name="InGameMainMenu" type="MarginContainer" unique_id=2037458206]
+process_mode = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+script = SubResource("GDScript_2iu3n")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1431261179]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2iu3n")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer" unique_id=273700661]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer" unique_id=582909382]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="Resume" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer" unique_id=240082239]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Resume"
+
+[node name="Settings" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer" unique_id=473599105]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Settings"
+
+[node name="Save" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer" unique_id=1443021867]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Save"
+
+[node name="Quit" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer" unique_id=941610530]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 10
+text = "Quit"
+
+[node name="SubMenu" type="Control" parent="PanelContainer/HBoxContainer" unique_id=241023671]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SettingsMenu" type="Control" parent="PanelContainer/HBoxContainer/SubMenu" unique_id=1972416903]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_g0ahc")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu" unique_id=475921315]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer" unique_id=1076754154]
+layout_mode = 2
+alignment = 1
+
+[node name="SettingsGeneral" type="Button" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/HBoxContainer" unique_id=314126622]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "General"
+
+[node name="SettingsSound" type="Button" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/HBoxContainer" unique_id=1170862106]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Sound"
+
+[node name="SettingsGraphic" type="Button" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/HBoxContainer" unique_id=1269522051]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Graphic"
+
+[node name="SettingsControl" type="Button" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/HBoxContainer" unique_id=693145996]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "Control"
+
+[node name="SettingsGeneralMenu" type="Control" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer" unique_id=1725711045]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SettingsSoundMenu" type="Control" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer" unique_id=253096903]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsSoundMenu" unique_id=887056870]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 2
+
+[node name="GeneralSoundLabel" type="Label" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsSoundMenu/GridContainer" unique_id=985941263]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "General sound: "
+
+[node name="GeneralSound" type="HSlider" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsSoundMenu/GridContainer" unique_id=1998681669]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 100.0
+rounded = true
+ticks_on_borders = true
+ticks_position = 3
+script = SubResource("GDScript_3idyw")
+
+[node name="SoundEffectLabel" type="Label" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsSoundMenu/GridContainer" unique_id=1661811598]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sound effect : "
+
+[node name="SoundEffect" type="HSlider" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsSoundMenu/GridContainer" unique_id=1263725109]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 100.0
+rounded = true
+ticks_on_borders = true
+ticks_position = 3
+script = SubResource("GDScript_bkx05")
+
+[node name="SettingsGraphicMenu" type="Control" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer" unique_id=2142950343]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsGraphicMenu" unique_id=2095681690]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 2
+
+[node name="RenderDistanceLabel" type="Label" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsGraphicMenu/GridContainer" unique_id=903043887]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Render distance : "
+
+[node name="RenderDistance" type="HSlider" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsGraphicMenu/GridContainer" unique_id=1096888655]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = 3.0
+max_value = 33.0
+step = 2.0
+value = 3.0
+rounded = true
+ticks_on_borders = true
+ticks_position = 3
+script = SubResource("GDScript_tl47v")
+
+[node name="SettingsControlMenu" type="Control" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer" unique_id=992057515]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+script = SubResource("GDScript_swycs")
+action_name_map = Dictionary[String, String]({
+"action_interact": "Interact",
+"action_inventory": "Inventory",
+"action_menu": "Main menu",
+"action_special_down": "Special down",
+"action_special_up": "Special up",
+"move_crouch": "Crouch",
+"move_down": "Down",
+"move_jump": "Jump",
+"move_left": "Left",
+"move_right": "Right",
+"move_up": "Up"
+})
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu" unique_id=1410058613]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+follow_focus = true
+horizontal_scroll_mode = 3
+
+[node name="MainContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu/ScrollContainer" unique_id=1907726125]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu/ScrollContainer/MainContainer" unique_id=1377649758]
+layout_mode = 2
+
+[node name="MouseSensitivity" type="Label" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu/ScrollContainer/MainContainer/HBoxContainer" unique_id=1197818953]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Move sensitivity: "
+
+[node name="HSlider" type="HSlider" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu/ScrollContainer/MainContainer/HBoxContainer" unique_id=1067477996]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 200.0
+step = 0.1
+value = 100.0
+script = SubResource("GDScript_14e5g")
+
+[node name="ControlReset" type="Button" parent="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu/ScrollContainer/MainContainer" unique_id=1013936039]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Reset"
+
+[node name="SaveMenu" type="Control" parent="PanelContainer/HBoxContainer/SubMenu" unique_id=1434823122]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="pressed" from="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu/ScrollContainer/MainContainer/ControlReset" to="PanelContainer/HBoxContainer/SubMenu/SettingsMenu/VBoxContainer/SettingsControlMenu" method="_on_control_reset_pressed"]
