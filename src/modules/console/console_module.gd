@@ -3,9 +3,13 @@ class_name ConsoleModule extends ConsoleCommand
 
 ## The manager exetends console command, but since it's the root, it has empty name a description
 
-## Emitted when the console prints text
+## Emitted when the console prints text.
 @warning_ignore("unused_signal")
 signal Print(text: String)
+
+## Emitted when the autocomplete solved the next value.
+@warning_ignore("unused_signal")
+signal Complete(word: String)
 
 func _init() -> void:
 	name = "Console"
@@ -20,8 +24,11 @@ func _init() -> void:
 ## Multiple commands are separated with a new line.
 func get_command(text: String) -> void:
 	# early return if empty
-	if len(text) == 0:
+	if text.length() == 0:
 		return
+
+	# print the command on the console
+	Print.emit(text.strip_escapes())
 
 	# get each line to prcess individually
 	for line: String in text.split("\n", false):
@@ -29,7 +36,7 @@ func get_command(text: String) -> void:
 
 func _get_command_line(line: String) -> void:
 	# early return if empty
-	if len(line) == 0:
+	if line.length() == 0:
 		return
 
 	execute(line)
@@ -37,8 +44,6 @@ func _get_command_line(line: String) -> void:
 func autocomplete(partial: String) -> bool:
 	if super.autocomplete(partial):
 		return true
-
-	# TODO only try to autocomplete paramters
 
 	return false
 

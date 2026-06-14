@@ -26,8 +26,8 @@ func _ready() -> void:
 
 func _on_body_entered(_body: Node) -> void:
 	for collider: Node3D in itemPhysical.get_colliding_bodies():
-		if collider.name == GameState.player.name:
+		if collider.name == Global.player.name:
 			# add itself to the inventory
-			var left: int = GameState.player.inventory.add_item(item, 1)
+			var left: int = Global.player.inventory.add_item(item, 1)
 			if left == 0:
 				queue_free()

@@ -9,7 +9,7 @@ class CommandTimeSet extends ConsoleCommand:
 		\tamount: The time of the day, between 0000 and 2399. Higher values are wrapped around."
 
 	func _execute_parameters(line: String) -> void:
-		if len(line) == 0:
+		if line.length() == 0:
 			help()
 			return
 
@@ -17,7 +17,7 @@ class CommandTimeSet extends ConsoleCommand:
 			error("The given amount is not a valid number.")
 			return
 
-		var amount: int = line.to_int() % GameState.CONST.DAY_LENGTH
+		var amount: int = line.to_int() % Global.CONST.DAY_LENGTH
 		# TODO change day time
 
 class CommandTimeAdd extends ConsoleCommand:
@@ -29,7 +29,7 @@ class CommandTimeAdd extends ConsoleCommand:
 		\tamount: The time to add, between 0000 and 2399. Higher values are wrapped around."
 
 	func _execute_parameters(line: String) -> void:
-		if len(line) == 0:
+		if line.length() == 0:
 			help()
 			return
 
@@ -37,7 +37,7 @@ class CommandTimeAdd extends ConsoleCommand:
 			error("The given amount is not a valid number.")
 			return
 
-		var amount: int = line.to_int() % GameState.CONST.DAY_LENGTH
+		var amount: int = line.to_int() % Global.CONST.DAY_LENGTH
 		# TODO change day time
 
 class CommandTimeRemove extends ConsoleCommand:
@@ -49,7 +49,7 @@ class CommandTimeRemove extends ConsoleCommand:
 		\tamount: The time to remove, between 0000 and 2399. Higher values are wrapped around."
 
 	func _execute_parameters(line: String) -> void:
-		if len(line) == 0:
+		if line.length() == 0:
 			help()
 			return
 
@@ -57,7 +57,7 @@ class CommandTimeRemove extends ConsoleCommand:
 			error("The given amount is not a valid number.")
 			return
 
-		var amount: int = line.to_int() % GameState.CONST.DAY_LENGTH
+		var amount: int = line.to_int() % Global.CONST.DAY_LENGTH
 		# TODO change day time
 
 func _init() -> void:

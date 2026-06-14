@@ -21,7 +21,7 @@ settings/stdout/print_fps=true
 
 [autoload]
 
-GameState="*uid://b4vn6kwom14jt"
+Global="*uid://b4vn6kwom14jt"
 
 [debug]
 

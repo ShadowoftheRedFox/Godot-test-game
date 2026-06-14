@@ -48,7 +48,7 @@ func update() -> void:
 
 	# for quick quit in dev mode
 	if in_main_menu && Input.is_key_pressed(KEY_CTRL):
-		GameState.quit_game()
+		Global.quit_game()
 
 
 	# check if in GUI

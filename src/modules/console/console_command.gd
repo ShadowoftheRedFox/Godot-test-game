@@ -40,7 +40,7 @@ enum RequirementsFlags {
 
 func _init() -> void:
 	# count the amount of commands available on startup
-	commands_len = len(commands)
+	commands_len = commands.size()
 
 ## Register a new sub command.
 func register(sub_command: ConsoleCommand) -> void:
@@ -59,7 +59,7 @@ func get_description(short_description: bool = false) -> String:
 	var text: String = "Command: " + name + "\n"
 	text += "Description: " + description
 
-	if len(commands) == 0:
+	if commands.size() == 0:
 		return text
 
 	text += "\nCommands: \n"
@@ -82,24 +82,32 @@ func get_description(short_description: bool = false) -> String:
 ## Display the help message of this command in the console.
 ## [prefix]: Optional. Prefix for the help message.
 func help(prefix: String = "") -> void:
-	if len(prefix) > 0:
-		GameState.CONSOLE.Print.emit(prefix + "\n" + get_description(true))
+	if prefix.length() > 0:
+		info(prefix + "\n" + get_description(true))
 	else:
-		GameState.CONSOLE.Print.emit(get_description(true))
-
-## Display an error message in the console.
-## [message]: The message to display.
-func error(message: String) -> void:
-	if len(message) == 0:
-		return
-	GameState.CONSOLE.Print.emit("[error]" + message + "[/error]")
+		info(get_description(true))
 
 ## Display a message in the console.
 ## [message]: The message to display.
 func info(message: String) -> void:
-	if len(message) == 0:
+	if message.length() == 0:
 		return
-	GameState.CONSOLE.Print.emit(message)
+	Global.CONSOLE.Print.emit(message)
+
+## Display an trace message in the console.
+## [message]: The message to display.
+func trace(message: String) -> void:
+	if message.length() == 0:
+			return
+	info("[color=web_gray][i]" + message + "[/i][/color]")
+
+## Display an error message in the console.
+## [message]: The message to display.
+func error(message: String) -> void:
+	if message.length() == 0:
+		return
+	info("[color=red]" + message + "[/color]")
+
 
 ## Execute the command with the given parameters.
 func execute(parameters: String) -> void:
@@ -113,7 +121,7 @@ func execute(parameters: String) -> void:
 
 	# we have no sub command, so call parameters
 	# also call if parameters length is 0, in case the command takes no parameters
-	if commands_len == 0 || len(parameters) == 0:
+	if commands_len == 0 || parameters.length() == 0:
 		_execute_parameters(parameters)
 		return
 
@@ -123,7 +131,7 @@ func execute(parameters: String) -> void:
 	for command: ConsoleCommand in commands:
 		if parts[0] == command.name:
 			# if yes, execute the command with the rest of the parameters
-			if len(parts) >= 2:
+			if parts.size() >= 2:
 				command.execute(parts[1])
 			else:
 				command.execute("")
@@ -164,38 +172,42 @@ func _check_requirements() -> bool:
 ## Should be overridden.
 ## Must call super.autocomplete is overridden.
 ## Used to autocomplete a partial value at the end of partial, with a parameter value.
-## Responses should be passed to [GameState.CONSOLE.NewContent.emit(result)].
+## Responses should be passed to [Global.CONSOLE.Print.emit(result)].
 ## Returns [true] if the autocomplete has already returned a value, and the child autocomplete must return without further process.
+## If the autocompletion can resolve to 1 possibilities, call [Global.CONSOLE.Complete.emit(result)] to tell the value to complete.
 func autocomplete(partial: String) -> bool:
 	# no sub commands to autocomplete, early return
 	if commands_len == 0:
 		return false
 
 	var words: PackedStringArray = partial.split(" ", true, 1)
-	var length: int = len(words)
+	var size: int = words.size()
 	var word: String = words[0]
 	# if word is the last word in the line, try to autocomplete it with a command name
-	if length == 1:
+	if size == 1:
 		# array of command names that match the autocompletion
 		var candidates: Array[String] = []
 		for cdt: ConsoleCommand in commands:
 			if cdt.name.begins_with(word):
 				candidates.push_back(cdt.name)
 
-		if len(candidates) == 0:
+		if candidates.size() == 0:
 			# show all command availables
-			info(Utils.join(commands.map(func(cmd: ConsoleCommand) -> String: return cmd.name)))
-			return true
-		# join results
-		@warning_ignore("unsafe_call_argument")
-		info(Utils.join(candidates))
+			info(", ".join(commands.map(func(cmd: ConsoleCommand) -> String: return cmd.name)))
+		elif candidates.size() == 1:
+			# call complete
+			Global.CONSOLE.Complete.emit(candidates[0])
+		else:
+			# join results and propose values
+			info(", ".join(candidates))
 		return true
 
 	# call autocomplete of the command
 	for cdt: ConsoleCommand in commands:
 		if cdt.name == word:
-			cdt.autocomplete(words[1])
-			return true
+			# call the sub command autocomplete, and return if it did
+			if cdt.autocomplete(words[1]):
+				return true
 
 	# parameter autocomplete must be done by child autocomplete
 	return false
@@ -203,5 +215,5 @@ func autocomplete(partial: String) -> bool:
 ## Should be overridden.
 ## Used to execute the command parameters when execute have been called.
 ## [line]: the parameters passed to this command in a single line.
-## Results should be passed to [GameState.CONSOLE.NewContent.emit(result)].
+## Results should be passed to [Global.CONSOLE.NewContent.emit(result)].
 @abstract func _execute_parameters(line: String) -> void

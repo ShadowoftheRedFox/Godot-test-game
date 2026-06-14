@@ -10,7 +10,7 @@ class_name Player extends Entity
 @onready var console_menu: MarginContainer = %ConsoleMenu
 
 func _ready() -> void:
-	GameState.player = self
+	Global.player = self
 	camera_component.character = self
 	# listen for signal for UI
 	input_component.UIChanged.connect(_on_ui_changed)

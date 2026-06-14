@@ -11,7 +11,7 @@ func _init() -> void:
 	for file_name: String in dir.get_files():
 		print(file_name)
 		var parts: PackedStringArray = file_name.split(".", false, 1)
-		if !parts[0].begins_with("Item") || len(parts) < 2 || parts[1] != "tres":
+		if parts.size() != 2 || !parts[0].begins_with("Item") || parts[1] != "tres":
 			printerr("File " + file_name + " does not have the correct item name format")
 			continue
 

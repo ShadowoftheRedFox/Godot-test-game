@@ -5,6 +5,8 @@ signal items_updated(position: int)
 
 ## Number of flots the inventory has. each slors can contain items_per_slot items.
 @export var size: Vector2i = Vector2i(5, 2)
+## The size of the inventory as int.
+var int_size: int = 0
 ## Number of items per slot
 @export var max_items_per_slot: int = 100
 ## Items currently in the inventory
@@ -32,12 +34,13 @@ func _init(_size: Vector2i = Vector2i(5, 2), \
 	can_add = _can_add
 	can_remove = _can_remove
 
+func _ready() -> void:
+	# properties set here to not conflict with exported values
+	int_size = size.x * size.y
 	# prepare array for our size
-	var total_size: int = size.x * size.y
-	items.resize(total_size)
-	items.fill(null)
-	amounts.resize(total_size)
-	amounts.fill(0)
+	items.resize(int_size)
+	amounts.resize(int_size)
+	print(amounts)
 
 ## Add the given amount of the given item in the inventory in the first slots
 ## available. Return the amount that could not be added.
@@ -50,18 +53,18 @@ func add_item(item: InventoryItem, amount: int, position: int = 0) -> int:
 		return amount
 
 	# loop from position to the end of out array
-	for i: int in range(position, items.size()):
+	for i: int in range(position, int_size):
 		var current_item: InventoryItem = items[i]
 		var current_amount: int = amounts[i]
 
 		# if the slot is full, or not the same item, skip
-		if current_amount >= max_items_per_slot || !item.equals(current_item):
+		if current_amount >= max_items_per_slot || (current_item != null && !item.equals(current_item)):
 			continue
 
 		# calculate the space left in this slot
 		var space_left: int = max_items_per_slot - current_amount
 
-		# if there is anough space for our amount, add it and finish
+		# if there is enough space for our amount, add it and finish
 		if space_left >= amount:
 			amounts[i] += amount
 			amount = 0
@@ -81,7 +84,7 @@ func add_item(item: InventoryItem, amount: int, position: int = 0) -> int:
 
 ## Remove all items from the inventory.
 func clear() -> void:
-	for i: int in range(0, items.size()):
+	for i: int in range(0, int_size):
 		items[i] = null
 		amounts[i] = 0
 		items_updated.emit(i)
@@ -118,7 +121,7 @@ func remove_item(item: InventoryItem, amount: int = -1, position: int = 0) -> in
 		return max(1, amount)
 
 	# loop from position to the end of out array
-	for i: int in range(position, items.size()):
+	for i: int in range(position, int_size):
 		var current_item: InventoryItem = items[i]
 		var current_amount: int = amounts[i]
 
@@ -134,13 +137,19 @@ func remove_item(item: InventoryItem, amount: int = -1, position: int = 0) -> in
 		elif current_amount >= amount:
 			amounts[i] -= amount
 			amount = 0
-			items[i] = null
-			break
+			# set to null if we emptied the slot
+			if amounts[i] == 0:
+				items[i] = null
 		else: # otherwise reduce the amount
 			amount -= current_amount
 			amounts[i] = 0
+			items[i] = null
 
 		items_updated.emit(i)
+
+		# stop when amount reaches 0 (this intentionnaly lets amount == -1 continue)
+		if amount == 0:
+			return 0
 
 	return amount
 
@@ -215,7 +224,7 @@ func get_amount_of_item(item: InventoryItem) -> int:
 		return 0
 
 	var res: int = 0
-	for i: int in items.size():
+	for i: int in int_size:
 		if items[i] != null and items[i].equals(item):
 			res += amounts[i]
 	return res

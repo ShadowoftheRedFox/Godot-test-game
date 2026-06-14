@@ -43,12 +43,12 @@ func _on_save_button() -> void:
 	save.flat = true
 
 func _on_quit_button() -> void:
-	GameState.quit_game()
+	Global.quit_game()
 
 func _on_resume_button() -> void:
 	_reset()
 	visible = false
-	GameState.player.resume_main_menu()
+	Global.player.resume_main_menu()
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2iu3n"]
@@ -123,7 +123,7 @@ script/source = "extends HSlider
 func _ready() -> void:
 	# TODO load from save the stocked value
 	_update_sound()
-	
+
 	# set the value and events
 	general_sound_label.text = \"General sound : \" + str(int(value))
 	value_changed.connect(_on_value_changed)
@@ -146,7 +146,7 @@ script/source = "extends HSlider
 func _ready() -> void:
 	# TODO load from save the stocked value
 	_update_sound()
-	
+
 	# set the value and events
 	sound_effect_label.text = \"Sound effect : \" + str(int(value))
 	value_changed.connect(_on_value_changed)
@@ -170,10 +170,10 @@ func _ready() -> void:
 	# auto calculate tick count
 	# min and max value are multiplied by step
 	tick_count = int((max_value - min_value + 1) / step)
-	
+
 	# TODO load from save the stocked value
 	_update_render_distance()
-	
+
 	# set the value and events
 	render_distance_label.text = \"Render distance : \" + str(int(value))
 	value_changed.connect(_on_value_changed)
@@ -193,86 +193,86 @@ script/source = "extends Control
 
 @onready var main_container: VBoxContainer = %MainContainer
 
-## As key, an action, as value the \"pretty\" name of it. 
+## As key, an action, as value the \"pretty\" name of it.
 @export var action_name_map: Dictionary[String, String] = {}
 
 func _ready() -> void:
 	# map of each action name and it's corresponding key name
 	var actions_map: Dictionary[String, String] = {}
-	
+
 	for action: StringName in InputMap.get_actions():
 		# if starts with \"ui_\", then it's not out gaùe defined actions
 		if action.begins_with(\"ui_\"):
 			continue
-		
+
 		actions_map.set(action, _get_key_name(InputMap.action_get_events(action)[0]))
-	
+
 	# now, create the categories
 	var grid_categories: Array[GridContainer] = []
 	var categories: Array[String] = []
-	
+
 	# list of action keys
 	var actions: Array[String] = actions_map.keys()
-	
+
 	# we split action's name by _ keep the first, and make sure it's unique
 	for action: StringName in actions:
 		var category_name: String = action.split(\"_\")[0]
 		if not categories.has(category_name):
 			categories.push_back(category_name)
-	
+
 	# sort alphabetically the categoris
 	categories.sort()
-	
+
 	# create the grids
 	for category: String in categories:
 		# create label/grid pair for each categories
-		var label: Label = Label.new() 
+		var label: Label = Label.new()
 		var grid: GridContainer = GridContainer.new()
-		
+
 		# name accordingly
 		label.name = category.to_camel_case() + \"Label\"
 		grid.name = _get_grid_name(category)
-		
+
 		# setup label
 		label.text = category.capitalize()
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		label.add_theme_font_size_override(\"font_size\", 24)
-		
+
 		# setup grid
 		grid.columns = 2
 		grid.size_flags_horizontal = Control.SIZE_FILL
 		grid.size_flags_vertical = Control.SIZE_FILL | Control.SIZE_EXPAND
-		
+
 		# add nodes to tree and array
 		main_container.add_child(label)
 		main_container.add_child(grid)
 		grid_categories.push_back(grid)
-		
+
 		# add separator between categories, only if not the last category
 		if categories.find(category) != categories.size() - 1:
 			main_container.add_child(HSeparator.new())
-	
+
 	# add buttons and labels for the corresponding grid container
 	for action: StringName in actions:
 		# create menu nodes
 		var label: Label = Label.new()
 		var button: InputButton = InputButton.new(action)
-		
+
 		# set the name in nodes tree
 		label.name = action.to_camel_case() + \"Label\"
 		button.name = action.to_camel_case() + \"Button\"
-		
+
 		# disable if it's the main menu
 		if action == \"action_menu\":
 			button.disabled = true
-		
+
 		# set size in grid (expand and center
 		label.size_flags_horizontal = Control.SIZE_EXPAND | Control.SIZE_SHRINK_CENTER
 		button.size_flags_horizontal = Control.SIZE_EXPAND | Control.SIZE_EXPAND_FILL
-		
+
 		# set the \"pretty\" name for the label
 		label.text = action_name_map.get(action, action)
-		
+
 		# add the nodes to the grid corresponding to it's category
 		var category: String = action.split(\"_\")[0]
 		var grid_index: int = grid_categories.find_custom(_grid_find.bind().bind(category))
@@ -293,9 +293,9 @@ func _get_key_name(event: InputEvent) -> String:
 	# we only handle InputEventKey for now
 	if event is not InputEventKey:
 		return \"not yet implemented\"
-	
+
 	var event_key: InputEventKey = event
-	
+
 	# handle position (i.e. left or right ctrl)
 	var key_position: String = \"\"
 	if event_key.location != KeyLocation.KEY_LOCATION_UNSPECIFIED:
@@ -307,7 +307,7 @@ func _get_key_name(event: InputEvent) -> String:
 	else:
 		return key_position + OS.get_keycode_string(
 			DisplayServer.keyboard_get_label_from_physical(event_key.physical_keycode)
-		)	
+		)
 
 ## Received when the reset button is pressed
 func _on_control_reset_pressed() -> void:
@@ -323,7 +323,7 @@ script/source = "extends HSlider
 func _ready() -> void:
 	# TODO load from save the stocked value
 	_update_setting()
-	
+
 	# set the value and events
 	mouse_sensitivity.text = \"Mouse sensitivity : \" + str(value) + \"%\"
 	value_changed.connect(_on_value_changed)

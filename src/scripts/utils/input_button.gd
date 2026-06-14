@@ -31,17 +31,17 @@ func _ready() -> void:
 func _gui_input(event: InputEvent) -> void:
 	if not _listening or disabled or event is InputEventMouse:
 		return
-	
+
 	if event is InputEventKey:
 		_update_input_map((event as InputEventKey).physical_keycode)
 		get_viewport().set_input_as_handled()
-	
+
 	_listening = false
 
 func _on_pressed() -> void:
 	_listening = true
 	text = LISTENING_TEXT
-	
+
 func _update_text() -> void:
 	text = _get_key_name()
 
@@ -49,21 +49,21 @@ func _update_text() -> void:
 ## To update an action, we need to delete the old action and add a new one.
 func _update_input_map(key: Key, location: KeyLocation = KeyLocation.KEY_LOCATION_UNSPECIFIED) -> void:
 	InputMap.action_erase_event(action, InputMap.action_get_events(action)[key_id])
-	
+
 	# create the event
 	var event: InputEventKey = InputEventKey.new()
 	event.physical_keycode = key
 	event.location = location
-	
+
 	# if key is escape, set unassigned
 	if key == Key.KEY_ESCAPE:
 		event.physical_keycode = KEY_NONE
-	
+
 	InputMap.action_add_event(action, event)
 	_update_text()
 	key_changed.emit(event.physical_keycode)
 	# save changes
-	GameState.SM.save_parameters()
+	Global.SM.save_parameters()
 
 ## Display the name if the action's key
 func _get_key_name() -> String:
@@ -71,16 +71,16 @@ func _get_key_name() -> String:
 	var events: Array[InputEvent] = InputMap.action_get_events(action)
 	if events.size() <= key_id:
 		return UNASSIGNED_ACTION
-	
+
 	# get the right event key
 	var event: InputEvent = events[key_id]
-	
+
 	# we only handle InputEventKey for now
 	if event is not InputEventKey:
 		return NOT_IMPLEMENTED
-	
+
 	var event_key: InputEventKey = event
-	
+
 	# handle position (i.e. left or right ctrl)
 	var key_position: String = ""
 	if event_key.location != KeyLocation.KEY_LOCATION_UNSPECIFIED:
@@ -89,7 +89,7 @@ func _get_key_name() -> String:
 	# if both key are none, display none
 	if event_key.physical_keycode == Key.KEY_NONE && event_key.keycode == Key.KEY_NONE:
 		return INPUT_NONE
-	
+
 	# get the key name, if physical, get the actual key label on the keyboard
 	if event_key.keycode != Key.KEY_NONE:
 		return key_position + OS.get_keycode_string(event_key.keycode)

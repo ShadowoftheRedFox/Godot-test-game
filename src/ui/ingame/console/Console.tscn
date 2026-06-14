@@ -10,16 +10,16 @@ func _ready() -> void:
 	_reset()
 	visibility_changed.connect(on_visibility_changed)
 	edit.text_submitted.connect(_on_submitted)
-	GameState.CONSOLE.Print.connect(_on_new_content)
-	# TODO install effects
-	
+	Global.CONSOLE.Print.connect(_on_print)
+	Global.CONSOLE.Complete.connect(_on_complete)
+
 func _input(event: InputEvent) -> void:
 	# don't trigger when the menu is not visible or not focused on the edit
 	if !visible || !edit.has_focus():
 		return
 	# trigger command autocomplete when pressing tab
 	if event is InputEventKey && (event as InputEventKey).keycode == KEY_TAB && (event as InputEventKey).is_released():
-		GameState.CONSOLE.autocomplete(edit.text.strip_escapes())
+		Global.CONSOLE.autocomplete(edit.text.strip_escapes())
 
 func on_visibility_changed() -> void:
 	_reset()
@@ -30,19 +30,26 @@ func _reset() -> void:
 
 ## send the text to the console to parse the command
 func _on_submitted(text: String) -> void:
-	GameState.CONSOLE.get_command(text);
+	Global.CONSOLE.get_command(text);
 	# TODO history of inputted text
 	edit.text = \"\"
 
 ## listen to console response and display it
-func _on_new_content(text: String) -> void:
-	var fullText: String = console.text + \"\\n\" + text
-	var length: int = len(fullText)
-	if length <= GameState.CONST.CONSOLE_MAX_LENGTH:
-		console.text = fullText
+func _on_print(text: String) -> void:
+	var length: int = console.text.length() + text.length() + 1 # +1 for \\n
+	if length <= Global.CONST.CONSOLE_MAX_LENGTH:
+		console.append_text(\"\\n\" + text)
 		return
 	# trim the start of the text if too long
-	console.text = fullText.substr(length - GameState.CONST.CONSOLE_MAX_LENGTH, -1)
+	console.text = (console.text + \"\\n\" + text).substr(length - Global.CONST.CONSOLE_MAX_LENGTH, -1)
+
+## Replace last word when we can autocomplete the value
+func _on_complete(word: String) -> void:
+	var words: PackedStringArray = edit.text.split(\" \", true)
+	words[words.size()-1] = word
+	edit.text = \" \".join(words)
+	# edit caret position
+	edit.caret_column = edit.text.length()
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2iu3n"]
