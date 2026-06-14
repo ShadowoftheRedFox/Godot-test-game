@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://fgfsequli1l4"]
+
+[sub_resource type="GDScript" id="GDScript_ytoc2"]
+script/source = "class_name ConsoleMenu extends MarginContainer
+
+@onready var console: RichTextLabel = %Console
+@onready var edit: LineEdit = %ConsoleEdit
+
+func _ready() -> void:
+	_reset()
+	visibility_changed.connect(on_visibility_changed)
+	edit.text_submitted.connect(_on_submitted)
+	GameState.CONSOLE.Print.connect(_on_new_content)
+	# TODO install effects
+	
+func _input(event: InputEvent) -> void:
+	# don't trigger when the menu is not visible or not focused on the edit
+	if !visible || !edit.has_focus():
+		return
+	# trigger command autocomplete when pressing tab
+	if event is InputEventKey && (event as InputEventKey).keycode == KEY_TAB && (event as InputEventKey).is_released():
+		GameState.CONSOLE.autocomplete(edit.text.strip_escapes())
+
+func on_visibility_changed() -> void:
+	_reset()
+	edit.grab_focus()
+
+func _reset() -> void:
+	edit.clear()
+
+## send the text to the console to parse the command
+func _on_submitted(text: String) -> void:
+	GameState.CONSOLE.get_command(text);
+	# TODO history of inputted text
+	edit.text = \"\"
+
+## listen to console response and display it
+func _on_new_content(text: String) -> void:
+	var fullText: String = console.text + \"\\n\" + text
+	var length: int = len(fullText)
+	if length <= GameState.CONST.CONSOLE_MAX_LENGTH:
+		console.text = fullText
+		return
+	# trim the start of the text if too long
+	console.text = fullText.substr(length - GameState.CONST.CONSOLE_MAX_LENGTH, -1)
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2iu3n"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.3491902, 0.3491902, 0.3491902, 0.4)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="InGameMainMenu" type="MarginContainer" unique_id=2037458206]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+script = SubResource("GDScript_ytoc2")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1431261179]
+clip_contents = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2iu3n")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=1525816115]
+layout_mode = 2
+
+[node name="Console" type="RichTextLabel" parent="PanelContainer/VBoxContainer" unique_id=1093159624]
+unique_name_in_owner = true
+process_mode = 3
+layout_mode = 2
+size_flags_vertical = 3
+focus_next = NodePath("../ConsoleEdit")
+focus_previous = NodePath("../ConsoleEdit")
+focus_mode = 2
+focus_behavior_recursive = 2
+bbcode_enabled = true
+scroll_following = true
+scroll_following_visible_characters = true
+autowrap_mode = 0
+vertical_alignment = 2
+threaded = true
+selection_enabled = true
+
+[node name="ConsoleEdit" type="LineEdit" parent="PanelContainer/VBoxContainer" unique_id=1509507290]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+focus_next = NodePath(".")
+focus_previous = NodePath(".")
+focus_behavior_recursive = 2
+placeholder_text = "Type \"?\" for help."
+keep_editing_on_text_submit = true
+emoji_menu_enabled = false
+backspace_deletes_composite_character_enabled = true
+clear_button_enabled = true
+deselect_on_focus_loss_enabled = false
+caret_blink = true

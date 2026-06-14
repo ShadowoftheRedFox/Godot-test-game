@@ -42,4 +42,3 @@ Console: f1
 Double jump to fly with the player.
 Crouch is only used to go down when flying for now.
 Sepcial up and down are special buttons to use without care in a specific scenes, to test feature.
-

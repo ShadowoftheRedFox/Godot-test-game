@@ -43,6 +43,23 @@ window/stretch/aspect="ignore"
 
 project/assembly_name="WTFisTHIS"
 
+[file_customization]
+
+folder_colors={
+"res://documentation/": "blue",
+"res://documentation/lore/": "blue",
+"res://src/components/": "yellow",
+"res://src/core/": "blue",
+"res://src/entities/": "red",
+"res://src/modules/": "teal",
+"res://src/player/": "purple",
+"res://src/scripts/": "green",
+"res://src/scripts/utils/": "green",
+"res://src/shaders/": "pink",
+"res://src/ui/": "yellow",
+"res://src/worlds/": "purple"
+}
+
 [filesystem]
 
 import/blender/enabled=false
