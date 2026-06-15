@@ -41,3 +41,4 @@
   - [ ] constant in upper case snake case
   - [ ] class in title case
   - [ ] internal function that should not be touched
+  - [ ] tool script that checks item file name are the same item name
