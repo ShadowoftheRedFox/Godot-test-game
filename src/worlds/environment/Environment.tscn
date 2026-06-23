@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://cxtrw8jhnputv"]
+
+[ext_resource type="Shader" uid="uid://b0g5cr24f3d3f" path="res://src/worlds/environment/skybox.gdshader" id="1_3n4eu"]
+[ext_resource type="Script" uid="uid://bikeglcdnxofi" path="res://src/worlds/environment/skybox_controller.gd" id="1_xk0ut"]
+[ext_resource type="Texture2D" uid="uid://dirvplocm1dcp" path="res://src/worlds/environment/sun_view_gradient.png" id="2_ji3n8"]
+[ext_resource type="Cubemap" uid="uid://druxwg7mpu0ma" path="res://src/worlds/environment/cb_map/moonCubeMap.res" id="2_uotph"]
+[ext_resource type="Cubemap" uid="uid://ct17gunxqcgwr" path="res://src/worlds/environment/cb_map/constellationCubeMap.res" id="3_0hubu"]
+[ext_resource type="Texture2D" uid="uid://dlnvcg6qpvvc6" path="res://src/worlds/environment/sun_zenith_gradient.png" id="3_uotph"]
+[ext_resource type="Cubemap" uid="uid://bqwvmhor8q7w0" path="res://src/worlds/environment/cb_map/starCubeMap.res" id="4_0vrqp"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3n4eu"]
+shader = ExtResource("1_3n4eu")
+shader_parameter/sun_dir = Vector3(0.31048772, -0.5210219, -0.7950683)
+shader_parameter/moon_dir = Vector3(-0.21222883, -0.86140233, 0.46174902)
+shader_parameter/sun_zenith_gradient = ExtResource("3_uotph")
+shader_parameter/view_zenith_gradient = ExtResource("3_uotph")
+shader_parameter/sun_view_gradient = ExtResource("2_ji3n8")
+shader_parameter/sun_radius = 0.05
+shader_parameter/sun_color = Color(1, 0.98912066, 0.17714295, 1)
+shader_parameter/moon_radius = 0.05
+shader_parameter/moon_exposure = 0.0
+shader_parameter/moon_cubemap = ExtResource("2_uotph")
+shader_parameter/moon_world_to_object = Basis(0.97722006, -0.18702348, 0.10025318, -7.4485035e-07, 0.47238123, 0.8812366, -0.2122285, -0.86116046, 0.46162158)
+shader_parameter/star_cubemap = ExtResource("4_0vrqp")
+shader_parameter/star_exposure = 6.000001045000001
+shader_parameter/star_power = 4.000000142499999
+shader_parameter/star_latitude = 0.0
+shader_parameter/star_speed = 0.001
+shader_parameter/star_constellation_cubemap = ExtResource("3_0hubu")
+shader_parameter/star_constellation_color = Color(0, 0.3, 0.6, 1)
+
+[sub_resource type="Sky" id="Sky_wjwyl"]
+sky_material = SubResource("ShaderMaterial_3n4eu")
+
+[sub_resource type="Environment" id="Environment_ji3n8"]
+background_mode = 2
+sky = SubResource("Sky_wjwyl")
+
+[node name="Environment" type="Node3D" unique_id=601410483]
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1473382783]
+unique_name_in_owner = true
+transform = Transform3D(0.9170795, -0.25019416, 0.31043214, -0.056107756, -0.85199857, -0.52092034, 0.39481622, 0.4603041, -0.79538596, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Moon" type="Node3D" parent="." unique_id=1694372634]
+unique_name_in_owner = true
+transform = Transform3D(0.97722, 0, -0.21222883, -0.18707627, 0.47250602, -0.8614066, 0.10027964, 0.8814851, 0.46174106, 0, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=427722439]
+environment = SubResource("Environment_ji3n8")
+script = ExtResource("1_xk0ut")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=2085725808]
