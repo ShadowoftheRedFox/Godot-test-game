@@ -57,14 +57,8 @@ func _scan_item_file(path:String, file_name:String) -> void:
 
 	ITEM_NAMES.push_back((item_resource as InventoryItem).item_name)
 
-## Number of chars max that can be displayed on the console.
-const CONSOLE_MAX_LENGTH: int = 10000
-
 ## Contains all item names in the game.
 var ITEM_NAMES: Array[StringName] = []
 
 ## Folder containing all the item resources.
 const ITEM_FOLDER: String = "res://src/modules/inventory/item/item_resource/"
-
-# The length of the day.
-const DAY_LENGTH: int = 2400

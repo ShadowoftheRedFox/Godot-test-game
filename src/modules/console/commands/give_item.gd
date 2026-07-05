@@ -10,7 +10,7 @@ func _init() -> void:
 
 	requirements = RequirementsFlags.PRIVILEGED
 
-func _execute_parameters(line: String) -> void:
+func execute_parameters(line: String) -> void:
 	# get parameters
 	var parameters: PackedStringArray = line.split(" ", false, 2)
 
@@ -74,3 +74,6 @@ func autocomplete(partial: String) -> bool:
 
 	# length is > 1, so we're trying to autocomplete a number, so just end here
 	return true
+
+func is_enabled() -> bool:
+	return check_requirements()

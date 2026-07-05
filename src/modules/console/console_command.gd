@@ -3,21 +3,34 @@
 
 # TODO aliases?
 # TODO parameters with their type and name to further lessen the load on children?
+### TEST
+"""
+for parameters, we need to take into account:
+	- they can be multiple of any type
+	- they are optional or required
+	- autocompletion need to work on them
+	- they need a description
+
+maybe have command and paramter as a same subclass so they share the main things
+
+"""
+### TEST
 
 ## The command name. Used to invoke the command.
-@export var name: String = ""
-## The full description of the command. Should specify what the arguments are, if they're optional, and their type.
+var name: String = ""
+## The full description of the command. Should specify what the arguments are, if
+## they're optional, and their type.
 ## Exemple:
 ## Add multiple integer together.
 ## Usage: a:Int b:Int [...c:Int]
 ## \t a: The first value to add.
 ## \t b: The second value to add.
 ## \t c: Optional. Any other value to add, separated with spaces.
-@export var description: String = ""
+var description: String = ""
 ## A quick description of the command. Exemple: Add multiple integer together.
-@export var summary: String = ""
+var summary: String = ""
 ## List of sub command.
-@export var commands: Array[ConsoleCommand] = []
+var commands: Array[ConsoleCommand] = []
 ## Quick reference to the amount of commnds registered.
 var commands_len: int = 0
 
@@ -55,7 +68,7 @@ func register(sub_command: ConsoleCommand) -> void:
 
 ## Display the description of the command.
 ## [short_description]: Whether or not the description add all the descriptions of sub commands.
-func get_description(short_description: bool = false) -> String:
+func _get_description(short_description: bool = false) -> String:
 	var text: String = "Command: " + name + "\n"
 	text += "Description: " + description
 
@@ -65,7 +78,7 @@ func get_description(short_description: bool = false) -> String:
 	text += "\nCommands: \n"
 	for command: ConsoleCommand in commands:
 		# only show command that we can execute
-		if !command._check_requirements():
+		if !command.check_requirements():
 			continue
 
 		# display the appropriate amount of informations
@@ -73,7 +86,7 @@ func get_description(short_description: bool = false) -> String:
 			text += "\t" + command.name + ": " + command.summary + "\n"
 		else:
 			# for each line of the sub command description, add a \t
-			for line: String in command.get_description().split("\n"):
+			for line: String in command._get_description().split("\n"):
 				text += "\t" + line + "\n"
 			text += "\n"
 
@@ -83,9 +96,9 @@ func get_description(short_description: bool = false) -> String:
 ## [prefix]: Optional. Prefix for the help message.
 func help(prefix: String = "") -> void:
 	if prefix.length() > 0:
-		info(prefix + "\n" + get_description(true))
+		info(prefix + "\n" + _get_description(true))
 	else:
-		info(get_description(true))
+		info(_get_description(true))
 
 ## Display a message in the console.
 ## [message]: The message to display.
@@ -111,30 +124,39 @@ func error(message: String) -> void:
 
 ## Execute the command with the given parameters.
 func execute(parameters: String) -> void:
+	# should no execute because it's disabled
+	if !is_enabled():
+		error("This command is disabled")
+		return
+
 	if parameters.begins_with("help") || parameters.begins_with("?"):
 		help()
 		return
 
 	# command requirements not met
-	if !_check_requirements():
+	if !check_requirements():
 		return
 
 	# we have no sub command, so call parameters
 	# also call if parameters length is 0, in case the command takes no parameters
 	if commands_len == 0 || parameters.length() == 0:
-		_execute_parameters(parameters)
+		execute_parameters(parameters)
 		return
 
 	# check if it's the start of any sub commands
 	# get the parts of our line, the sub command and it's parameters
 	var parts: PackedStringArray = parameters.split(' ', true, 1)
-	for command: ConsoleCommand in commands:
-		if parts[0] == command.name:
+	for cmd: ConsoleCommand in commands:
+		# skip disabled commands
+		if !cmd.is_enabled():
+			continue
+
+		if parts[0] == cmd.name:
 			# if yes, execute the command with the rest of the parameters
 			if parts.size() >= 2:
-				command.execute(parts[1])
+				cmd.execute(parts[1])
 			else:
-				command.execute("")
+				cmd.execute("")
 			return
 
 	# sub command not found
@@ -143,7 +165,7 @@ func execute(parameters: String) -> void:
 
 ## Checks command requirements before firing command.
 ## Return false if the condition doesn't meet the command requirements. True otherwise.
-func _check_requirements() -> bool:
+func check_requirements() -> bool:
 	# no requirements
 	if requirements == RequirementsFlags.NONE:
 		return true
@@ -165,19 +187,19 @@ func _check_requirements() -> bool:
 	if requirements & RequirementsFlags.MULTI_PLAYER:
 		# for now, the game is single player only
 		# TODO check if multi player
-		pass
+		return false
 
 	return true
 
 ## Should be overridden.
-## Must call super.autocomplete is overridden.
+## Must call [super.autocomplete] when overridden.
 ## Used to autocomplete a partial value at the end of partial, with a parameter value.
 ## Responses should be passed to [Global.CONSOLE.Print.emit(result)].
 ## Returns [true] if the autocomplete has already returned a value, and the child autocomplete must return without further process.
 ## If the autocompletion can resolve to 1 possibilities, call [Global.CONSOLE.Complete.emit(result)] to tell the value to complete.
 func autocomplete(partial: String) -> bool:
-	# no sub commands to autocomplete, early return
-	if commands_len == 0:
+	# no sub commands to autocomplete or disabled, early return
+	if commands_len == 0 || !is_enabled():
 		return false
 
 	var words: PackedStringArray = partial.split(" ", true, 1)
@@ -186,27 +208,33 @@ func autocomplete(partial: String) -> bool:
 	# if word is the last word in the line, try to autocomplete it with a command name
 	if size == 1:
 		# array of command names that match the autocompletion
+		# and are enabled
 		var candidates: Array[String] = []
-		for cdt: ConsoleCommand in commands:
-			if cdt.name.begins_with(word):
-				candidates.push_back(cdt.name)
+		for cmd: ConsoleCommand in commands:
+			if cmd.name.begins_with(word) && cmd.is_enabled():
+				candidates.push_back(cmd.name)
 
 		if candidates.size() == 0:
 			# show all command availables
-			info(", ".join(commands.map(func(cmd: ConsoleCommand) -> String: return cmd.name)))
+			info(", ".join(commands.map(func(c: ConsoleCommand) -> String: return c.name)))
 		elif candidates.size() == 1:
-			# call complete
+			# call complete since we found our answer
 			Global.CONSOLE.Complete.emit(candidates[0])
 		else:
 			# join results and propose values
 			info(", ".join(candidates))
 		return true
 
-	# call autocomplete of the command
-	for cdt: ConsoleCommand in commands:
-		if cdt.name == word:
+	# if word is not the last word of the line, send the autocomplete to a
+	# subcommand of the same name as word
+	# and call the autocomplete of the command
+	for cmd: ConsoleCommand in commands:
+		if cmd.name == word:
+			# if the command is disabled, return
+			if !cmd.is_enabled():
+				return false
 			# call the sub command autocomplete, and return if it did
-			if cdt.autocomplete(words[1]):
+			if cmd.autocomplete(words[1]):
 				return true
 
 	# parameter autocomplete must be done by child autocomplete
@@ -216,4 +244,8 @@ func autocomplete(partial: String) -> bool:
 ## Used to execute the command parameters when execute have been called.
 ## [line]: the parameters passed to this command in a single line.
 ## Results should be passed to [Global.CONSOLE.NewContent.emit(result)].
-@abstract func _execute_parameters(line: String) -> void
+@abstract func execute_parameters(line: String) -> void
+
+## Returns if the command is enabled or not.
+## Disabled command won't show up in autocomplete or at the execution.
+@abstract func is_enabled() -> bool

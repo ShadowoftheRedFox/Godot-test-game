@@ -4,6 +4,7 @@ var direction: Vector2 = Vector2.ZERO
 var mouse_direction: Vector2 = Vector2.ZERO
 var jumps: bool = false
 var crouches: bool = false
+var sprints: bool = false
 
 var fly_up: bool = false
 var fly_down: bool = false
@@ -50,7 +51,6 @@ func update() -> void:
 	if in_main_menu && Input.is_key_pressed(KEY_CTRL):
 		Global.quit_game()
 
-
 	# check if in GUI
 	if in_main_menu || in_inventory || in_console:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -70,6 +70,9 @@ func update() -> void:
 	special_up = Input.is_action_just_pressed("action_special_up")
 	special_down = Input.is_action_just_pressed("action_special_down")
 	interacts = Input.is_action_just_pressed("action_interact")
+	# TODO option to toggle sprint in settings
+	# for now it's just hold
+	sprints = Input.is_action_pressed("move_sprint")
 
 func _reset() -> void:
 	# set all inputs to their "default" value

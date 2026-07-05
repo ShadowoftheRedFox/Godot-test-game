@@ -37,11 +37,11 @@ func _on_submitted(text: String) -> void:
 ## listen to console response and display it
 func _on_print(text: String) -> void:
 	var length: int = console.text.length() + text.length() + 1 # +1 for \\n
-	if length <= Global.CONST.CONSOLE_MAX_LENGTH:
+	if length <= ConsoleModule.CONSOLE_MAX_LENGTH:
 		console.append_text(\"\\n\" + text)
 		return
 	# trim the start of the text if too long
-	console.text = (console.text + \"\\n\" + text).substr(length - Global.CONST.CONSOLE_MAX_LENGTH, -1)
+	console.text = (console.text + \"\\n\" + text).substr(length - ConsoleModule.CONSOLE_MAX_LENGTH, -1)
 
 ## Replace last word when we can autocomplete the value
 func _on_complete(word: String) -> void:

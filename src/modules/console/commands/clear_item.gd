@@ -11,7 +11,7 @@ func _init() -> void:
 
 	requirements = RequirementsFlags.PRIVILEGED
 
-func _execute_parameters(line: String) -> void:
+func execute_parameters(line: String) -> void:
 	if line.length() == 0:
 		Global.player.inventory.clear()
 		trace("Cleared inventory")
@@ -76,3 +76,6 @@ func autocomplete(partial: String) -> bool:
 
 	# length is > 1, so we're trying to autocomplete a number, so just end here
 	return true
+
+func is_enabled() -> bool:
+	return check_requirements()

@@ -1,3 +1,3 @@
 # Documentation
 
-- [Code](./code.md): Details about what to expect when writing code.
+- [Code layout](./code_layout.gd): Details about what to expect when writing GD Script.

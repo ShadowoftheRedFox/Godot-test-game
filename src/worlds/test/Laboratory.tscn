@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b8brfdyr57ked"]
 
-[ext_resource type="PackedScene" uid="uid://26srdfxbxw6k" path="res://src/player/Player.tscn" id="1_t08so"]
-[ext_resource type="PackedScene" uid="uid://bl1nkfu5cylho" path="res://assets/internal/Environment.tscn" id="2_67kpa"]
+[ext_resource type="Script" uid="uid://cjlshumin6it" path="res://src/worlds/test/laboratory.gd" id="1_0fujc"]
+[ext_resource type="PackedScene" uid="uid://dwrfynvlncnbx" path="res://src/worlds/environment/Environment.tscn" id="2_0fujc"]
 [ext_resource type="PackedScene" uid="uid://1anjtmyppsfo" path="res://src/entities/props/Prop.tscn" id="5_eclf4"]
 [ext_resource type="ArrayMesh" uid="uid://mpfrov2bagji" path="res://assets/PolygonStarter/Models/extracted/SM_PolygonPrototype_Prop_Crate_03.res" id="6_eclf4"]
 [ext_resource type="Material" uid="uid://bprw8jx500qd0" path="res://assets/PolygonStarter/Materials/PolygonStarter_Mat_01_mat.tres" id="6_nnpde"]
@@ -53,11 +53,10 @@ heightmap_texture = SubResource("CompressedTexture2D_ncp0c")
 uv1_scale = Vector3(50, 50, 50)
 
 [node name="Laboratory" type="Node3D" unique_id=1111460297]
+script = ExtResource("1_0fujc")
 
-[node name="Player" parent="." unique_id=319123823 instance=ExtResource("1_t08so")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8172724, 0)
-
-[node name="Environment" parent="." unique_id=279306561 instance=ExtResource("2_67kpa")]
+[node name="Environment" parent="." unique_id=601410483 instance=ExtResource("2_0fujc")]
+day_length = 60
 
 [node name="Room" type="Node3D" parent="." unique_id=1795409838]
 metadata/_edit_lock_ = true
@@ -89,3 +88,6 @@ material_override = ExtResource("6_nnpde")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0.5, 0)
 scene = ExtResource("10_8srka")
 delay = 0.1
+
+[node name="Marker3D" type="Marker3D" parent="." unique_id=376430659]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)

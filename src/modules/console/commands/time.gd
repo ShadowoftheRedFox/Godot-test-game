@@ -1,74 +1,88 @@
 class_name CommandTime extends ConsoleCommand
 
-class CommandTimeSet extends ConsoleCommand:
-	func _init() -> void:
-		name = "set"
-		summary = "Set the time of the day."
-		description = "Set the time of the day.
-		Usage: amount:int
-		\tamount: The time of the day, between 0000 and 2399. Higher values are wrapped around."
-
-	func _execute_parameters(line: String) -> void:
-		if line.length() == 0:
-			help()
-			return
-
-		if !line.is_valid_int():
-			error("The given amount is not a valid number.")
-			return
-
-		var amount: int = line.to_int() % Global.CONST.DAY_LENGTH
-		# TODO change day time
-
-class CommandTimeAdd extends ConsoleCommand:
-	func _init() -> void:
-		name = "add"
-		summary = "Add to the time of the day."
-		description = "Add to the time of the day.
-		Usage: amount:int
-		\tamount: The time to add, between 0000 and 2399. Higher values are wrapped around."
-
-	func _execute_parameters(line: String) -> void:
-		if line.length() == 0:
-			help()
-			return
-
-		if !line.is_valid_int():
-			error("The given amount is not a valid number.")
-			return
-
-		var amount: int = line.to_int() % Global.CONST.DAY_LENGTH
-		# TODO change day time
-
-class CommandTimeRemove extends ConsoleCommand:
-	func _init() -> void:
-		name = "remove"
-		summary = "Remove to the time of the day."
-		description = "Remove to the time of the day.
-		Usage: amount:int
-		\tamount: The time to remove, between 0000 and 2399. Higher values are wrapped around."
-
-	func _execute_parameters(line: String) -> void:
-		if line.length() == 0:
-			help()
-			return
-
-		if !line.is_valid_int():
-			error("The given amount is not a valid number.")
-			return
-
-		var amount: int = line.to_int() % Global.CONST.DAY_LENGTH
-		# TODO change day time
-
 func _init() -> void:
 	name = "time"
 	summary = "Change the time of the day."
 	description = "Change the time of the day.
 	Usage: <set|add|remove> amount:int"
 
+	# needs to be privileged to change time
+	requirements = ConsoleCommand.RequirementsFlags.PRIVILEGED
+
 	register(CommandTimeSet.new())
 	register(CommandTimeAdd.new())
 	register(CommandTimeRemove.new())
 
-func _execute_parameters(_line: String) -> void:
+func execute_parameters(_line: String) -> void:
 	help()
+
+func is_enabled() -> bool:
+	# disabled if there is no environment to change
+	if Global.environment == null:
+		return false
+	# return depending on the requirements set for this command
+	return check_requirements()
+
+## Since sub commands description all ends by the same string
+func _end_description(action: String) -> String:
+	return "\nUsage: amount:int\n\tamount: The time to " \
+	+ action \
+	+", between 0000 and " \
+	+ str(EnvironmentController.DAY_LENGTH) \
+	+". Higher values are wrapped around."
+
+## Checks if sub commands line is valid
+func _is_line_valid(line: String) -> bool:
+	if line.length() == 0:
+		help()
+		return false
+
+	if !line.is_valid_int():
+		error("The given amount is not a valid number.")
+		return false
+	return true
+
+class CommandTimeSet extends CommandTime:
+	func _init() -> void:
+		name = "set"
+		summary = "Set the time of the day."
+		description = "Set the time of the day." + _end_description("set")
+
+	func execute_parameters(line: String) -> void:
+		if _is_line_valid(line):
+			return
+
+		var amount: int = line.to_int() % EnvironmentController.DAY_LENGTH
+		Global.environment.set_time(amount)
+		info("Set time to " + str(amount))
+
+class CommandTimeAdd extends CommandTime:
+	func _init() -> void:
+		name = "add"
+		summary = "Add to the time of the day."
+		description = "Add to the time of the day." + _end_description("add")
+
+	func execute_parameters(line: String) -> void:
+		if _is_line_valid(line):
+			return
+
+		var amount: int = line.to_int() % EnvironmentController.DAY_LENGTH \
+			+ Global.environment.get_time()
+		Global.environment.set_time(amount)
+		info("Set time to " + str(amount))
+
+class CommandTimeRemove extends CommandTime:
+	func _init() -> void:
+		name = "remove"
+		summary = "Remove to the time of the day."
+		description = "Remove to the time of the day." + _end_description("remove")
+
+	func execute_parameters(line: String) -> void:
+		if _is_line_valid(line):
+			return
+
+		var amount: int = Global.environment.get_time() \
+			- line.to_int() % EnvironmentController.DAY_LENGTH
+		Global.environment.set_time(amount)
+		# just print the time it has been set, easier than doing the calculation here
+		info("Set time to " + str(Global.environment.get_time()))

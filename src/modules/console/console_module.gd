@@ -1,7 +1,9 @@
-## Manage the game state with commend received with the "get_command" function.
 class_name ConsoleModule extends ConsoleCommand
-
+## Manage the game state with commend received with the "get_command" function.
 ## The manager exetends console command, but since it's the root, it has empty name a description
+
+## Number of chars max that can be displayed on the console.
+const CONSOLE_MAX_LENGTH: int = 10000
 
 ## Emitted when the console prints text.
 @warning_ignore("unused_signal")
@@ -30,7 +32,7 @@ func get_command(text: String) -> void:
 	# print the command on the console
 	Print.emit(text.strip_escapes())
 
-	# get each line to prcess individually
+	# get each line to process individually
 	for line: String in text.split("\n", false):
 		_get_command_line(line)
 
@@ -47,8 +49,11 @@ func autocomplete(partial: String) -> bool:
 
 	return false
 
+func is_enabled() -> bool:
+	# the main command is always enabled
+	return true
 
-func _execute_parameters(line: String) -> void:
+func execute_parameters(line: String) -> void:
 	# if we're reaching here, we have found the sub command
 	var parameter: String = line.split(" ", false, 1)[0]
 	help("Unknown command \"" + parameter + "\"")

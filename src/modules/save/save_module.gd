@@ -1,8 +1,13 @@
 ## Handle file IO for saves and loads
 class_name SaveModule
 
-const PARAMETERS_SAVE_PATH: String = "user://system/parameters"
+## Folder where to save system data, not related to a player or a saved world.
+const SYSTEM_SAVE_PATH: String = "user://system/"
+## Folder where to save player data related, such as world save.
 const USER_SAVE_PATH: String = "user://save/"
+
+## Path to where is saved the parameters file.
+const PARAMETERS_SAVE_PATH: String = SYSTEM_SAVE_PATH + "parameters"
 
 ## Load saved parameters
 func load_parameters() -> void:

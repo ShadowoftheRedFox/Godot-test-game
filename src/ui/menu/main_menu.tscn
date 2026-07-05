@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://de2bged6t63hi"]
+
+[ext_resource type="Script" uid="uid://dr218vnx7o45" path="res://src/ui/menu/main_menu.gd" id="1_jnwf7"]
+[ext_resource type="PackedScene" uid="uid://370d5fcos68o" path="res://src/ui/menu/sub_menu/settings.tscn" id="1_rohls"]
+[ext_resource type="PackedScene" uid="uid://cj233o433okuy" path="res://src/ui/menu/sub_menu/save.tscn" id="2_jnwf7"]
+[ext_resource type="PackedScene" uid="uid://2r13g3tsow2d" path="res://src/ui/menu/sub_menu/load.tscn" id="4_fioea"]
+
+[node name="MainMenu" type="MarginContainer" unique_id=1858244809]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+script = ExtResource("1_jnwf7")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1539919257]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=246467398]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Continue" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1806666456]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Continue"
+
+[node name="New Game" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=390554282]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Continue"
+
+[node name="Settings" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1061553820]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Settings"
+
+[node name="Load" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=674843547]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Save"
+
+[node name="Quit" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1578899188]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Quit"
+
+[node name="SubMenu" type="Control" parent="HBoxContainer" unique_id=773620898]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SettingsMenu" parent="HBoxContainer/SubMenu" unique_id=1321832088 instance=ExtResource("1_rohls")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="SaveMenu" parent="HBoxContainer/SubMenu" unique_id=37869105 instance=ExtResource("2_jnwf7")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="LoadMenu" parent="HBoxContainer/SubMenu" unique_id=1435295231 instance=ExtResource("4_fioea")]
+unique_name_in_owner = true
+layout_mode = 1
