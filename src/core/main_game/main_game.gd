@@ -22,8 +22,10 @@ var _current_scene: BaseScene = null
 @onready var debug_root: Control = %DebugRoot
 
 func _ready() -> void:
+	#TODO only init player for scene
+	#TODO different call for scene and menu
 	_init_player()
-	load_scene(TEST_SCENE_UID)
+	load_scene(MAIN_MENU_SCENE_UID)
 	_init_systems()
 
 ## Instantiate a new player in the entity root

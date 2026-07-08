@@ -8,3 +8,8 @@ class_name MainMenu extends MarginContainer
 @onready var settings_menu: Control = %SettingsMenu
 @onready var save_menu: Control = %SaveMenu
 @onready var load_menu: Control = %LoadMenu
+
+func _ready() -> void:
+	# disable the button if the last played save is null
+	continue_button.disabled = Global.SM.last_played == null
+	

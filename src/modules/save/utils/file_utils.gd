@@ -40,12 +40,12 @@ func exists(file_path: String) -> bool:
 func read(file_path: String) -> String:
 	file_path = _check_path(file_path)
 	if !exists(file_path):
-		push_error(file_path + " doesn't exists")
+		printerr(file_path + " doesn't exists")
 		return ""
 
 	var file: FileAccess = _open(file_path, FileAccess.READ)
 	if file == null:
-		push_error(file_path + ": error while trying to open")
+		printerr(file_path + ": error while trying to open")
 		return ""
 	return file.get_as_text()
 
@@ -115,12 +115,12 @@ func delete(file_path: String) -> bool:
 	# open the dire to the file
 	var dir: DirAccess = DirAccess.open(base_path)
 	if dir == null:
-		push_error("error \"" + error_string(DirAccess.get_open_error()) + "\" while trying to delete file " + base_path + file_path)
+		printerr("error \"" + error_string(DirAccess.get_open_error()) + "\" while trying to delete file " + base_path + file_path)
 		return false
 
 	var result: int = dir.remove(file_path)
 	if result != Error.OK:
-		push_error("error \"" + error_string(result) + "\" while deleting file " + base_path + file_path)
+		printerr("error \"" + error_string(result) + "\" while deleting file " + base_path + file_path)
 	return result == Error.OK
 
 ## Check if the path to the file is structurally correct.
@@ -145,7 +145,7 @@ func _open(file_path: String, flags: int) -> FileAccess:
 		file = FileAccess.open(base_path + file_path, flags)
 
 	if file == null:
-		push_error("error \"" + error_string(FileAccess.get_open_error()) + "\" while opening the file " + base_path + file_path)
+		printerr("error \"" + error_string(FileAccess.get_open_error()) + "\" while opening the file " + base_path + file_path)
 
 	return file
 
@@ -154,5 +154,5 @@ func _make_directory(file_path: String) -> bool:
 	file_path = _check_path(file_path)
 	var result: int = DirAccess.open(base_path).make_dir_recursive(file_path)
 	if result != Error.OK:
-		push_error("error \"" + error_string(result) + "\" while creating the directory to " + base_path + file_path)
+		printerr("error \"" + error_string(result) + "\" while creating the directory to " + base_path + file_path)
 	return result == Error.OK

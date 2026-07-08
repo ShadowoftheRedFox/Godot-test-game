@@ -17,17 +17,11 @@ var CONSOLE: ConsoleModule = ConsoleModule.new()
 # when the controller is initialized, it'll set himself up here
 var environment: EnvironmentController = null
 
-func _ready() -> void:
-	# load parameters
-	SM.load_parameters()
-	# find saves files if any
-	# TODO SM.find_saves()
-
 ## Function to call when quitting. It will perform the necessary actions before quitting.
 func quit_game() -> void:
 	# notify everyone that we're quitting the game
 	# so they can clean up, save, etc... cleanly
-	# to listen, use _unhandled_input(event:InputEvent) 
+	# to listen, use _unhandled_input(event:InputEvent)
 	# with event.is_action_pressed(&"debug_quit")
 	get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
 	get_tree().quit()

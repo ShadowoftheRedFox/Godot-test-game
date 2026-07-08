@@ -13,7 +13,7 @@ func _scan_items_directory(path: String) -> void:
 	# opens the folder
 	var dir: DirAccess = DirAccess.open(path)
 	if dir == null:
-		push_error("An error occurred when trying to access the " + path + " folder.")
+		printerr("An error occurred when trying to access the " + path + " folder.")
 		return
 	# start reading every file in the folder
 	dir.list_dir_begin()
@@ -37,13 +37,13 @@ func _scan_items_directory(path: String) -> void:
 	# close the folder stream
 	dir.list_dir_end()
 
-func _scan_item_file(path:String, file_name:String) -> void:
+func _scan_item_file(path: String, file_name: String) -> void:
 	# check the name and type are valid
 	var parts: PackedStringArray = file_name.split(".", false, 1)
 	assert(
-		parts.size() == 2 
-		&& parts[0].begins_with("Item") 
-		&& parts[1] == "tres", 
+		parts.size() == 2
+		&& parts[0].begins_with("Item")
+		&& parts[1] == "tres",
 		"File " + file_name + " does not have the correct item name format"
 	)
 	var item_resource: Resource = load(path + file_name)
@@ -52,7 +52,7 @@ func _scan_item_file(path:String, file_name:String) -> void:
 		item_resource is InventoryItem
 		&& (item_resource as InventoryItem).item_name == parts[0],
 		"Item " + (item_resource as InventoryItem).item_name
-		+ " doesn't match its file name: " + path + file_name
+		+" doesn't match its file name: " + path + file_name
 	)
 
 	ITEM_NAMES.push_back((item_resource as InventoryItem).item_name)

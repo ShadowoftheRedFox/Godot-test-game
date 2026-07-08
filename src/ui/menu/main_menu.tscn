@@ -33,7 +33,7 @@ text = "Continue"
 [node name="New Game" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=390554282]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Continue"
+text = "New game"
 
 [node name="Settings" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1061553820]
 unique_name_in_owner = true
