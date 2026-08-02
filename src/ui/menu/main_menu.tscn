@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://dr218vnx7o45" path="res://src/ui/menu/main_menu.gd" id="1_jnwf7"]
 [ext_resource type="PackedScene" uid="uid://370d5fcos68o" path="res://src/ui/menu/sub_menu/settings.tscn" id="1_rohls"]
-[ext_resource type="PackedScene" uid="uid://cj233o433okuy" path="res://src/ui/menu/sub_menu/save.tscn" id="2_jnwf7"]
-[ext_resource type="PackedScene" uid="uid://2r13g3tsow2d" path="res://src/ui/menu/sub_menu/load.tscn" id="4_fioea"]
+[ext_resource type="PackedScene" uid="uid://2r13g3tsow2d" path="res://src/ui/menu/sub_menu/load_save/load.tscn" id="4_fioea"]
+[ext_resource type="PackedScene" uid="uid://b68ltlirmv77a" path="res://src/ui/menu/sub_menu/create.tscn" id="5_tar7q"]
 
 [node name="MainMenu" type="MarginContainer" unique_id=1858244809]
 anchors_preset = 15
@@ -11,6 +11,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
@@ -43,7 +45,7 @@ text = "Settings"
 [node name="Load" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=674843547]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Save"
+text = "Load"
 
 [node name="Quit" type="Button" parent="HBoxContainer/VBoxContainer" unique_id=1578899188]
 unique_name_in_owner = true
@@ -59,10 +61,12 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 1
 
-[node name="SaveMenu" parent="HBoxContainer/SubMenu" unique_id=37869105 instance=ExtResource("2_jnwf7")]
-unique_name_in_owner = true
-layout_mode = 1
-
 [node name="LoadMenu" parent="HBoxContainer/SubMenu" unique_id=1435295231 instance=ExtResource("4_fioea")]
 unique_name_in_owner = true
+visible = false
+layout_mode = 1
+
+[node name="CreateMenu" parent="HBoxContainer/SubMenu" unique_id=1249162522 instance=ExtResource("5_tar7q")]
+unique_name_in_owner = true
+visible = false
 layout_mode = 1

@@ -108,3 +108,6 @@ func _get_save(save_name: String) -> GameSave:
 			return save
 
 	return null
+
+func save_parameters() -> void:
+	pass

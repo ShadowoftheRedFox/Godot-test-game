@@ -1,0 +1,79 @@
+[gd_scene format=3 uid="uid://2r13g3tsow2d"]
+
+[sub_resource type="GDScript" id="GDScript_e44vd"]
+resource_name = "LoadMenu"
+script/source = "extends Control
+
+const LOAD_NODE: PackedScene = preload(\"uid://c31ub0g22rbmf\")
+@onready var list: VBoxContainer = $MarginContainer/VBoxContainer/ScrollContainer/List
+
+var node_list: Array[LoadNode] = []
+
+func _ready() -> void:
+	if Global.SM.saves.size() == 0:
+		var label: Label = Label.new()
+		label.text = \"No previous saves found\"
+		list.add_child(label)
+		return
+	
+	for save: GameSave in Global.SM.saves:
+		var node: LoadNode = LOAD_NODE.instantiate()
+		node._save = save
+		list.add_child(node)
+		node_list.append(node)
+	
+
+func _on_search_filter_text_changed(new_text: String) -> void:
+	# if no text, show all
+	if new_text.length() == 0:
+		node_list.all(func (c: LoadNode) -> void: c.show())
+		return
+	# filter node list by name
+	@warning_ignore(\"standalone_ternary\")
+	node_list.all(func (c: LoadNode) -> void: c.show() if c._save.name.contains(new_text) else c.hide())
+	
+"
+
+[node name="LoadMenu" type="Control" unique_id=1435295231]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_e44vd")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=441321759]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=45517684]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="SearchFilter" type="LineEdit" parent="MarginContainer/VBoxContainer" unique_id=2020318880]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+placeholder_text = "Filter save names...."
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=1603768508]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="List" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer" unique_id=1469794296]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/SearchFilter" to="." method="_on_search_filter_text_changed"]

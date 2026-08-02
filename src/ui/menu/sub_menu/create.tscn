@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://2r13g3tsow2d"]
+[gd_scene format=3 uid="uid://b68ltlirmv77a"]
 
-[node name="LoadMenu" type="Control" unique_id=1435295231]
+[node name="Create" type="Control" unique_id=1249162522]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
