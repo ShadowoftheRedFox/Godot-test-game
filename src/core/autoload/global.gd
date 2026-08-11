@@ -17,6 +17,15 @@ var CONSOLE: ConsoleModule = ConsoleModule.new()
 # when the controller is initialized, it'll set himself up here
 var environment: EnvironmentController = null
 
+## The main game script.
+## It is set up when the main game loads.
+var MAIN: MainGame = null
+
+func _init() -> void:
+	# we initialize the random numbers
+	# we pass through str to get the floating value in the string
+	seed(str(Time.get_unix_time_from_system()).hash())
+
 ## Function to call when quitting. It will perform the necessary actions before quitting.
 func quit_game() -> void:
 	# notify everyone that we're quitting the game

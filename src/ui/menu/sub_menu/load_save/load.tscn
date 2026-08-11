@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://2r13g3tsow2d"]
 
+[ext_resource type="Texture2D" uid="uid://duxgu5s7ywdng" path="res://assets/icons/search.svg" id="1_d48v3"]
+
 [sub_resource type="GDScript" id="GDScript_e44vd"]
 resource_name = "LoadMenu"
 script/source = "extends Control
@@ -57,13 +59,14 @@ theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=45517684]
 layout_mode = 2
-theme_override_constants/separation = 4
+theme_override_constants/separation = 20
 
 [node name="SearchFilter" type="LineEdit" parent="MarginContainer/VBoxContainer" unique_id=2020318880]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_vertical = 0
 placeholder_text = "Filter save names...."
+right_icon = ExtResource("1_d48v3")
+icon_expand_mode = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=1603768508]
 layout_mode = 2
@@ -71,9 +74,9 @@ size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
 [node name="List" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer" unique_id=1469794296]
-clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 4
 
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/SearchFilter" to="." method="_on_search_filter_text_changed"]

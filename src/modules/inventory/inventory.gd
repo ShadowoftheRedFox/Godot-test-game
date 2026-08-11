@@ -40,7 +40,6 @@ func _ready() -> void:
 	# prepare array for our size
 	items.resize(int_size)
 	amounts.resize(int_size)
-	print(amounts)
 
 ## Add the given amount of the given item in the inventory in the first slots
 ## available. Return the amount that could not be added.
@@ -160,7 +159,7 @@ func remove_item(item: InventoryItem, amount: int = -1, position: int = 0) -> in
 ## put the leftovers back at the source.
 ## Returns the amount of items moved.
 func move_own_item(source: int, destination: int) -> int:
-	return move_item(source, self , destination)
+	return move_item(source, self, destination)
 
 ## Move item from the source position to the destination position of the given
 ## inventory.

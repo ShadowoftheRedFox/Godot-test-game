@@ -2,10 +2,10 @@ class_name LoadNode extends Control
 
 var _save: GameSave = null
 
-@onready var label: Label = $HBoxContainer/Label
-@onready var load_button: Button = $HBoxContainer/Load
-@onready var info_button: Button = $HBoxContainer/Info
-@onready var delete: Button = $HBoxContainer/Delete
+@onready var label: Label = $VBoxContainer/Display/Label
+@onready var load_button: Button = $VBoxContainer/Display/Load
+@onready var info_button: Button = $VBoxContainer/Display/Info
+@onready var delete: Button = $VBoxContainer/Display/Delete
 @onready var infos: RichTextLabel = $VBoxContainer/Infos
 
 func _ready() -> void:
@@ -15,6 +15,7 @@ func _ready() -> void:
 	
 	info_button.pressed.connect(on_infos_clicked)
 	load_button.pressed.connect(on_load_clicked)
+	infos.hide()
 
 func on_load_clicked() -> void:
 	_save.load()

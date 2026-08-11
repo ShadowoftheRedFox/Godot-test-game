@@ -34,16 +34,15 @@ var _no_delay_count: int = 0
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
-	
+
 	# if no scene setup, or can't instantiate, just remove itself
 	if scene == null || !scene.can_instantiate():
 		queue_free()
 		return
-		
+
 	# get the type of the scene
 	_get_scene_type()
-	print(\"Scene type to spawn: \" + _scene_type)
-	
+
 	# setup timer if there is a delay
 	if (delay > 0):
 		_timer = Timer.new()
@@ -57,24 +56,24 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
-	
+
 	# check every 20 frames for spawn
 	_no_delay_count += 1
 	if _no_delay_count == 20:
 		_no_delay_count = 0
 	else:
 		return
-		
+
 	# stop checking if we reached our amount to spawn
 	if _amount_spawned >= max_amount:
 		_check_to_free()
 		return
-	
+
 	if delay > 0:
 		return
-	
+
 	_check_for_spawn()
-	
+
 func _get_scene_type() -> void:
 	# get the root node of the scene
 	var ancestry: Array[SceneState] = []
@@ -83,9 +82,7 @@ func _get_scene_type() -> void:
 		ancestry.append(state)
 		state = state.get_base_scene_state()
 	var root: SceneState = ancestry.back()
-	
-	print(root)
-	
+
 	# now, check if the root has a script, if yes, get his name, if it has one
 	for i: int in root.get_node_property_count(0):
 		if root.get_node_property_name(0, i) == &\"script\":
@@ -93,7 +90,7 @@ func _get_scene_type() -> void:
 			_scene_type = script.get_global_name()
 			if not _scene_type.is_empty():
 				return
-	
+
 	# the root has no script, or no named script, return it's base class
 	_scene_type = root.get_node_type(0)
 
@@ -103,7 +100,7 @@ func _check_for_spawn() -> void:
 			_timer.start(delay)
 		else:
 			_timer.stop()
-	
+
 	# check for any overlapping bodies
 	var has_overlapping: bool = false
 	for body: Node3D in get_overlapping_bodies():
@@ -117,7 +114,7 @@ func _check_for_spawn() -> void:
 		if (script != null and script.get_global_name() == _scene_type) or type == _scene_type:
 			has_overlapping = true
 			break
-	
+
 	if !has_overlapping:
 		_spawn()
 
@@ -126,11 +123,11 @@ func _spawn() -> void:
 	if _amount_spawned >= max_amount:
 		_check_to_free()
 		return
-	
+
 	_amount_spawned += 1
 	var new_scene: Node = scene.instantiate()
 	parent.add_child(new_scene)
-	
+
 func _check_to_free()->void:
 	if _amount_spawned < max_amount || is_queued_for_deletion():
 		return

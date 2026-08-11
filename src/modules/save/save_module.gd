@@ -41,11 +41,10 @@ func find_saves() -> void:
 	if dirs.size() == 0:
 		return
 
+	print(" ".join(dirs))
+
 	# read all folder for a file called GameSave.SAVE_FILE
-	for dir_name: String in dir:
-		# abnormal file, skip
-		if !dir_name.begins_with('save'):
-			continue
+	for dir_name: String in dirs:
 		var subdir: DirAccess = DirAccess.open(SYSTEM_SAVE_PATH + dir_name)
 		if subdir == null:
 			## failed to open, skip
@@ -99,6 +98,7 @@ func load_game(save_name: String) -> bool:
 	return true
 
 ## Get the save by its name.
+## Return null if not found
 func _get_save(save_name: String) -> GameSave:
 	if save_name.length() == 0:
 		return null

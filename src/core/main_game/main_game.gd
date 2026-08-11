@@ -4,7 +4,12 @@ enum MenuLayer {
 	HUD,
 	PAUSE,
 	TRANSITION,
-	DEBUG
+	DEBUG,
+}
+
+enum WorldLayer {
+	LEVEL,
+	ENTITY,
 }
 
 # Main menu and test level references
@@ -16,6 +21,8 @@ const DEBUG_OVERLAY_UID: String = "uid://gwa7n875db7o"
 
 var player: Player = null
 var _current_scene: BaseScene = null
+
+@onready var systems_root: Node = %Systems
 
 # world root nodes
 @onready var level_root: Node3D = %LevelRoot
@@ -37,6 +44,28 @@ func _ready() -> void:
 func load_scene(scene_uid: String) -> void:
 	# call when idle
 	_deferred_load_scene.call_deferred(scene_uid)
+
+## Remove the current scene
+func remove_current_scene() -> void:
+	# check if we can remove the scene, and if it's not already queued
+	if _current_scene == null || _current_scene.is_queued_for_deletion():
+		return
+
+	_current_scene.queue_free()
+
+## Remove the current scene
+func remove_menu(menu_uid: String, layer: MenuLayer = MenuLayer.HUD) -> void:
+	# get the root for the given layer
+	var root: Control = _get_menu_root(layer)
+	if root == null:
+		return
+
+	var menu: Node = root.get_node_or_null(Utils.get_raw_uid(menu_uid))
+	if menu == null || menu.is_queued_for_deletion():
+		return
+
+	root.remove_child(menu)
+	menu.queue_free()
 
 ## Called for loading a menu
 ## NOTE: the menu must extends Control
@@ -90,7 +119,7 @@ func _deferred_load_scene(scene_uid: String) -> void:
 		_new_scene.free()
 		push_error("Loaded scene is not of type BaseScene")
 		return
-	
+
 	_current_scene = _new_scene as BaseScene
 	level_root.add_child(_current_scene)
 	_place_player_at_level_spawn()
@@ -115,19 +144,9 @@ func _deferred_load_menu(menu_uid: String, layer: MenuLayer) -> void:
 	var new_menu: Control = _new_menu as Control
 
 	# get the root for the given layer
-	var root: Control
-	match layer:
-		MenuLayer.HUD:
-			root = hud_root
-		MenuLayer.PAUSE:
-			root = pause_root
-		MenuLayer.DEBUG:
-			root = debug_root
-		MenuLayer.TRANSITION:
-			root = transition_root
-		_:
-			push_error("Given layer does not exists:" + str(layer))
-			return
+	var root: Control = _get_menu_root(layer)
+	if root == null:
+		return
 
 	# if the scene already exists, push error
 	if !root.has_node(menu_uid) && root.get_node_or_null(menu_uid) != null:
@@ -135,8 +154,35 @@ func _deferred_load_menu(menu_uid: String, layer: MenuLayer) -> void:
 		return
 
 	# put the uid as the name of the child
-	new_menu.name = menu_uid
+	new_menu.name = Utils.get_raw_uid(menu_uid)
 	root.add_child(new_menu)
+
+## Return the given menu root. Return null on error.
+func _get_menu_root(layer: MenuLayer = MenuLayer.HUD) -> Control:
+	match layer:
+		MenuLayer.HUD:
+			return hud_root
+		MenuLayer.PAUSE:
+			return pause_root
+		MenuLayer.DEBUG:
+			return debug_root
+		MenuLayer.TRANSITION:
+			return transition_root
+		_:
+			push_error("Given menu layer does not exists:" + str(layer))
+			return null
+
+## Return the given world root. Return null on error.
+func _get_world_root(layer: WorldLayer = WorldLayer.LEVEL) -> Node3D:
+	match layer:
+		WorldLayer.LEVEL:
+			return level_root
+		WorldLayer.ENTITY:
+			return entity_root
+		_:
+			push_error("Given world layer does not exists:" + str(layer))
+			return null
+
 
 ## Instantiate a new player in the entity root
 func _init_player() -> void:
@@ -149,6 +195,8 @@ func _init_player() -> void:
 	if player == null:
 		push_error("Loaded player scene does not extend player or DNE: " + PLAYER_SCENE_UID)
 
+	# for future if multiplayer ever happens
+	player.name = "Host"
 	entity_root.add_child(player)
 
 # Finds the default spawn location in currently loaded scene, and places
@@ -165,5 +213,6 @@ func _place_player_at_level_spawn() -> void:
 	player.global_position = _current_scene.get_default_player_spawn()
 
 func _init_systems() -> void:
+	# set itself on global to be globally accessible
+	Global.MAIN = self
 	# TODO (systems): Will be called to set up high level systems
-	pass
