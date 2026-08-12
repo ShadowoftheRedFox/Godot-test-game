@@ -26,6 +26,7 @@ func _reset() -> void:
 	create_menu.hide()
 
 func on_continue_button_clicked() -> void:
+	print("luanching")
 	Global.SM.last_played.load()
 
 func on_new_game_button_clicked() -> void:

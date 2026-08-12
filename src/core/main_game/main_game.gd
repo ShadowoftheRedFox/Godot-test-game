@@ -52,6 +52,7 @@ func remove_current_scene() -> void:
 		return
 
 	_current_scene.queue_free()
+	_current_scene = null
 
 ## Remove the current scene
 func remove_menu(menu_uid: String, layer: MenuLayer = MenuLayer.HUD) -> void:
@@ -195,9 +196,9 @@ func _init_player() -> void:
 	if player == null:
 		push_error("Loaded player scene does not extend player or DNE: " + PLAYER_SCENE_UID)
 
-	# for future if multiplayer ever happens
-	player.name = "Host"
+	player.name = "Player"
 	entity_root.add_child(player)
+	player.setup_ui()
 
 # Finds the default spawn location in currently loaded scene, and places
 # the Player at that position.
@@ -211,6 +212,13 @@ func _place_player_at_level_spawn() -> void:
 		return
 
 	player.global_position = _current_scene.get_default_player_spawn()
+
+func remove_player() -> void:
+	if player == null || player.is_queued_for_deletion():
+		return
+	player.remove_ui()
+	player.queue_free()
+	player = null
 
 func _init_systems() -> void:
 	# set itself on global to be globally accessible

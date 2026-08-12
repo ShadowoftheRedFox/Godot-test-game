@@ -24,3 +24,7 @@ func _ready() -> void:
 @abstract func _on_heal(value: int) -> void
 ## Fired when the effect signal is received.
 @abstract func _on_effect() -> void
+## Fired when the entity is added, if it needs to add UI.
+@abstract func setup_ui() -> void
+## Fired when the entity is removed, to remove the added UI on startup.
+@abstract func remove_ui() -> void

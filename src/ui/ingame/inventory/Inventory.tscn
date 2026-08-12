@@ -13,7 +13,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[node name="PlayerGui" type="MarginContainer" unique_id=333286146]
+[node name="PlayerInventory" type="MarginContainer" unique_id=333286146]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

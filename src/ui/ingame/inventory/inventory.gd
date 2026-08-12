@@ -1,4 +1,4 @@
-class_name PlayerGUI extends MarginContainer
+class_name PlayerInventory extends MarginContainer
 const INVENTORY_SLOT: PackedScene = preload("uid://dnsinxvoqcmqu")
 
 ## Grid where the inventory slots are.

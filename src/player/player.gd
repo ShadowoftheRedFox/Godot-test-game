@@ -1,13 +1,17 @@
 class_name Player extends Entity
 
+const CONSOLE: PackedScene = preload("uid://fgfsequli1l4")
+const INVENTORY: PackedScene = preload("uid://b50byu54aqqsv")
+const PAUSE: PackedScene = preload("uid://b30nyqm72dwjv")
+
 @onready var input_component: InputComponent = %InputComponent
 @onready var camera_component: CameraComponent = %CameraComponent
 
 @onready var inventory: Inventory = %Inventory
 
-@onready var player_gui: MarginContainer = %InventoryGui
-@onready var main_menu: MarginContainer = %MainMenu
-@onready var console_menu: MarginContainer = %ConsoleMenu
+@onready var inventory_menu: PlayerInventory = null
+@onready var pause_menu: PlayerPauseMenu = null
+@onready var console_menu: ConsoleMenu = null
 
 func _ready() -> void:
 	Global.player = self
@@ -17,9 +21,9 @@ func _ready() -> void:
 
 func _on_ui_changed() -> void:
 	# TODO pause menu process when hidden?
-	player_gui.visible = input_component.in_inventory
-	main_menu.visible = input_component.in_main_menu
 	console_menu.visible = input_component.in_console
+	inventory_menu.visible = input_component.in_inventory
+	pause_menu.visible = input_component.in_main_menu
 
 func _physics_process(delta: float) -> void:
 	move_component.direction = input_component.direction
@@ -65,3 +69,22 @@ func _on_heal(value: int) -> void:
 
 func _on_effect() -> void:
 	print("Got effect")
+
+func setup_ui() -> void:
+	# we do not pass by the load_menu function from main_gale
+	# because we want to have a reference of our node
+	console_menu = CONSOLE.instantiate()
+	inventory_menu = INVENTORY.instantiate()
+	inventory_menu.inventory = inventory
+	pause_menu = PAUSE.instantiate()
+
+	Global.MAIN.hud_root.add_child(console_menu)
+	Global.MAIN.hud_root.add_child(inventory_menu)
+	Global.MAIN.pause_root.add_child(pause_menu)
+
+	_on_ui_changed()
+
+func remove_ui() -> void:
+	console_menu.queue_free()
+	inventory_menu.queue_free()
+	pause_menu.queue_free()

@@ -1,58 +1,8 @@
 [gd_scene format=3 uid="uid://b30nyqm72dwjv"]
 
+[ext_resource type="Script" uid="uid://d36pd587qq1vm" path="res://src/ui/ingame/pause/pause.gd" id="1_2ye2k"]
 [ext_resource type="PackedScene" uid="uid://370d5fcos68o" path="res://src/ui/menu/sub_menu/settings.tscn" id="1_kdqdn"]
 [ext_resource type="PackedScene" uid="uid://cj233o433okuy" path="res://src/ui/menu/sub_menu/save.tscn" id="2_fegtn"]
-
-[sub_resource type="GDScript" id="GDScript_2iu3n"]
-script/source = "extends MarginContainer
-
-# Main menu button
-@onready var resume: Button = %Resume
-@onready var settings: Button = %Settings
-@onready var save: Button = %Save
-@onready var quit: Button = %Quit
-
-# Main submenu container
-@onready var settings_menu: Control = %SettingsMenu
-@onready var save_menu: Control = %SaveMenu
-
-func _ready() -> void:
-	_reset()
-	resume.pressed.connect(_on_resume_button)
-	settings.pressed.connect(_on_settings_button)
-	save.pressed.connect(_on_save_button)
-	quit.pressed.connect(_on_quit_button)
-	visibility_changed.connect(_game_pause)
-
-## Pause the tree when this menu is visible
-func _game_pause() -> void:
-	_reset()
-	get_tree().paused = visible
-
-func _reset() -> void:
-	settings_menu.hide()
-	settings.flat = false
-	save_menu.hide()
-	save.flat = false
-
-func _on_settings_button() -> void:
-	_reset()
-	settings_menu.show()
-	settings.flat = true
-
-func _on_save_button() -> void:
-	_reset()
-	save_menu.show()
-	save.flat = true
-
-func _on_quit_button() -> void:
-	Global.quit_game()
-
-func _on_resume_button() -> void:
-	_reset()
-	visible = false
-	Global.player.resume_main_menu()
-"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2iu3n"]
 content_margin_left = 10.0
@@ -76,7 +26,7 @@ theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
-script = SubResource("GDScript_2iu3n")
+script = ExtResource("1_2ye2k")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1431261179]
 layout_mode = 2
@@ -104,11 +54,17 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Save"
 
-[node name="Quit" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer" unique_id=941610530]
+[node name="ToMainMenu" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer" unique_id=1180986480]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 10
-text = "Quit"
+text = "Main menu"
+
+[node name="Quit" type="Button" parent="PanelContainer/HBoxContainer/VBoxContainer" unique_id=941610530]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+text = "Quit game"
 
 [node name="SubMenu" type="Control" parent="PanelContainer/HBoxContainer" unique_id=241023671]
 layout_mode = 2
