@@ -1,0 +1,180 @@
+[gd_scene format=3 uid="uid://b7to221qswv01"]
+
+[ext_resource type="Script" uid="uid://b481rdduuicdi" path="res://src/worlds/noise_layer/noise.gd" id="1_3p7iw"]
+
+[sub_resource type="Gradient" id="Gradient_3p7iw"]
+offsets = PackedFloat32Array(0, 0.11029412, 0.19485295, 0.31985295, 0.3970588, 0.55514705, 0.7463235, 0.9227941)
+colors = PackedColorArray(3.85046e-06, 0, 0.76361996, 1, 0.18132246, 0.34121227, 1, 1, 6.930828e-06, 0.5513632, 0.7145624, 1, 0.8392157, 0.6509804, 0.44313726, 1, 0, 0.61960787, 0.1254902, 1, 0, 0.6492547, 0.3154382, 1, 0.5477513, 0.54496557, 0.5373825, 1, 1, 1, 1, 1)
+
+[node name="Noise" type="MarginContainer" unique_id=449208731]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_3p7iw")
+position_scale = 0.5001
+noise_gradient = SubResource("Gradient_3p7iw")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1413845097]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 5.0
+stretch_mode = 3
+
+[node name="LiveEditMenus" type="MarginContainer" parent="." unique_id=1847922191]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LiveEditMenus" unique_id=1305603544]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="FoldableContainer" type="FoldableContainer" parent="LiveEditMenus/HBoxContainer" unique_id=1274291474]
+layout_mode = 2
+size_flags_vertical = 8
+title = "Size and position"
+
+[node name="GridContainer" type="GridContainer" parent="LiveEditMenus/HBoxContainer/FoldableContainer" unique_id=712748022]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="LiveEditMenus/HBoxContainer/FoldableContainer/GridContainer" unique_id=610507825]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Scale"
+
+[node name="Scale" type="SpinBox" parent="LiveEditMenus/HBoxContainer/FoldableContainer/GridContainer" unique_id=1351678349]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.01
+step = 0.1
+value = 0.01
+allow_greater = true
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="Label2" type="Label" parent="LiveEditMenus/HBoxContainer/FoldableContainer/GridContainer" unique_id=1990356250]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Offset X"
+
+[node name="OffsetX" type="SpinBox" parent="LiveEditMenus/HBoxContainer/FoldableContainer/GridContainer" unique_id=210641117]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -10000.0
+max_value = 10000.0
+step = 10.0
+allow_greater = true
+allow_lesser = true
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="Label3" type="Label" parent="LiveEditMenus/HBoxContainer/FoldableContainer/GridContainer" unique_id=707679509]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Offset Y"
+
+[node name="OffsetY" type="SpinBox" parent="LiveEditMenus/HBoxContainer/FoldableContainer/GridContainer" unique_id=1131435502]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = -10000.0
+max_value = 10000.0
+step = 10.0
+allow_greater = true
+allow_lesser = true
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="Label4" type="Label" parent="LiveEditMenus/HBoxContainer/FoldableContainer/GridContainer" unique_id=91268925]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Resolution"
+
+[node name="Resolution" type="SpinBox" parent="LiveEditMenus/HBoxContainer/FoldableContainer/GridContainer" unique_id=1290868232]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.1
+max_value = 1.0
+step = 0.01
+value = 0.7999999999999999
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="FoldableContainer2" type="FoldableContainer" parent="LiveEditMenus/HBoxContainer" unique_id=1638112490]
+layout_mode = 2
+size_flags_vertical = 8
+title = "Noise"
+
+[node name="GridContainer" type="GridContainer" parent="LiveEditMenus/HBoxContainer/FoldableContainer2" unique_id=943927246]
+layout_mode = 2
+columns = 2
+
+[node name="Label" type="Label" parent="LiveEditMenus/HBoxContainer/FoldableContainer2/GridContainer" unique_id=1348792102]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Octaves"
+
+[node name="Octaves" type="SpinBox" parent="LiveEditMenus/HBoxContainer/FoldableContainer2/GridContainer" unique_id=2027881806]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+value = 1.0
+rounded = true
+allow_greater = true
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="Label2" type="Label" parent="LiveEditMenus/HBoxContainer/FoldableContainer2/GridContainer" unique_id=1154956073]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Persistance"
+
+[node name="Persistance" type="SpinBox" parent="LiveEditMenus/HBoxContainer/FoldableContainer2/GridContainer" unique_id=254631997]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01
+value = 0.2
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="Label3" type="Label" parent="LiveEditMenus/HBoxContainer/FoldableContainer2/GridContainer" unique_id=1004256729]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Lacunarity"
+
+[node name="Lacunarity" type="SpinBox" parent="LiveEditMenus/HBoxContainer/FoldableContainer2/GridContainer" unique_id=1862899669]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01
+value = 0.2
+update_on_text_changed = true
+select_all_on_focus = true
+
+[node name="Label4" type="Label" parent="LiveEditMenus/HBoxContainer/FoldableContainer2/GridContainer" unique_id=276739457]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Seed"
+
+[node name="Seed" type="LineEdit" parent="LiveEditMenus/HBoxContainer/FoldableContainer2/GridContainer" unique_id=18619665]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Seed"
+max_length = 32
+select_all_on_focus = true
