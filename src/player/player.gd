@@ -2,14 +2,17 @@ class_name Player extends Entity
 
 const CONSOLE: PackedScene = preload("uid://fgfsequli1l4")
 const INVENTORY: PackedScene = preload("uid://b50byu54aqqsv")
+const TOOLBAR: PackedScene = preload("uid://l5xxtvcovajb")
 const PAUSE: PackedScene = preload("uid://b30nyqm72dwjv")
 
 @onready var input_component: InputComponent = %InputComponent
 @onready var camera_component: CameraComponent = %CameraComponent
 
 @onready var inventory: Inventory = %Inventory
+@onready var toolbar: Inventory = %Toolbar
 
 @onready var inventory_menu: PlayerInventory = null
+@onready var toolbar_menu: PlayerInventory = null
 @onready var pause_menu: PlayerPauseMenu = null
 @onready var console_menu: ConsoleMenu = null
 
@@ -78,11 +81,14 @@ func setup_ui() -> void:
 	# because we want to have a reference of our node
 	console_menu = CONSOLE.instantiate()
 	inventory_menu = INVENTORY.instantiate()
+	toolbar_menu = TOOLBAR.instantiate()
 	inventory_menu.inventory = inventory
+	toolbar_menu.inventory = toolbar
 	pause_menu = PAUSE.instantiate()
 
 	Global.MAIN.hud_root.add_child(console_menu)
 	Global.MAIN.hud_root.add_child(inventory_menu)
+	Global.MAIN.hud_root.add_child(toolbar_menu)
 	Global.MAIN.pause_root.add_child(pause_menu)
 
 	_on_ui_changed()
@@ -90,4 +96,5 @@ func setup_ui() -> void:
 func remove_ui() -> void:
 	console_menu.queue_free()
 	inventory_menu.queue_free()
+	toolbar_menu.queue_free()
 	pause_menu.queue_free()

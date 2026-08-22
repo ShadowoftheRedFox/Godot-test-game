@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://b50byu54aqqsv"]
+[gd_scene format=3 uid="uid://l5xxtvcovajb"]
 
-[ext_resource type="Script" uid="uid://c3c88kv0jtfjv" path="res://src/ui/ingame/inventory/inventory.gd" id="1_1uqnm"]
+[ext_resource type="Script" uid="uid://bmqcasd7tnx3e" path="res://src/ui/ingame/inventory/toolbar.gd" id="1_yc5mu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gunmw"]
 content_margin_left = 10.0
@@ -13,23 +13,23 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[node name="PlayerInventory" type="MarginContainer" unique_id=333286146]
-anchors_preset = 8
+[node name="PlayerToolbar" type="MarginContainer" unique_id=333286146]
+anchors_preset = 7
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -60.0
+anchor_bottom = 1.0
+offset_left = -30.0
 offset_top = -60.0
-offset_right = 60.0
-offset_bottom = 60.0
+offset_right = 30.0
 grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
-script = ExtResource("1_1uqnm")
+grow_vertical = 0
+size_flags_vertical = 8
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+script = ExtResource("1_yc5mu")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=961476596]
 layout_mode = 2

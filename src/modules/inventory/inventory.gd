@@ -22,6 +22,10 @@ var int_size: int = 0
 ## True if items can be removed from this inventory
 @export var can_remove: bool = true
 
+## Internal references to the slots nodes of this inventory
+@warning_ignore("unused_private_class_variable")
+var _slots: Array[InventorySlot] = []
+
 func _init(_size: Vector2i = Vector2i(5, 2), \
 	_max_items_per_slot: int = 100, \
 	_player_editable: bool = true, \

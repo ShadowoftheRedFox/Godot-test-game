@@ -59,3 +59,10 @@ unique_name_in_owner = true
 script = ExtResource("8_rx1o7")
 items = Array[ExtResource("7_20ow7")]([ExtResource("8_20ow7")])
 amounts = Array[int]([7])
+
+[node name="Toolbar" type="Node" parent="." unique_id=1809202521]
+unique_name_in_owner = true
+script = ExtResource("8_rx1o7")
+size = Vector2i(5, 1)
+items = Array[ExtResource("7_20ow7")]([ExtResource("8_20ow7")])
+amounts = Array[int]([7])

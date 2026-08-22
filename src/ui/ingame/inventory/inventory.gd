@@ -21,6 +21,7 @@ func _ready() -> void:
 			slot.gui_input.connect(_on_gui_input.bind(slot))
 
 ## Listens for input on slot to create inventory interactions
+@warning_ignore("unused_parameter")
 func _on_gui_input(event: InputEvent, slot: InventorySlot) -> void:
 	if slot == null:
 		return

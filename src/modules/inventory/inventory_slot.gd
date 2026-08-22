@@ -17,6 +17,8 @@ var _pos_in_inventory: Vector2i = Vector2i.ZERO
 var _index: int = -1
 ## Reference to the inventory that own this slot
 var _inventory: Inventory = null
+## If the slot is currently focused (equiped/used)
+var _focused: bool = false
 
 func _ready() -> void:
 	assert(_inventory != null, "inventory must not be null")
@@ -24,6 +26,9 @@ func _ready() -> void:
 	 && _pos_in_inventory.x < _inventory.size.x \
 	 && _pos_in_inventory.y < _inventory.size.y, \
 	 "position in inventory is out of range")
+	
+	# add itself to the inventory
+	_inventory._slots.append(self)
 	
 	# set the square size where it need to be
 	var slot_size: Vector2 = Vector2(slot_square_size, slot_square_size)
@@ -52,6 +57,7 @@ func _ready() -> void:
 	stylebox.bg_color = Color(0.1, 0.1, 0.1, 0.6)
 	stylebox.set_content_margin_all(5)
 	stylebox.set_corner_radius_all(10)
+	stylebox.border_blend = true
 	_panel.add_theme_stylebox_override("panel", stylebox)
 
 	_on_item_updated(_index)
@@ -137,3 +143,16 @@ func _on_mouse_entered() -> void:
 
 func _on_mouse_exited() -> void:
 	_on_hover(false)
+
+func set_focus(focused: bool) -> void:
+	_focused = focused
+	var stylebox: StyleBoxFlat = _panel.get_theme_stylebox("panel")
+	var border_width: int = 0
+	var border_color: Color = Color.TRANSPARENT
+	
+	if focused:
+		border_width = 3
+		border_color = Color.CYAN
+	
+	stylebox.set_border_width_all(border_width)
+	stylebox.border_color = border_color
