@@ -21,11 +21,6 @@ var in_console: bool = false
 ## Sent when a UI is opened of closed.
 signal UIChanged()
 
-func _input(event: InputEvent) -> void:
-	if event is not InputEventAction && event is not InputEventKey:
-		return
-	update()
-
 func update() -> void:
 	# toggle with the input
 	var menu_pressed: bool = Input.is_action_just_pressed("action_menu")
@@ -34,16 +29,16 @@ func update() -> void:
 	in_main_menu = not in_main_menu if menu_pressed else in_main_menu
 	in_inventory = not in_inventory if inventory_pressed else in_inventory
 	in_console = not in_console if console_pressed else in_console
-	# BUG can open console with inventory
+	
 	# can't be both menu at same time, so if both are open, main menu takes precedence
-	if in_inventory && in_main_menu:
+	if in_main_menu:
 		in_inventory = false
-	# same deal with console
-	if in_console && (in_main_menu || in_inventory):
-		in_main_menu = false
+		in_console = false
+	# same deal with console, but only takes precedence over inventory
+	if in_console:
 		in_inventory = false
 
-	# send signal if any are pressed
+	# send signal if any UI related keys are pressed
 	if menu_pressed || inventory_pressed || console_pressed:
 		UIChanged.emit()
 

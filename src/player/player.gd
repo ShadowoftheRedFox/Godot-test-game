@@ -20,23 +20,26 @@ func _ready() -> void:
 	input_component.UIChanged.connect(_on_ui_changed)
 
 func _on_ui_changed() -> void:
-	# TODO pause menu process when hidden?
 	console_menu.visible = input_component.in_console
 	inventory_menu.visible = input_component.in_inventory
 	pause_menu.visible = input_component.in_main_menu
 
 func _physics_process(delta: float) -> void:
+	input_component.update()
 	move_component.direction = input_component.direction
 	move_component.wants_jump = input_component.jumps
 	move_component.wants_crouch = input_component.crouches
 	move_component.wants_fly_up = input_component.fly_up
 	move_component.wants_fly_down = input_component.fly_down
+	move_component.update(delta)
+	# since input update on input event, a held key can stay true
+	# for a long time, even if using 'pressed_once"
+	# so reset jump when the move is done
+	input_component.jumps = false
 
 	# TODO better shoot
 	if input_component.special_up or input_component.special_down:
 		_shoot(-5 if input_component.special_up else 5)
-
-	move_component.update(delta)
 
 ## Quit main menu and resume the game. Called from other scripts.
 func resume_main_menu() -> void:

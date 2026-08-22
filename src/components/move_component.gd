@@ -19,52 +19,28 @@ var flying: bool = false
 var wants_fly_up: bool = false
 var wants_fly_down: bool = false
 
-var wants_fly_timer: Timer = Timer.new()
-var wants_fly_counter: int = 0
-
-func _ready() -> void:
-	if not is_able_to_fly:
-		return
-
-	wants_fly_timer.wait_time = 0.2
-	wants_fly_timer.one_shot = true
-	wants_fly_timer.timeout.connect(wants_fly_timeout)
-	add_child(wants_fly_timer)
-	
-func wants_fly_timeout() -> void:
-	if wants_fly_counter >= 2:
-		wants_fly = true
-		print("Flying!")
-	wants_fly_counter = 0
-
 func update(delta: float) -> void:
-	if body == null:
-		return
-		
-	# detects wants_fly as two short spaced jumps
-	# BUG holding space makes us wwant to fly
-	if is_able_to_fly and wants_jump:
-		if wants_fly_timer.is_stopped():
-			wants_fly_timer.start()
-		if not wants_fly_timer.is_stopped():
-			wants_fly_counter += 1
+	assert(body != null, "Move component needs to have a body provided")
 	
-	# fly AND jump and gravity
-	if is_able_to_fly and wants_fly:
-		flying = not flying
-		body.velocity.y = 0
-
-	if is_able_to_fly and flying:
+	#print(wants_jump)
+	# flying is done when you pressed jumps again in air
+	if is_able_to_fly && wants_jump && !body.is_on_floor():
+		flying = !flying
+		# reset y velocity if stopped flying
+		if flying == false:
+			body.velocity.y = 0
+	elif is_able_to_fly && flying:
 		if wants_fly_up:
 			body.velocity.y = fly_speed
 		elif wants_fly_down:
 			body.velocity.y = - fly_speed
 		else:
 			body.velocity.y = 0
-	elif wants_jump and body.is_on_floor():
+	elif wants_jump && body.is_on_floor():
 		body.velocity.y = jump_force
-	elif not body.is_on_floor():
+	elif !body.is_on_floor():
 		body.velocity.y += body.get_gravity().y * delta
+	
 	wants_jump = false
 	wants_fly = false
 	
