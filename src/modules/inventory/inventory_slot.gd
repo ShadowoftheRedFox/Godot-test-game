@@ -1,5 +1,7 @@
 class_name InventorySlot extends Control
 
+@export_range(10.0, 100.0) var slot_square_size: float = 80.0
+
 ## The panel that shows the slot
 @onready var _panel: Panel = $Panel
 ## The control that will show the items.
@@ -22,6 +24,20 @@ func _ready() -> void:
 	 && _pos_in_inventory.x < _inventory.size.x \
 	 && _pos_in_inventory.y < _inventory.size.y, \
 	 "position in inventory is out of range")
+	
+	# set the square size where it need to be
+	var slot_size: Vector2 = Vector2(slot_square_size, slot_square_size)
+	self.custom_minimum_size = slot_size
+	self.size = slot_size
+	_panel.custom_minimum_size = slot_size
+	_panel.size = slot_size
+	_visual.custom_minimum_size = slot_size
+	
+	# the scale of the subviewport container is 0.155 when the slot_size is 80
+	# adapt for custom slot_size: 0.155 = 80/0.0019375
+	var visual_scale: float = slot_square_size * 0.0019375
+	_visual.scale = Vector2(visual_scale, visual_scale)
+	_visual.position = Vector2(0, 0)
 
 	# calculate the true index in advance
 	_index = _pos_in_inventory.y * _inventory.size.x + _pos_in_inventory.x

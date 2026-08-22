@@ -21,27 +21,20 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("1_lo36e")
+slot_square_size = 50.0
 
 [node name="Panel" type="Panel" parent="." unique_id=1225431109]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 0
+offset_right = 80.0
+offset_bottom = 80.0
 theme = SubResource("Theme_4q6kb")
 
 [node name="Visual" type="SubViewportContainer" parent="Panel" unique_id=2145272099]
-custom_minimum_size = Vector2(50, 50)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 436.12915
-offset_bottom = 436.1289
-grow_horizontal = 2
-grow_vertical = 2
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 0
+offset_right = 512.0
+offset_bottom = 512.0
 scale = Vector2(0.155, 0.155)
 
 [node name="SubViewport" type="SubViewport" parent="Panel/Visual" unique_id=728769967]
