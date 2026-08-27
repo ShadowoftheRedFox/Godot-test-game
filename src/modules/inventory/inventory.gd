@@ -58,6 +58,12 @@ func add_item(item: InventoryItem, amount: int, position: int = 0) -> int:
 		return 0
 	if item == null:
 		return amount
+	
+	# check if we already got an item
+	var last_item: int = get_last_index_of_item(item, true)
+	if last_item > position:
+		# if yes, add at this slot first
+		return add_item(item, amount, last_item)
 
 	# loop from position to the end of out array
 	for i: int in range(position, int_size):
@@ -240,3 +246,15 @@ func get_amount_of_item(item: InventoryItem) -> int:
 		if items[i] != null and items[i].equals(item):
 			res += amounts[i]
 	return res
+
+## Get the last index of the item given in the inventoy.
+## Returns -1 if not found, or if item is null.
+## If free is true, returns the first found slot that isn't full.
+func get_last_index_of_item(item: InventoryItem, free: bool = false) -> int:
+	if item == null:
+		return -1
+	
+	for i: int in range(int_size-1, -1, -1):
+		if items[i] != null && items[i].equals(item) && (!free || amounts[i] != max_items_per_slot):
+			return i
+	return -1

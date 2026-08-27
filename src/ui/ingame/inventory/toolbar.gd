@@ -28,4 +28,4 @@ func focus_to(slot: int) -> void:
 	focused_slot = clampi(slot, 0, inventory.size.x)
 	
 	for i: InventorySlot in inventory._slots:
-		i.set_focus(i._pos_in_inventory.x == slot)
+		i.set_focus(i._pos_in_inventory.x == slot && i._pos_in_inventory.y == i._inventory.size.y - 1)
