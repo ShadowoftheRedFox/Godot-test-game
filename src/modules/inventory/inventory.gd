@@ -26,11 +26,15 @@ var int_size: int = 0
 @warning_ignore("unused_private_class_variable")
 var _slots: Array[InventorySlot] = []
 
+var _id: int = 0
+
 func _init(_size: Vector2i = Vector2i(5, 2), \
 	_max_items_per_slot: int = 100, \
 	_player_editable: bool = true, \
 	_can_add: bool = true, \
 	_can_remove: bool = true) -> void:
+	# get a unique ID
+	_id = Global.IM.get_id()
 	# set values
 	size = _size
 	max_items_per_slot = _max_items_per_slot
@@ -183,30 +187,35 @@ func move_item(source: int, other: Inventory, destination: int) -> int:
 	var item_source: InventoryItem = items[source]
 	var amount_source: int = amounts[source]
 
-	var item_destination: InventoryItem = other.items[source]
-	var amount_destination: int = other.amounts[source]
+	var item_destination: InventoryItem = other.items[destination]
+	var amount_destination: int = other.amounts[destination]
 
-	# if not amount to move, just return
-	if amount_source == 0 && amount_destination == 0:
+	# if not amount to move, or same slot, just return
+	if amount_source <= 0 && amount_destination <= 0 \
+		|| (other._id == _id && source == destination):
 		return 0
 
 	var amount_moved: int = 0
 
 	# if same item, move the amount
-	if item_source.equals(item_destination):
-		# we get the minimum amount movabel on both sides
+	if item_source != null && item_source.equals(item_destination):
+		# we get the amount movable on both sides, then the minimum between the two
+		# it prevent a bigger inventory from overflowing a smaller one
 		var space_left: int = min(other.max_items_per_slot - amount_destination, max_items_per_slot - amount_source);
-
-		# the move the source to teh destination
-		other.amounts[destination] += space_left
-		amounts[source] -= space_left
+		# then we make sure the amount moving isn't higher than the space left
+		var amount_to_move: int = clampi(amount_source, 0, space_left)
+		
+		# the move the source to the destination
+		other.amounts[destination] += amount_to_move
+		amounts[source] -= amount_to_move
 
 		# if we emptied the desination, remove items
-		if amounts[source] == 0:
+		if amounts[source] <= 0:
 			items[source] = null
 
-		amount_moved = space_left
-	else: # otherwise swap items and amount
+		amount_moved = amount_to_move
+	elif item_source != null && amount_source > 0: 
+		# otherwise swap items and amount if source is not null
 		other.items[destination] = item_source
 		other.amounts[destination] = amount_source
 

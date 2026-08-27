@@ -12,6 +12,8 @@ var CONST: ConstantManager = ConstantManager.new()
 var SDM: SoundManager = SoundManager.new()
 ## A reference to the console
 var CONSOLE: ConsoleModule = ConsoleModule.new()
+## The global inventory orchestrator
+var IM: InventoryModule = InventoryModule.new()
 ## A reference to the current environment
 ## Can be null if there is no environment
 # when the controller is initialized, it'll set himself up here

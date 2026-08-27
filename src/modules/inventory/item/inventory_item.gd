@@ -78,7 +78,7 @@ func get_rarity_color() -> Color:
 
 ## Return true is the given object is the same item as this one.
 func equals(other: Object) -> bool:
-	if other == null || !is_instance_of(other, InventoryItem):
+	if other == null || other is not InventoryItem:
 		return false
 
 	var item: InventoryItem = other

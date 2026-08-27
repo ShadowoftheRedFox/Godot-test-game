@@ -1,4 +1,4 @@
-class_name Toolbar extends PlayerInventory
+class_name PlayerToolbar extends PlayerInventory
 
 ## The index of the currently foxued (equipped) slot from the toolbar
 var focused_slot: int  = 0

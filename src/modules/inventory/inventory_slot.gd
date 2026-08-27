@@ -19,6 +19,8 @@ var _index: int = -1
 var _inventory: Inventory = null
 ## If the slot is currently focused (equiped/used)
 var _focused: bool = false
+##The unique ID of this slot
+var _id: int = 0
 
 func _ready() -> void:
 	assert(_inventory != null, "inventory must not be null")
@@ -27,6 +29,8 @@ func _ready() -> void:
 	 && _pos_in_inventory.y < _inventory.size.y, \
 	 "position in inventory is out of range")
 	
+	# get a unique ID
+	_id = Global.IM.get_id()
 	# add itself to the inventory
 	_inventory._slots.append(self)
 	
@@ -36,6 +40,7 @@ func _ready() -> void:
 	self.size = slot_size
 	_panel.custom_minimum_size = slot_size
 	_panel.size = slot_size
+	_panel.theme = Theme.new()
 	_visual.custom_minimum_size = slot_size
 	
 	# the scale of the subviewport container is 0.155 when the slot_size is 80
@@ -61,6 +66,7 @@ func _ready() -> void:
 	_panel.add_theme_stylebox_override("panel", stylebox)
 
 	_on_item_updated(_index)
+	_setup_drag_interaction()
 
 func _get_item() -> InventoryItem:
 	if _inventory.items.size() <= _index:
@@ -128,6 +134,15 @@ func _update_body_in_subviewport() -> void:
 	# TODO we don't need to move the mesh around, the camera is placed to see where it appears
 
 func _on_hover(inside: bool) -> void:
+	if inside:
+		# set itself as the currently hovered slot
+		Global.IM.currently_hovered_slot = self
+	else:
+		# if itself is out of hover, remove itself
+		if Global.IM.currently_hovered_slot != null && \
+			Global.IM.currently_hovered_slot._id == _id:
+				Global.IM.currently_hovered_slot = null
+	
 	var stylebox: StyleBoxFlat = _panel.get_theme_stylebox("panel")
 	# bg color with item rarity
 	var color: Color = Color(0.1, 0.1, 0.1, 0.6)
@@ -156,3 +171,30 @@ func set_focus(focused: bool) -> void:
 	
 	stylebox.set_border_width_all(border_width)
 	stylebox.border_color = border_color
+
+func _setup_drag_interaction() -> void:
+	gui_input.connect(_on_gui_input)
+
+func _on_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		_on_gui_input_mouse(event as InputEventMouseButton)
+	
+func _on_gui_input_mouse(event: InputEventMouseButton) -> void:
+	#TODO double click try to fill this slot from the inventory
+	#TODO right click halves the amount of this slot (try to move the other half into the next empty slot)
+	if event.is_pressed():
+		#TODO make the panel follow the mouse until released
+		return
+	
+	# skip if we've got no items
+	if _get_amount() <=0:
+		return
+	# check if a slot is hovered
+	var target: InventorySlot = Global.IM.currently_hovered_slot
+	if target == null:
+		return
+	# if a slot is hovered, check it's not ourself
+	if target._id == _id:
+		return
+	# drag the items
+	_inventory.move_item(_index, target._inventory, target._index)

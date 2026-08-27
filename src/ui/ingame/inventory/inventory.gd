@@ -19,6 +19,10 @@ func _ready() -> void:
 			slot._pos_in_inventory = Vector2i(x, y)
 			grid_container.add_child(slot)
 			slot.gui_input.connect(_on_gui_input.bind(slot))
+	
+	# if this is a toolbar, focus the first slot
+	if self is PlayerToolbar:
+		(self as PlayerToolbar).focus_to(0)
 
 ## Listens for input on slot to create inventory interactions
 @warning_ignore("unused_parameter")

@@ -2,8 +2,6 @@
 
 [ext_resource type="Script" uid="uid://c0bs62jdow10e" path="res://src/modules/inventory/inventory_slot.gd" id="1_lo36e"]
 
-[sub_resource type="Theme" id="Theme_4q6kb"]
-
 [node name="InventorySlot" type="Control" unique_id=1421058199]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 3
@@ -28,7 +26,7 @@ custom_minimum_size = Vector2(80, 80)
 layout_mode = 0
 offset_right = 80.0
 offset_bottom = 80.0
-theme = SubResource("Theme_4q6kb")
+mouse_filter = 1
 
 [node name="Visual" type="SubViewportContainer" parent="Panel" unique_id=2145272099]
 custom_minimum_size = Vector2(80, 80)
