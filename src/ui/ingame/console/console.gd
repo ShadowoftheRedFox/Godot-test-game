@@ -7,8 +7,8 @@ func _ready() -> void:
 	_reset()
 	visibility_changed.connect(on_visibility_changed)
 	edit.text_submitted.connect(_on_submitted)
-	Global.CONSOLE.Print.connect(_on_print)
-	Global.CONSOLE.Complete.connect(_on_complete)
+	Global.CONSOLE.output.connect(_on_print)
+	Global.CONSOLE.suggest.connect(_on_complete)
 
 func _input(event: InputEvent) -> void:
 	# don't trigger when the menu is not visible or not focused on the edit
@@ -16,7 +16,7 @@ func _input(event: InputEvent) -> void:
 		return
 	# trigger command autocomplete when pressing tab
 	if event is InputEventKey && (event as InputEventKey).keycode == KEY_TAB && (event as InputEventKey).is_released():
-		Global.CONSOLE.autocomplete(edit.text.strip_escapes())
+		Global.CONSOLE.complete(edit.text)
 
 func on_visibility_changed() -> void:
 	_reset()
@@ -27,23 +27,21 @@ func _reset() -> void:
 
 ## send the text to the console to parse the command
 func _on_submitted(text: String) -> void:
-	Global.CONSOLE.get_command(text);
+	Global.CONSOLE.run(text);
 	# TODO history of inputted text
 	edit.text = ""
 
 ## listen to console response and display it
 func _on_print(text: String) -> void:
 	var length: int = console.text.length() + text.length() + 1 # +1 for \n
-	if length <= ConsoleModule.CONSOLE_MAX_LENGTH:
+	if length <= Global.CONSOLE.CONSOLE_MAX_LENGTH:
 		console.append_text("\n" + text)
 		return
 	# trim the start of the text if too long
-	console.text = (console.text + "\n" + text).substr(length - ConsoleModule.CONSOLE_MAX_LENGTH, -1)
+	console.text = (console.text + "\n" + text).substr(length - Global.CONSOLE.CONSOLE_MAX_LENGTH, -1)
 
 ## Replace last word when we can autocomplete the value
-func _on_complete(word: String) -> void:
-	var words: PackedStringArray = edit.text.split(" ", true)
-	words[words.size()-1] = word
-	edit.text = " ".join(words)
+func _on_complete(text: String) -> void:
+	edit.text = text
 	# edit caret position
 	edit.caret_column = edit.text.length()

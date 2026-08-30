@@ -57,6 +57,8 @@ const ITEM_CLASS_COLOR: Dictionary[ItemClass, Color] = {
 # TODO item size and shape in inventory? fluid? gas?
 ## Name of the item.
 @export var item_name: StringName = ""
+## Display name of the item.
+@export var item_display_name: String = ""
 ## Mesh of the item.
 @export var item_mesh: Mesh = null
 ## If the item can be placed in world, this scene is what will be instantiated.
@@ -83,4 +85,7 @@ func equals(other: Object) -> bool:
 
 	var item: InventoryItem = other
 
-	return item.item_class == item_class && item.item_rarity == item_rarity && item.item_name == item_name
+	return item.item_class == item_class \
+		&& item.item_rarity == item_rarity \
+		&& item.item_name == item_name \
+		&& item.item_display_name == item_display_name

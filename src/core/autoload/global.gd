@@ -11,7 +11,7 @@ var CONST: ConstantManager = ConstantManager.new()
 ## Sound manager that handle sound mixing
 var SDM: SoundManager = SoundManager.new()
 ## A reference to the console
-var CONSOLE: ConsoleModule = ConsoleModule.new()
+var CONSOLE: ConsoleApplication = GameCommandApplication.new("main")
 ## The global inventory orchestrator
 var IM: InventoryModule = InventoryModule.new()
 ## A reference to the current environment

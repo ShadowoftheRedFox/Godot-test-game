@@ -42,3 +42,7 @@
   - [ ] class in title case
   - [ ] internal function that should not be touched
   - [ ] tool script that checks item file name are the same item name
+- [ ] code structure:
+  - [ ] easy mod addition
+  - [ ] generic settings tabs
+  - [ ] way to load resources pretty (other than addon watching a specific folder)

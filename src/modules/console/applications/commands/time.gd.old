@@ -1,4 +1,4 @@
-class_name CommandTime extends ConsoleCommand
+class_name CommandTimeOld extends ConsoleCommand
 
 func _init() -> void:
 	name = "time"
@@ -42,7 +42,7 @@ func _is_line_valid(line: String) -> bool:
 		return false
 	return true
 
-class CommandTimeSet extends CommandTime:
+class CommandTimeSet extends CommandTimeOld:
 	func _init() -> void:
 		name = "set"
 		summary = "Set the time of the day."
@@ -56,7 +56,7 @@ class CommandTimeSet extends CommandTime:
 		Global.environment.set_time(amount)
 		info("Set time to " + str(amount))
 
-class CommandTimeAdd extends CommandTime:
+class CommandTimeAdd extends CommandTimeOld:
 	func _init() -> void:
 		name = "add"
 		summary = "Add to the time of the day."
@@ -71,7 +71,7 @@ class CommandTimeAdd extends CommandTime:
 		Global.environment.set_time(amount)
 		info("Set time to " + str(amount))
 
-class CommandTimeRemove extends CommandTime:
+class CommandTimeRemove extends CommandTimeOld:
 	func _init() -> void:
 		name = "remove"
 		summary = "Remove to the time of the day."

@@ -1,5 +1,5 @@
-@tool
-@icon("res://path/to/icon.svg")
+#@tool
+#@icon("res://path/to/icon.svg")
 class_name PascalCase extends Node
 ## Brief description of the class
 ##
@@ -32,7 +32,7 @@ var _is_private_variable: bool = true
 @onready var on_ready_variable: Node = $Node
 
 # export tool button
-@export_tool_button("Tool button", "Button") var button_action: Callable = _on_button_action
+#@export_tool_button("Tool button", "Button") var button_action: Callable = _on_button_action
 
 # optional built in virtual methods
 # _init()
