@@ -49,7 +49,6 @@ func validate() -> String:
 
 	var missing_arguments: Array[CommandInputArgument] = _definition._arguments.filter(\
 		func(arg: CommandInputArgument) -> bool:
-			print(arg.name, " ", arg.get_value())
 			if arg.is_required():
 				return !arg.has_value()
 			if arg.is_optional():

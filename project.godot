@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="WTFisTHIS"
-config/version="0.0.3"
+config/version="0.0.4"
 config/tags=PackedStringArray("demo", "game", "test")
 run/main_scene="uid://cnepiop6racbc"
 config/features=PackedStringArray("4.6", "Forward Plus")

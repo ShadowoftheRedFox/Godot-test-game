@@ -75,8 +75,8 @@ func get_command(command_name: String) -> Command:
 
 ## Return the command command if it is registered, null otherwise.
 ## Same as get_command, but will look at registered command aliases too, so is a bit slower.
-func get_command_or_alias(command_name_or_alias: String) -> Command:
-	for cmd: Command in _commands.values():
+func get_command_or_alias(command_name_or_alias: String, source: Array[Command] = _commands.values()) -> Command:
+	for cmd: Command in source:
 		if cmd.name == command_name_or_alias || cmd.aliases.has(command_name_or_alias):
 			return cmd
 	return null
@@ -84,20 +84,20 @@ func get_command_or_alias(command_name_or_alias: String) -> Command:
 ## Tries to find a command whose name or alias match the given value.
 ## If no match is found, tries to find the best name or alias starting with the value.
 ## Returns the list of candidates.
-func find_command(command_name: String) -> Array[Command]:
+func find_command(command_name: String, source: Array[Command] = _commands.values()) -> Array[Command]:
 	# if command_name is empty, just send back all commands
 	if command_name.is_empty():
-		return _commands.values()
+		return source
 
 	# if we have an exact match, return it
-	var _cmd: Command = get_command_or_alias(command_name)
+	var _cmd: Command = get_command_or_alias(command_name, source)
 	if _cmd != null:
 		return [_cmd]
 
 	var candidates: Array[Command] = []
 
 	# otherwise, get a list of close match from name and aliases
-	for cmd: Command in _commands.values():
+	for cmd: Command in source:
 		if cmd.name.begins_with(command_name):
 			candidates.append(cmd)
 			continue

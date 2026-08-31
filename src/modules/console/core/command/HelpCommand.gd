@@ -43,13 +43,13 @@ func execute(caller: CommandApplication, input: CommandInput) -> bool:
 			return true
 
 	if cmd != null:
-		display_help(caller, cmd)
+		_display_help(caller, cmd)
 	else:
-		display_help(caller, self)
+		_display_help(caller, self)
 
 	return true
 
-func display_help(caller: CommandApplication, cmd: Command) -> void:
+func _display_help(caller: CommandApplication, cmd: Command) -> void:
 	var text: String = "Command: " + (cmd.name if cmd.display_name.is_empty() else cmd.display_name) + "\n"
 	if cmd.hidden:
 		text += "This command is hidden."
