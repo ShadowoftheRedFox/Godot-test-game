@@ -1,5 +1,5 @@
 ## Run a set of instruction from a console.
-@abstract class_name Command extends Resource
+@abstract class_name Command
 
 ## List of requirement flags to berify if the caller (current game client) can call this command.
 enum RequirementsFlags {
@@ -68,11 +68,17 @@ func configure() -> void:
 func initialize(caller: CommandApplication, input: CommandInput) -> void:
 	return
 
+## A small structure like class to hold the command suggestions responses.
 class Suggestion:
+	## The list of suggestions.
 	var suggestions: PackedStringArray = PackedStringArray()
+	## The argument the suggestions comes from.
 	var argument: CommandInputArgument = null
+	## The position of the argument in the word list of the command.
 	var argument_position: int = -1
+	## If an input is required, meaning there are no suggestions or default value.
 	var require_input: bool = false
+	## If a suggestions is choosen, whether or not it should replace the word or be appended to the line.
 	var will_replace_last_word: bool = false
 
 ## Called to autocomplete values.
@@ -102,8 +108,8 @@ func suggest(_caller: CommandApplication, input: CommandInput) -> Suggestion:
 			break
 		# if filled and has suggestion, check if the value match a suggestions
 		if a.has_suggestions():
-			var suggestions: PackedStringArray = a.get_suggestions()
-			if !suggestions.has(a.get_raw_value()):
+			var suggestions: PackedStringArray = a.suggest(a.get_raw_value())
+			if suggestions.size() > 0:
 				arg = a
 				response.will_replace_last_word = true
 				break
@@ -161,7 +167,7 @@ func run(caller: CommandApplication, input: CommandInput) -> bool:
 	if !ignore_validation:
 		var error: String = input.validate()
 		if !error.is_empty():
-			caller.output.emit(error)
+			caller.error(error)
 			return false
 
 	return execute(caller, input)

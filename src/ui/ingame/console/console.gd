@@ -4,6 +4,7 @@ class_name ConsoleMenu extends MarginContainer
 @onready var edit: LineEdit = %ConsoleEdit
 
 func _ready() -> void:
+	_setup_effects()
 	_reset()
 	visibility_changed.connect(on_visibility_changed)
 	edit.text_submitted.connect(_on_submitted)
@@ -17,6 +18,11 @@ func _input(event: InputEvent) -> void:
 	# trigger command autocomplete when pressing tab
 	if event is InputEventKey && (event as InputEventKey).keycode == KEY_TAB && (event as InputEventKey).is_released():
 		Global.CONSOLE.complete(edit.text)
+
+## Setup a list of custom effect for the rich text label.
+## Doc: https://docs.godotengine.org/en/4.6/tutorials/ui/bbcode_in_richtextlabel.html
+func _setup_effects() -> void:
+	pass
 
 func on_visibility_changed() -> void:
 	_reset()

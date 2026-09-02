@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="InventoryItem" format=3 uid="uid://kdc5dy7ljtre"]
+
+[ext_resource type="Script" uid="uid://d248sqs3fwusd" path="res://src/modules/inventory/item/item_recipe.gd" id="1_4ddaq"]
+[ext_resource type="Texture2D" uid="uid://q00phdos8oi2" path="res://assets/Asphalt_01/JPEG/Asphalt_01/Asphalt_01_metallic.jpg" id="1_i3538"]
+[ext_resource type="PackedScene" uid="uid://cweg2ds8sfpw7" path="res://src/modules/inventory/item/item_physical/ItemCube.tscn" id="2_4e1xb"]
+[ext_resource type="Script" uid="uid://061snkpdro2h" path="res://src/modules/inventory/item/inventory_item.gd" id="2_q0fln"]
+[ext_resource type="Texture2D" uid="uid://c6lk6xqyi5qe6" path="res://assets/Asphalt_01/JPEG/Asphalt_01/Asphalt_01_normalogl.jpg" id="2_q5wri"]
+[ext_resource type="Texture2D" uid="uid://wsj2pi1xptul" path="res://assets/Asphalt_01/JPEG/Asphalt_01/Asphalt_01_roughness.jpg" id="3_dsy7d"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i3538"]
+albedo_color = Color(0.9169191, 0.40924764, 0, 1)
+metallic = 1.0
+metallic_specular = 1.0
+metallic_texture = ExtResource("1_i3538")
+roughness_texture = ExtResource("3_dsy7d")
+normal_enabled = true
+normal_texture = ExtResource("2_q5wri")
+
+[sub_resource type="BoxMesh" id="BoxMesh_q5wri"]
+material = SubResource("StandardMaterial3D_i3538")
+
+[resource]
+script = ExtResource("2_q0fln")
+item_name = &"ItemCopperBlock"
+item_display_name = "Copper block"
+item_mesh = SubResource("BoxMesh_q5wri")
+item_physical = ExtResource("2_4e1xb")
+item_rarity = 2
+metadata/_custom_type_script = "uid://061snkpdro2h"

@@ -28,12 +28,12 @@ func _ready() -> void:
 	 && _pos_in_inventory.x < _inventory.size.x \
 	 && _pos_in_inventory.y < _inventory.size.y, \
 	 "position in inventory is out of range")
-	
+
 	# get a unique ID
 	_id = Global.IM.get_id()
 	# add itself to the inventory
 	_inventory._slots.append(self)
-	
+
 	# set the square size where it need to be
 	var slot_size: Vector2 = Vector2(slot_square_size, slot_square_size)
 	self.custom_minimum_size = slot_size
@@ -42,7 +42,7 @@ func _ready() -> void:
 	_panel.size = slot_size
 	_panel.theme = Theme.new()
 	_visual.custom_minimum_size = slot_size
-	
+
 	# the scale of the subviewport container is 0.155 when the slot_size is 80
 	# adapt for custom slot_size: 0.155 = 80/0.0019375
 	var visual_scale: float = slot_square_size * 0.0019375
@@ -142,7 +142,7 @@ func _on_hover(inside: bool) -> void:
 		if Global.IM.currently_hovered_slot != null && \
 			Global.IM.currently_hovered_slot._id == _id:
 				Global.IM.currently_hovered_slot = null
-	
+
 	var stylebox: StyleBoxFlat = _panel.get_theme_stylebox("panel")
 	# bg color with item rarity
 	var color: Color = Color(0.1, 0.1, 0.1, 0.6)
@@ -164,11 +164,11 @@ func set_focus(focused: bool) -> void:
 	var stylebox: StyleBoxFlat = _panel.get_theme_stylebox("panel")
 	var border_width: int = 0
 	var border_color: Color = Color.TRANSPARENT
-	
+
 	if focused:
 		border_width = 3
 		border_color = Color.CYAN
-	
+
 	stylebox.set_border_width_all(border_width)
 	stylebox.border_color = border_color
 
@@ -178,16 +178,16 @@ func _setup_drag_interaction() -> void:
 func _on_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		_on_gui_input_mouse(event as InputEventMouseButton)
-	
+
 func _on_gui_input_mouse(event: InputEventMouseButton) -> void:
 	#TODO double click try to fill this slot from the inventory
 	#TODO right click halves the amount of this slot (try to move the other half into the next empty slot)
 	if event.is_pressed():
 		#TODO make the panel follow the mouse until released
 		return
-	
+
 	# skip if we've got no items
-	if _get_amount() <=0:
+	if _get_amount() <= 0:
 		return
 	# check if a slot is hovered
 	var target: InventorySlot = Global.IM.currently_hovered_slot

@@ -1,7 +1,9 @@
-class_name Inventory extends Node
+class_name Inventory extends Resource
 
 ## Emitted when items are updated on the given position
 signal items_updated(position: int)
+## Emitted when the inventory's size changes.
+signal size_changed()
 
 ## Number of flots the inventory has. each slors can contain items_per_slot items.
 @export var size: Vector2i = Vector2i(5, 2)
@@ -41,30 +43,65 @@ func _init(_size: Vector2i = Vector2i(5, 2), \
 	player_editable = _player_editable
 	can_add = _can_add
 	can_remove = _can_remove
+	set_size(size)
 
-func _ready() -> void:
-	# properties set here to not conflict with exported values
-	int_size = size.x * size.y
+## Change the size of the inventory.
+## If the new size is lower than the current one, it may need to drop items.
+## Returns the amount of items dropped.
+## New size must be bigger than 0.
+func set_size(new_size: Vector2i) -> int:
+	if new_size.x <= 0 || new_size.y <= 0:
+		return 0
+
+	var int_new_size: int = new_size.x * new_size.y
+	if int_new_size >= int_size:
+		int_size = int_new_size
+		# prepare array for our size
+		items.resize(int_size)
+		amounts.resize(int_size)
+		size_changed.emit()
+		return 0
+
+	var removed: int = 0
+	for i: int in range(int_new_size, int_size):
+		var item: InventoryItem = items[i]
+		if item != null:
+			var item_removed: int = remove_item(item, -1, i)
+			removed += item_removed
+			item.dropped(item_removed)
+
+	for i: int in range(int_size, int_new_size, -1):
+		_slots[i].queue_free()
+		_slots.remove_at(i)
+
 	# prepare array for our size
 	items.resize(int_size)
 	amounts.resize(int_size)
+	size_changed.emit()
+
+	return removed
 
 ## Add the given amount of the given item in the inventory in the first slots
 ## available. Return the amount that could not be added.
 ## Position is optional. If supplied, will try to remove item starting from
 ## this position.
 func add_item(item: InventoryItem, amount: int, position: int = 0) -> int:
+	print("called add item")
 	if amount <= 0:
+		print("amount 0")
 		return 0
 	if item == null:
+		print("item null")
 		return amount
-	
+
 	# check if we already got an item
 	var last_item: int = get_last_index_of_item(item, true)
 	if last_item > position:
+		print("last item")
 		# if yes, add at this slot first
 		return add_item(item, amount, last_item)
 
+	print("position: ", position, " size: ", int_size)
 	# loop from position to the end of out array
 	for i: int in range(position, int_size):
 		var current_item: InventoryItem = items[i]
@@ -72,11 +109,12 @@ func add_item(item: InventoryItem, amount: int, position: int = 0) -> int:
 
 		# if the slot is full, or not the same item, skip
 		if current_amount >= max_items_per_slot || (current_item != null && !item.equals(current_item)):
+			print("full or not same item")
 			continue
 
 		# calculate the space left in this slot
 		var space_left: int = max_items_per_slot - current_amount
-
+		print("space left ", space_left)
 		# if there is enough space for our amount, add it and finish
 		if space_left >= amount:
 			amounts[i] += amount
@@ -91,8 +129,9 @@ func add_item(item: InventoryItem, amount: int, position: int = 0) -> int:
 		items_updated.emit(i)
 
 		if amount == 0:
+			print("zero")
 			return 0
-
+	print("end return")
 	return amount
 
 ## Remove all items from the inventory.
@@ -166,7 +205,6 @@ func remove_item(item: InventoryItem, amount: int = -1, position: int = 0) -> in
 
 	return amount
 
-
 ## Move item from the source position to the destination position.
 ## If items are differents, swap them.
 ## If items are the same, fill the destination until the maximum amount, and
@@ -210,7 +248,7 @@ func move_item(source: int, other: Inventory, destination: int) -> int:
 		var space_left: int = min(other.max_items_per_slot - amount_destination, max_items_per_slot - amount_source);
 		# then we make sure the amount moving isn't higher than the space left
 		var amount_to_move: int = clampi(amount_source, 0, space_left)
-		
+
 		# the move the source to the destination
 		other.amounts[destination] += amount_to_move
 		amounts[source] -= amount_to_move
@@ -220,7 +258,7 @@ func move_item(source: int, other: Inventory, destination: int) -> int:
 			items[source] = null
 
 		amount_moved = amount_to_move
-	elif item_source != null && amount_source > 0: 
+	elif item_source != null && amount_source > 0:
 		# otherwise swap items and amount if source is not null
 		other.items[destination] = item_source
 		other.amounts[destination] = amount_source
@@ -253,8 +291,43 @@ func get_amount_of_item(item: InventoryItem) -> int:
 func get_last_index_of_item(item: InventoryItem, free: bool = false) -> int:
 	if item == null:
 		return -1
-	
-	for i: int in range(int_size-1, -1, -1):
+
+	for i: int in range(int_size - 1, -1, -1):
 		if items[i] != null && items[i].equals(item) && (!free || amounts[i] != max_items_per_slot):
 			return i
 	return -1
+
+## Check if the given slot is registered in the inventory slots.
+## Return true if it is registered, false otherwise.
+func has_slot(slot: InventorySlot) -> bool:
+	if slot == null:
+		return false
+	return has_slot_id(slot._id)
+
+## Check if the given slot's ID is registered in the inventory slots.
+## Return true if it is registered, false otherwise.
+func has_slot_id(id: int) -> bool:
+	for slot: InventorySlot in _slots:
+		if slot._id == id:
+			return true
+	return false
+
+## Add a slot to the registered inventory slots.
+## Only added if the slot doesn't already exists.
+func add_slot(slot: InventorySlot) -> void:
+	if slot == null || has_slot_id(slot._id):
+		return
+
+	_slots.append(slot)
+
+## Remove the slot from the registered inventory slots.
+func remove_slot(slot: InventorySlot) -> void:
+	if slot == null:
+		return
+	remove_slot_id(slot._id)
+
+## Remove the slot whose ID matches the given ID, from the registered inventory slots.
+func remove_slot_id(slot_id: int) -> void:
+	for i: int in range(_slots.size()):
+		if _slots.get(i)._id == slot_id:
+			_slots.remove_at(i)

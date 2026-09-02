@@ -1,9 +1,9 @@
-[gd_scene format=3 uid="uid://b50byu54aqqsv"]
+[gd_scene format=3 uid="uid://cq5jto1l6crnr"]
 
-[ext_resource type="Script" uid="uid://c3c88kv0jtfjv" path="res://src/ui/ingame/inventory/inventory.gd" id="1_1uqnm"]
-[ext_resource type="StyleBox" uid="uid://bmxmosiuqt20b" path="res://assets/internal/menu_panel.tres" id="2_ri4im"]
+[ext_resource type="Script" uid="uid://c3c88kv0jtfjv" path="res://src/ui/ingame/inventory/PlayerInventory.gd" id="1_ytne4"]
+[ext_resource type="StyleBox" uid="uid://bmxmosiuqt20b" path="res://assets/internal/menu_panel.tres" id="2_ac0ie"]
 
-[node name="PlayerInventory" type="MarginContainer" unique_id=333286146]
+[node name="UIInventory" type="MarginContainer" unique_id=333286146]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -19,12 +19,12 @@ theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
-script = ExtResource("1_1uqnm")
+script = ExtResource("1_ytne4")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=961476596]
 layout_mode = 2
 mouse_filter = 1
-theme_override_styles/panel = ExtResource("2_ri4im")
+theme_override_styles/panel = ExtResource("2_ac0ie")
 
 [node name="GridContainer" type="GridContainer" parent="PanelContainer" unique_id=1967086975]
 unique_name_in_owner = true

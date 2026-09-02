@@ -92,6 +92,8 @@ func get_commands_names_and_aliases() -> PackedStringArray:
 	var names: PackedStringArray = PackedStringArray()
 	for cmd: Command in sub_commands:
 		names.append(cmd.name)
+		for alias: String in cmd.aliases:
+			names.append(alias)
 	return names
 
 ## Execute the command after the arguments have been validated.
@@ -103,7 +105,7 @@ func execute(caller: CommandApplication, input: CommandInput) -> bool:
 	var command_name: String = cmd_arg.get_raw_value()
 
 	if !cmd_arg.has_value() || !get_commands_names_and_aliases().has(command_name):
-		caller.output.emit("Unknown command \"" + command_name + "\"")
+		caller.error("Unknown command \"" + command_name + "\"")
 		return false
 
 	var commands: Array[Command] = caller.find_command(command_name, sub_commands)
@@ -111,7 +113,7 @@ func execute(caller: CommandApplication, input: CommandInput) -> bool:
 	# no command found
 	if commands.size() == 0:
 		# TODO show helps instead
-		caller.output.emit("No commands name matching \"" + command_name + "\"")
+		caller.error("No commands name matching \"" + command_name + "\"")
 		return false
 
 	# multiple commands found
@@ -126,7 +128,7 @@ func execute(caller: CommandApplication, input: CommandInput) -> bool:
 					response.append(alias)
 
 		response.sort()
-		caller.output.emit(" ".join(response))
+		caller.trace(" ".join(response))
 		return false
 
 	# a unique command cound

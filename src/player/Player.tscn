@@ -5,9 +5,9 @@
 [ext_resource type="Script" uid="uid://d4kj4whqt3giv" path="res://src/components/move_component.gd" id="3_24gqh"]
 [ext_resource type="Script" uid="uid://bvixwki5ss1pa" path="res://src/components/health_component.gd" id="4_yjynp"]
 [ext_resource type="Script" uid="uid://ce4h2mdshhcdv" path="res://src/components/camera_component.gd" id="5_j1g85"]
+[ext_resource type="Script" uid="uid://donxbfb1tvwpe" path="res://src/modules/inventory/InventoryNode.gd" id="6_v7rlw"]
 [ext_resource type="Script" uid="uid://061snkpdro2h" path="res://src/modules/inventory/item/inventory_item.gd" id="7_20ow7"]
 [ext_resource type="Resource" uid="uid://nfhxb5ipgdms" path="res://src/modules/inventory/item/item_resource/ItemIronBlock.tres" id="8_20ow7"]
-[ext_resource type="Script" uid="uid://dfe0gnda2agej" path="res://src/modules/inventory/inventory.gd" id="8_rx1o7"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2m2ha"]
 
@@ -54,9 +54,9 @@ unique_name_in_owner = true
 script = ExtResource("5_j1g85")
 camera = NodePath("../CameraAnchor/Camera3D")
 
-[node name="Inventory" type="Node" parent="." unique_id=784841100]
+[node name="Inventory" type="Node" parent="." unique_id=934331513]
 unique_name_in_owner = true
-script = ExtResource("8_rx1o7")
+script = ExtResource("6_v7rlw")
 size = Vector2i(5, 3)
 items = Array[ExtResource("7_20ow7")]([ExtResource("8_20ow7")])
-amounts = Array[int]([7])
+amounts = Array[int]([10])

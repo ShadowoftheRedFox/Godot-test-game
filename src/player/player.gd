@@ -8,7 +8,7 @@ const PAUSE: PackedScene = preload("uid://b30nyqm72dwjv")
 @onready var input_component: InputComponent = %InputComponent
 @onready var camera_component: CameraComponent = %CameraComponent
 
-@onready var inventory: Inventory = %Inventory
+@onready var inventory: InventoryNode = %Inventory
 
 @onready var inventory_menu: PlayerInventory = null
 @onready var toolbar_menu: PlayerInventory = null
@@ -81,8 +81,8 @@ func setup_ui() -> void:
 	console_menu = CONSOLE.instantiate()
 	inventory_menu = INVENTORY.instantiate()
 	toolbar_menu = TOOLBAR.instantiate()
-	inventory_menu.inventory = inventory
-	toolbar_menu.inventory = inventory
+	inventory_menu.inventory = inventory._inventory
+	toolbar_menu.inventory = inventory._inventory
 	pause_menu = PAUSE.instantiate()
 
 	Global.MAIN.hud_root.add_child(console_menu)

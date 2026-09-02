@@ -89,3 +89,8 @@ func equals(other: Object) -> bool:
 		&& item.item_rarity == item_rarity \
 		&& item.item_name == item_name \
 		&& item.item_display_name == item_display_name
+
+## Called when this item must be dropped in its physical form, in the given amount.
+@warning_ignore("unused_parameter")
+func dropped(amount: int = 1) -> void:
+	pass

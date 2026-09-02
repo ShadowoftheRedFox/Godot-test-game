@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://l5xxtvcovajb"]
 
-[ext_resource type="Script" uid="uid://bmqcasd7tnx3e" path="res://src/ui/ingame/inventory/toolbar.gd" id="1_yc5mu"]
+[ext_resource type="Script" uid="uid://bmqcasd7tnx3e" path="res://src/ui/ingame/inventory/PlayerToolbar.gd" id="1_yc5mu"]
 [ext_resource type="StyleBox" uid="uid://bmxmosiuqt20b" path="res://assets/internal/menu_panel.tres" id="2_4mw4i"]
 
 [node name="PlayerToolbar" type="MarginContainer" unique_id=333286146]

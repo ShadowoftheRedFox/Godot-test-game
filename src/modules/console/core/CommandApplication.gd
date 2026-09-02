@@ -29,6 +29,18 @@ func _init(application_name: String) -> void:
 	register(HelpCommand.new())
 	init_register()
 
+## Print a normal message to the output.
+func print(message: String) -> void:
+	output.emit(message)
+
+## Print a trace message to the output.
+func trace(message: String) -> void:
+	output.emit(message)
+
+## Print an error message to the output.
+func error(message: String) -> void:
+	output.emit(message)
+
 ## Function called after initialisation to register commands automatically.
 ## Should be overriden as needed.
 func init_register() -> void:
@@ -76,37 +88,15 @@ func get_command(command_name: String) -> Command:
 ## Return the command command if it is registered, null otherwise.
 ## Same as get_command, but will look at registered command aliases too, so is a bit slower.
 func get_command_or_alias(command_name_or_alias: String, source: Array[Command] = _commands.values()) -> Command:
-	for cmd: Command in source:
-		if cmd.name == command_name_or_alias || cmd.aliases.has(command_name_or_alias):
-			return cmd
-	return null
+	if has_command(command_name_or_alias):
+		return get_command(command_name_or_alias)
+	return CommandUtils.get_command_or_alias(command_name_or_alias, source)
 
 ## Tries to find a command whose name or alias match the given value.
 ## If no match is found, tries to find the best name or alias starting with the value.
 ## Returns the list of candidates.
 func find_command(command_name: String, source: Array[Command] = _commands.values()) -> Array[Command]:
-	# if command_name is empty, just send back all commands
-	if command_name.is_empty():
-		return source
-
-	# if we have an exact match, return it
-	var _cmd: Command = get_command_or_alias(command_name, source)
-	if _cmd != null:
-		return [_cmd]
-
-	var candidates: Array[Command] = []
-
-	# otherwise, get a list of close match from name and aliases
-	for cmd: Command in source:
-		if cmd.name.begins_with(command_name):
-			candidates.append(cmd)
-			continue
-		for alias: String in cmd.aliases:
-			if alias.begins_with(command_name):
-				candidates.append(cmd)
-				continue
-
-	return candidates
+	return CommandUtils.find_command(command_name, source)
 
 ## Execute the command line. Return true on command success, false otherwise.
 func run(command_line: String) -> bool:
@@ -117,7 +107,7 @@ func run(command_line: String) -> bool:
 	# no command found
 	if commands.size() == 0:
 		# TODO show helps instead
-		output.emit("No commands name matching \"" + command_name + "\"")
+		error("No commands name matching \"" + command_name + "\"")
 		return false
 
 	# multiple commands found
@@ -132,7 +122,7 @@ func run(command_line: String) -> bool:
 					response.append(alias)
 
 		response.sort()
-		output.emit(" ".join(response))
+		trace(" ".join(response))
 		return false
 
 	# a unique command cound
@@ -153,7 +143,7 @@ func complete(command_line: String) -> bool:
 	# no command found
 	if commands.size() == 0:
 		# TODO show helps instead
-		output.emit("No commands name matching \"" + command_name + "\"")
+		error("No commands name matching \"" + command_name + "\"")
 		return false
 
 	# multiple commands found
@@ -170,7 +160,7 @@ func complete(command_line: String) -> bool:
 				if alias.begins_with(command_name):
 					response.append(alias)
 
-		output.emit(" ".join(response))
+		trace(" ".join(response))
 		return false
 
 	# a unique command cound
@@ -191,23 +181,33 @@ func complete(command_line: String) -> bool:
 
 	# the argument to fill require a manual input of some sort, and has nothing to suggest
 	if res.require_input:
-		output.emit(res.argument.name + ": " + res.argument.get_type_name())
+		trace(res.argument.name + ": " + res.argument.get_type_name())
 		return true
 
-	var suggestions: PackedStringArray = res.suggestions
 	# multiple possibilities are printed
-	if suggestions.size() > 1:
-		output.emit(" ".join(suggestions))
-	elif suggestions.size() == 0:
+	if res.suggestions.size() > 1:
+			# check if we can autocomplete a bit
+		var common_prefix: String = CommandUtils.find_common_prefix(res.suggestions)
+		# if there is a common preifx, and if it isn't already inputed
+		if common_prefix.length() > 0 && !command_line.ends_with(common_prefix):
+			_suggest_response(command_line, res, common_prefix)
+		else:
+			trace(" ".join(res.suggestions))
+	elif res.suggestions.size() == 0:
 		# no suggestions, should never happen
-		output.emit("Whatever you're trying to say, I've got no ideas")
+		error("Whatever you're trying to say, I've got no ideas")
 	else:
 		# a single suggestion, append it to the line or replace the last word as needed
-		var words: PackedStringArray = command_line.split(" ", false)
-		if res.will_replace_last_word:
-			words.set(res.argument_position + 1, suggestions.get(0))
-		else:
-			words.append(suggestions.get(0))
-		suggest.emit(" ".join(words))
+		_suggest_response(command_line, res, res.suggestions.get(0))
 
 	return true
+
+## Suggest the response to the signal.
+## Set word as the suggested response.
+func _suggest_response(line: String, res: Command.Suggestion, word: String) -> void:
+	var words: PackedStringArray = line.split(" ", false)
+	if res.will_replace_last_word:
+		words.set(res.argument_position + 1, word)
+	else:
+		words.append(word)
+	suggest.emit(" ".join(words))

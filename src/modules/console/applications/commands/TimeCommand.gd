@@ -51,15 +51,15 @@ func execute(caller: CommandApplication, input: CommandInput) -> bool:
 			_set_time_part(caller, value)
 			return true
 		"set":
-			caller.output.emit("Unable to set the time of the day, value is either an integer or one of: " + ", ".join(DAY_PARTS) + ".")
+			caller.error("Unable to set the time of the day, value is either an integer or one of: " + ", ".join(DAY_PARTS) + ".")
 			return false
 		"stop":
 			Global.environment.day_night_cycle_enabled = false
-			caller.output.emit("The sun will never rise again!")
+			caller.print("The sun will never rise again!")
 			return true
 		"start":
 			Global.environment.day_night_cycle_enabled = true
-			caller.output.emit("The sun can rise again!")
+			caller.print("The sun can rise again!")
 			return true
 		"display":
 			_display_time(caller)
@@ -68,10 +68,10 @@ func execute(caller: CommandApplication, input: CommandInput) -> bool:
 			_set_day_length(caller, int(value) if value.is_valid_int() else EnvironmentController.DAY_LENGTH)
 			return true
 		"length":
-			caller.output.emit("Unable to set the length of the day, value is an integer with the length of the day in seconds.")
+			caller.error("Unable to set the length of the day, value is an integer with the length of the day in seconds.")
 			return false
 		_:
-			caller.output.emit("Unknown action \"" + action + "\"")
+			caller.error("Unknown action \"" + action + "\"")
 			return false
 
 func _display_time(caller: CommandApplication) -> void:
@@ -85,7 +85,7 @@ func _display_time(caller: CommandApplication) -> void:
 	var h: String = str(hours).pad_zeros(2)
 	var m: String = str(minutes).pad_zeros(2)
 
-	caller.output.emit("Time is: " + h + ":" + m)
+	caller.print("Time is: " + h + ":" + m)
 
 func _set_time_part(caller: CommandApplication, day_part: String) -> void:
 	var time: int = 0
@@ -111,8 +111,8 @@ func _set_time(caller: CommandApplication, time: int) -> void:
 	if time < 0:
 		time += EnvironmentController.DAY_LENGTH
 	Global.environment.set_time(time)
-	caller.output.emit("Set time to " + str(time))
+	caller.print("Set time to " + str(time))
 
 func _set_day_length(caller: CommandApplication, length: int) -> void:
 	Global.environment.set_day_length(length)
-	caller.output.emit("The day length is now " + str(length) + " seconds.")
+	caller.print("The day length is now " + str(length) + " seconds.")

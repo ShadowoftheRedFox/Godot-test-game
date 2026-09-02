@@ -29,6 +29,7 @@ material = SubResource("StandardMaterial3D_ub20b")
 [resource]
 script = ExtResource("4_pkyjm")
 item_name = &"ItemIronBlock"
+item_display_name = "Iron block"
 item_mesh = SubResource("BoxMesh_b1km3")
 item_physical = ExtResource("2_545ks")
 item_rarity = 3

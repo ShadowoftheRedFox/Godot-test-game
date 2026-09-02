@@ -64,7 +64,7 @@ func run(caller: CommandApplication, input: CommandInput) -> bool:
 	if !ignore_validation:
 		var error: String = input.validate()
 		if !error.is_empty():
-			caller.output.emit(error)
+			caller.error(error)
 			return false
 
 	return execute(caller, input)
