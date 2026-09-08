@@ -51,7 +51,7 @@ func _process(delta: float) -> void:
 	sun.rotate_object_local(Vector3.RIGHT, angle_speed * delta)
 
 	# if the sun is below the horizon, disable light for the night
-	if sun.rotation.x <= 0.0:
+	if sun.rotation.x >= 0.0:
 		sun.sky_mode = DirectionalLight3D.SKY_MODE_SKY_ONLY
 	else:
 		sun.sky_mode = DirectionalLight3D.SKY_MODE_LIGHT_AND_SKY
