@@ -11,38 +11,38 @@ class_name MainMenu extends MarginContainer
 @onready var create_menu: Control = %CreateMenu
 
 func _ready() -> void:
-	# disable the button if the last played save is null
-	continue_button.disabled = Global.SM.last_played == null
-	
-	continue_button.pressed.connect(on_continue_button_clicked)
-	new_game_button.pressed.connect(on_new_game_button_clicked)
-	settings_button.pressed.connect(on_settings_button_clicked)
-	load_button.pressed.connect(on_load_button_clicked)
-	quit_button.pressed.connect(on_quit_button_clicked)
+    # disable the button if the last played save is null
+    continue_button.disabled = Global.SM.last_played == null
+
+    continue_button.pressed.connect(on_continue_button_clicked)
+    new_game_button.pressed.connect(on_new_game_button_clicked)
+    settings_button.pressed.connect(on_settings_button_clicked)
+    load_button.pressed.connect(on_load_button_clicked)
+    quit_button.pressed.connect(on_quit_button_clicked)
 
 func _reset() -> void:
-	settings_menu.hide()
-	load_menu.hide()
-	create_menu.hide()
+    settings_menu.hide()
+    load_menu.hide()
+    create_menu.hide()
 
 func on_continue_button_clicked() -> void:
-	print("luanching")
-	Global.SM.last_played.load()
+    print("luanching")
+    Global.SM.last_played.load()
 
 func on_new_game_button_clicked() -> void:
-	if !create_menu.visible:
-		_reset()
-		create_menu.show()
+    if !create_menu.visible:
+        _reset()
+        create_menu.show()
 
 func on_settings_button_clicked() -> void:
-	if !settings_menu.visible:
-		_reset()
-		settings_menu.show()
+    if !settings_menu.visible:
+        _reset()
+        settings_menu.show()
 
 func on_load_button_clicked() -> void:
-	if !load_menu.visible:
-		_reset()
-		load_menu.show()
+    if !load_menu.visible:
+        _reset()
+        load_menu.show()
 
 func on_quit_button_clicked() -> void:
-	Global.quit_game()
+    Global.quit_game()

@@ -1,47 +1,48 @@
 - [ ] have the chunk generation done and pretty:
-	- [ ] by chunk
-	- [ ] no gap betweem chunk seams (skirt?)
-	- [ ] biomes
+    - [ ] by chunk
+    - [ ] no gap betweem chunk seams (skirt?)
+    - [ ] biomes
 - [ ] environment:
-	- [ ] day night cycle
-	- [ ] weather
-	- [ ] light shader
-	- [ ] sky shader
-	- [ ] pretty clouds
+    - [x] day night cycle
+    - [ ] weather
+    - [ ] light shader
+    - [ ] sky shader
+    - [ ] pretty clouds
 - [ ] items:
   - [ ] more items
   - [ ] more tools
-  - [ ] generic recipes
+  - [x] generic recipes
   - [ ] items groups
   - [ ] consummable/interactable items
 - [ ] inventory:
-  - [ ] managing inventory with click
+  - [-] managing inventory with click
   - [ ] sort button (group -> by name)
   - [ ] toolbar/way to quick use items
+  - [ ] restricted item/fluid slot
 - [ ] building:
   - [ ] POC
   - [ ] snap to grid or free
   - [ ] interactable
 - [ ] general:
   - [ ] save settings
-  - [ ] apply mouse sensitivity
+  - [x] apply mouse sensitivity
   - [ ] test if player turning around is not bayblading
   - [ ] run+crouch = slide?
   - [ ] sound/music
   - [ ] mobs
-  - [ ] folder by kindred and not type (aka no scenes, scripts folder, instead: inventory, item, player, entities, world, building...)
+  - [x] folder by kindred and not type (aka no scenes, scripts folder, instead: inventory, item, player, entities, world, building...)
 - [ ] console:
-	- [ ] gamerules
-	- [ ] give / clear inventory
-	- [ ] set time of day
-	- [ ] god mode
-	- [ ] change difficulty
+  - [ ] gamerules
+  - [x] give / clear inventory
+  - [x] set time of day
+  - [ ] god mode
+      - [ ] change difficulty
 - [ ] code:
-  - [ ] variable in snake case
-  - [ ] constant in upper case snake case
-  - [ ] class in title case
-  - [ ] internal function that should not be touched
-  - [ ] tool script that checks item file name are the same item name
+  - [x] variable in snake case
+  - [x] constant in upper case snake case
+  - [x] class in title case
+  - [x] internal function that should not be touched by objects not related. if external object needs something, a public function must be exposed
+  - [x] tool script that checks item file name are the same item name
 - [ ] code structure:
   - [ ] easy mod addition
   - [ ] generic settings tabs

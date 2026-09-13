@@ -32,108 +32,108 @@ var _no_delay_count: int = 0
 # maybe an array of scene with robability to spawn each one (class extending this one?)
 
 func _ready() -> void:
-	if Engine.is_editor_hint():
-		return
+    if Engine.is_editor_hint():
+        return
 
-	# if no scene setup, or can't instantiate, just remove itself
-	if scene == null || !scene.can_instantiate():
-		queue_free()
-		return
+    # if no scene setup, or can't instantiate, just remove itself
+    if scene == null || !scene.can_instantiate():
+        queue_free()
+        return
 
-	# get the type of the scene
-	_get_scene_type()
+    # get the type of the scene
+    _get_scene_type()
 
-	# setup timer if there is a delay
-	if (delay > 0):
-		_timer = Timer.new()
-		add_child(_timer)
-		_timer.timeout.connect(_check_for_spawn)
-		_timer.start(delay)
+    # setup timer if there is a delay
+    if (delay > 0):
+        _timer = Timer.new()
+        add_child(_timer)
+        _timer.timeout.connect(_check_for_spawn)
+        _timer.start(delay)
 
-	# spawn the first one
-	_spawn.call_deferred()
+    # spawn the first one
+    _spawn.call_deferred()
 
 func _process(_delta: float) -> void:
-	if Engine.is_editor_hint():
-		return
+    if Engine.is_editor_hint():
+        return
 
-	# check every 20 frames for spawn
-	_no_delay_count += 1
-	if _no_delay_count == 20:
-		_no_delay_count = 0
-	else:
-		return
+    # check every 20 frames for spawn
+    _no_delay_count += 1
+    if _no_delay_count == 20:
+        _no_delay_count = 0
+    else:
+        return
 
-	# stop checking if we reached our amount to spawn
-	if _amount_spawned >= max_amount:
-		_check_to_free()
-		return
+    # stop checking if we reached our amount to spawn
+    if _amount_spawned >= max_amount:
+        _check_to_free()
+        return
 
-	if delay > 0:
-		return
+    if delay > 0:
+        return
 
-	_check_for_spawn()
+    _check_for_spawn()
 
 func _get_scene_type() -> void:
-	# get the root node of the scene
-	var ancestry: Array[SceneState] = []
-	var state: SceneState = scene.get_state()
-	while state != null:
-		ancestry.append(state)
-		state = state.get_base_scene_state()
-	var root: SceneState = ancestry.back()
+    # get the root node of the scene
+    var ancestry: Array[SceneState] = []
+    var state: SceneState = scene.get_state()
+    while state != null:
+        ancestry.append(state)
+        state = state.get_base_scene_state()
+    var root: SceneState = ancestry.back()
 
-	# now, check if the root has a script, if yes, get his name, if it has one
-	for i: int in root.get_node_property_count(0):
-		if root.get_node_property_name(0, i) == &\"script\":
-			var script: Script = root.get_node_property_value(0, i)
-			_scene_type = script.get_global_name()
-			if not _scene_type.is_empty():
-				return
+    # now, check if the root has a script, if yes, get his name, if it has one
+    for i: int in root.get_node_property_count(0):
+        if root.get_node_property_name(0, i) == &\"script\":
+            var script: Script = root.get_node_property_value(0, i)
+            _scene_type = script.get_global_name()
+            if not _scene_type.is_empty():
+                return
 
-	# the root has no script, or no named script, return it's base class
-	_scene_type = root.get_node_type(0)
+    # the root has no script, or no named script, return it's base class
+    _scene_type = root.get_node_type(0)
 
 func _check_for_spawn() -> void:
-	if _timer != null:
-		if _amount_spawned < max_amount:
-			_timer.start(delay)
-		else:
-			_timer.stop()
+    if _timer != null:
+        if _amount_spawned < max_amount:
+            _timer.start(delay)
+        else:
+            _timer.stop()
 
-	# check for any overlapping bodies
-	var has_overlapping: bool = false
-	for body: Node3D in get_overlapping_bodies():
-		# get script name, or node type
-		var script: Script = body.get_script()
-		var type: String = body.get_class()
-		#print(\"body type: \" + type)
-		#if script != null:
-			#print(\"Body script name: \" + script.get_global_name())
-		# if the script name or the type is the same, create new scene
-		if (script != null and script.get_global_name() == _scene_type) or type == _scene_type:
-			has_overlapping = true
-			break
+    # check for any overlapping bodies
+    var has_overlapping: bool = false
+    for body: Node3D in get_overlapping_bodies():
+        # get script name, or node type
+        var script: Script = body.get_script()
+        var type: String = body.get_class()
+        #print(\"body type: \" + type)
+        #if script != null:
+            #print(\"Body script name: \" + script.get_global_name())
+        # if the script name or the type is the same, create new scene
+        if (script != null and script.get_global_name() == _scene_type) or type == _scene_type:
+            has_overlapping = true
+            break
 
-	if !has_overlapping:
-		_spawn()
+    if !has_overlapping:
+        _spawn()
 
 func _spawn() -> void:
-	# stops when we reach the max_amount and has only the collision shape and timer
-	if _amount_spawned >= max_amount:
-		_check_to_free()
-		return
+    # stops when we reach the max_amount and has only the collision shape and timer
+    if _amount_spawned >= max_amount:
+        _check_to_free()
+        return
 
-	_amount_spawned += 1
-	var new_scene: Node = scene.instantiate()
-	parent.add_child(new_scene)
+    _amount_spawned += 1
+    var new_scene: Node = scene.instantiate()
+    parent.add_child(new_scene)
 
 func _check_to_free()->void:
-	if _amount_spawned < max_amount || is_queued_for_deletion():
-		return
+    if _amount_spawned < max_amount || is_queued_for_deletion():
+        return
 
-	if get_child_count() == 1 + (1 if _timer != null else 0):
-		queue_free()
+    if get_child_count() == 1 + (1 if _timer != null else 0):
+        queue_free()
 "
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ktd02"]

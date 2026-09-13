@@ -1,8 +1,8 @@
 class_name DeathAnimationComponent extends Node
 
 enum DeathAnimations {
-	NONE,
-	DESINTEGRATION
+    NONE,
+    DESINTEGRATION
 }
 
 @export var health_component: HealthComponent
@@ -10,19 +10,19 @@ enum DeathAnimations {
 @export var animation: DeathAnimations
 
 func _ready() -> void:
-	health_component.died.connect(_on_death)
+    health_component.died.connect(_on_death)
 
 func _on_death() -> void:
-	if mesh == null:
-		_finalize()
-		return
-	
-	match animation:
-		DeathAnimations.NONE:
-			_finalize()
+    if mesh == null:
+        _finalize()
+        return
+
+    match animation:
+        DeathAnimations.NONE:
+            _finalize()
 
 func animate_desintegration() -> void:
-	pass
+    pass
 
 func _finalize() -> void:
-	queue_free()
+    queue_free()

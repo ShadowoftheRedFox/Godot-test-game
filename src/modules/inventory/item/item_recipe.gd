@@ -1,22 +1,22 @@
 class_name ItemRecipe extends Resource
 
 class Pair extends Resource:
-	## How much of this item is needed to craft.
-	@export_range(1, 1000, 1, "or_greater") var amount: int = 1
-	## What item is needed to craft.
-	@export var item: InventoryItem = null
+    ## How much of this item is needed to craft.
+    @export_range(1, 1000, 1, "or_greater") var amount: int = 1
+    ## What item is needed to craft.
+    @export var item: InventoryItem = null
 
 enum CraftingRequirement {
-	## Can be crafted anywhere
-	NONE,
-	## Can be crafted in the inventory
-	INVENTORY,
-	## Can be crafted with a table
-	TABLE,
-	## Can be smelted with a furnace
-	FURNACE,
-	## Can be forged in an anvil
-	ANVIL
+    ## Can be crafted anywhere
+    NONE,
+    ## Can be crafted in the inventory
+    INVENTORY,
+    ## Can be crafted with a table
+    TABLE,
+    ## Can be smelted with a furnace
+    FURNACE,
+    ## Can be forged in an anvil
+    ANVIL
 }
 
 ## The requirements to be met for using this recipe.

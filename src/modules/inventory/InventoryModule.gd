@@ -10,5 +10,5 @@ var _id: int = 0
 
 ## Get a unique ID
 func get_id() -> int:
-	_id+=1
-	return _id
+    _id += 1
+    return _id

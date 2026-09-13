@@ -9,4 +9,4 @@
 
 - `assert`: Must be used to assert condition when debugging, meaning **ALL** assert errors must be fixed before building to production. If the code should run in production but still make the check, then use an `if` instead.
 - `print` and `printerr`: Only use those if it is useful information to display in the console for production, such as save or load file errors.
-- `pusj_warning` and `push_error`: Use when this information is only needed for debugging, but not for production.
+- `push_warning` and `push_error`: Use when this information is only needed for debugging, but not for production.

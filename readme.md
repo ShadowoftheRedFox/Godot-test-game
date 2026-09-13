@@ -13,10 +13,10 @@ Because I did a GameJam with it, it's the game engine i'm the most confortable w
 ## Implementations
 
 There are multiple things currently implemented:
-	- An infinite world generated with chunks.
-		- Pros: Light, can change chunk size and render distance easily.
-		- Cons: Seams between chunk are not, well, *seamless*. LOD made by hands
-	- A laboratory, where I play with different game mechanics in a fla world.
+    - An infinite world generated with chunks.
+        - Pros: Light, can change chunk size and render distance easily.
+        - Cons: Seams between chunk are not, well, *seamless*. LOD made by hands
+    - A laboratory, where I play with different game mechanics in a fla world.
 
 Things implemented:
 - inventory system

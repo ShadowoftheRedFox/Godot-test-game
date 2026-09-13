@@ -13,25 +13,25 @@ signal died
 @export var invincible: bool = false
 
 func _ready() -> void:
-	assert(max_health > 0, "Max health is 0! Use invinsible or use a static object.")
-	current_health = clamp(current_health, 0, max_health)
-	_emit()
+    assert(max_health > 0, "Max health is 0! Use invinsible or use a static object.")
+    current_health = clamp(current_health, 0, max_health)
+    _emit()
 
 func damage(value: int) -> void:
-	if invincible:
-		return
-	
-	assert(value >= 0, "Took damage but is negative, use heal instead?")
-	current_health = clamp(current_health - value, 0, max_health)
-	_emit()
-	
-	if current_health == 0:
-		died.emit()
+    if invincible:
+        return
+
+    assert(value >= 0, "Took damage but is negative, use heal instead?")
+    current_health = clamp(current_health - value, 0, max_health)
+    _emit()
+
+    if current_health == 0:
+        died.emit()
 
 func heal(value: int) -> void:
-	assert(value >= 0, "Took heal but is negative, use damage instead?")
-	current_health = clamp(current_health + value, 0, max_health)
-	_emit()
+    assert(value >= 0, "Took heal but is negative, use damage instead?")
+    current_health = clamp(current_health + value, 0, max_health)
+    _emit()
 
 func _emit() -> void:
-	health_changed.emit(current_health, max_health)
+    health_changed.emit(current_health, max_health)

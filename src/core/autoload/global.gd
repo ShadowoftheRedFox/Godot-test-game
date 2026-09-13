@@ -24,15 +24,15 @@ var environment: EnvironmentController = null
 var MAIN: MainGame = null
 
 func _init() -> void:
-	# we initialize the random numbers
-	# we pass through str to get the floating value in the string
-	seed(str(Time.get_unix_time_from_system()).hash())
+    # we initialize the random numbers
+    # we pass through str to get the floating value in the string
+    seed(str(Time.get_unix_time_from_system()).hash())
 
 ## Function to call when quitting. It will perform the necessary actions before quitting.
 func quit_game() -> void:
-	# notify everyone that we're quitting the game
-	# so they can clean up, save, etc... cleanly
-	# to listen, use _unhandled_input(event:InputEvent)
-	# with event.is_action_pressed(&"debug_quit")
-	get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
-	get_tree().quit()
+    # notify everyone that we're quitting the game
+    # so they can clean up, save, etc... cleanly
+    # to listen, use _unhandled_input(event:InputEvent)
+    # with event.is_action_pressed(&"debug_quit")
+    get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
+    get_tree().quit()

@@ -11,60 +11,60 @@ var whitelist: Array[String] = []
 ## Does not reset the lists.
 ## Return the current command.
 func enable_blacklist() -> RestrictedCommand:
-	whitelisted = false
-	blacklisted = true
-	return self
+    whitelisted = false
+    blacklisted = true
+    return self
 
 ## Enable the whitelist and disable the blacklist.
 ## Does not reset the lists.
 ## Return the current command.
 func enable_whitelist() -> RestrictedCommand:
-	whitelisted = true
-	blacklisted = false
-	return self
+    whitelisted = true
+    blacklisted = false
+    return self
 
 ## Enable the blacklist, and set the current blacklist to the given list.
 ## Return the current command.
 func set_blacklist(list: Array[String]) -> RestrictedCommand:
-	enable_blacklist()
-	blacklist = list
-	return self
+    enable_blacklist()
+    blacklist = list
+    return self
 
 ## Add a target to the blacklist.
 ## Return the current command.
 func add_blacklist(target: String) -> RestrictedCommand:
-	if !blacklist.has(target):
-		blacklist.append(target)
-	return self
+    if !blacklist.has(target):
+        blacklist.append(target)
+    return self
 
 ## Enable the whitelist, and set the current whitelist to the given list.
 ## Return the current command.
 func set_whitelist(list: Array[String]) -> RestrictedCommand:
-	enable_whitelist()
-	whitelist = list
-	return self
+    enable_whitelist()
+    whitelist = list
+    return self
 
 ## Add a target to the whitelist.
 ## Return the current command.
 func add_whitelist(target: String) -> RestrictedCommand:
-	if !whitelist.has(target):
-		whitelist.append(target)
-	return self
+    if !whitelist.has(target):
+        whitelist.append(target)
+    return self
 
 func run(caller: CommandApplication, input: CommandInput) -> bool:
-	if !is_enabled():
-		return false
+    if !is_enabled():
+        return false
 
-	# check whitelist/blacklist
-	if (whitelisted && !whitelist.has(caller.name)) || (blacklisted && blacklist.has(caller.name)):
-		return false
+    # check whitelist/blacklist
+    if (whitelisted && !whitelist.has(caller.name)) || (blacklisted && blacklist.has(caller.name)):
+        return false
 
-	initialize(caller, input)
+    initialize(caller, input)
 
-	if !ignore_validation:
-		var error: String = input.validate()
-		if !error.is_empty():
-			caller.error(error)
-			return false
+    if !ignore_validation:
+        var error: String = input.validate()
+        if !error.is_empty():
+            caller.error(error)
+            return false
 
-	return execute(caller, input)
+    return execute(caller, input)

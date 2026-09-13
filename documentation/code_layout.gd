@@ -11,8 +11,8 @@ signal something_happened(value: Variant)
 
 # enums (PascalCase, members are CONSTANT_CASE
 enum EnumCase {
-	VALUE_1,
-	VALUE_2
+    VALUE_1,
+    VALUE_2
 }
 
 # constants
@@ -41,31 +41,31 @@ var _is_private_variable: bool = true
 # All other virtual methods
 
 func _ready() -> void:
-	pass
+    pass
 
 func _process(_delta: float) -> void:
-	pass
+    pass
 
 func _physics_process(_delta: float) -> void:
-	pass
+    pass
 
 # public methods (not prefixed by an underscore, snake_case)
 @warning_ignore("unused_parameter")
 func do_something(something: InnerSomething) -> void:
-	pass
+    pass
 
 # export tool button function
 func _on_button_action() -> void:
-	pass
+    pass
 
 # private methods (prefixed by an underscore, snake_case)
 func _do_something_private() -> String:
-	return "Secret"
+    return "Secret"
 
 # callback
 func _on_something_happened() -> void:
-	pass
+    pass
 
 # inner class
 class InnerSomething:
-	pass
+    pass

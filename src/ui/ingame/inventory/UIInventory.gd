@@ -8,32 +8,32 @@ const INVENTORY_SLOT: PackedScene = preload("uid://dnsinxvoqcmqu")
 @export var inventory: Inventory = null
 
 func _ready() -> void:
-	# set grid columns
-	grid_container.columns = inventory.size.x
+    # set grid columns
+    grid_container.columns = inventory.size.x
 
-	setup_inventory_slots()
+    setup_inventory_slots()
 
 ## Create the list of slots to add to the inventory.
 func setup_inventory_slots() -> void:
-	# build the slots with the same inventory size
-	for y: int in inventory.size.y:
-		for x: int in inventory.size.x:
-			var slot: InventorySlot = INVENTORY_SLOT.instantiate()
-			slot._inventory = inventory
-			slot._pos_in_inventory = Vector2i(x, y)
-			grid_container.add_child(slot)
-			slot.gui_input.connect(_on_gui_input.bind(slot))
+    # build the slots with the same inventory size
+    for y: int in inventory.size.y:
+        for x: int in inventory.size.x:
+            var slot: InventorySlot = INVENTORY_SLOT.instantiate()
+            slot._inventory = inventory
+            slot._pos_in_inventory = Vector2i(x, y)
+            grid_container.add_child(slot)
+            slot.gui_input.connect(_on_gui_input.bind(slot))
 
 ## Listens for input on slot to create inventory interactions
 @warning_ignore("unused_parameter")
 func _on_gui_input(event: InputEvent, slot: InventorySlot) -> void:
-	if slot == null:
-		return
-	# TODO drag and drop: move item
-	# TODO drag and drop outside: drop items
+    if slot == null:
+        return
+    # TODO drag and drop: move item
+    # TODO drag and drop outside: drop items
 
-	pass
+    pass
 
 ## Stop processing when not visible
 func _on_visibility_changed() -> void:
-	process_mode = Node.PROCESS_MODE_INHERIT if visible else Node.PROCESS_MODE_DISABLED
+    process_mode = Node.PROCESS_MODE_INHERIT if visible else Node.PROCESS_MODE_DISABLED

@@ -1,0 +1,53 @@
+## A state in a state machine.
+## Virtual base class for all states.
+## Extend this class and override its methods to implement a state.
+@abstract class_name StateMachineState
+
+## Flag at the startup. If set to true, the state will be removed from the
+## state machine. Should be set at the initialization.
+var disabled: bool = false
+
+## Call the initialize function on startup.
+func _init() -> void:
+    initialiaze()
+
+## Define here what happens when the class is created.
+@abstract func initialiaze() -> void
+
+## Get the name of the state. Should be unique in a machine.
+@abstract func get_state_name() -> String
+
+## Emitted when the state finishes and wants to transition to another state.
+@warning_ignore("unused_signal")
+signal finished(next_state_path: String, data: Dictionary)
+
+## Called by the state machine when receiving unhandled input events.
+@warning_ignore("unused_parameter")
+func handle_input(event: InputEvent) -> void:
+    pass
+
+## Called by the state machine on the engine's main loop tick.
+@warning_ignore("unused_parameter")
+func update(delta: float) -> void:
+    pass
+
+## Called by the state machine on the engine's physics update tick.
+@warning_ignore("unused_parameter")
+func physics_update(delta: float) -> void:
+    pass
+
+## Called by the state machine upon changing the active state. The `data` parameter
+## is a dictionary with arbitrary data the state can use to initialize itself.
+@warning_ignore("unused_parameter")
+func enter(previous_state_path: String, data: Dictionary = {}) -> void:
+    pass
+
+## Called by the state machine before changing the active state. Use this function
+## to clean up the state.
+func exit() -> void:
+    pass
+
+## Called when the machine is getting destroyed.
+## Used for long term clean up, such as residual nodes.
+func destroy() -> void:
+    pass

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Building" format=3 uid="uid://ca0qqkrbqar83"]
+
+[ext_resource type="ArrayMesh" uid="uid://mpfrov2bagji" path="res://assets/PolygonStarter/Models/extracted/SM_PolygonPrototype_Prop_Crate_03.res" id="1_jk2kt"]
+[ext_resource type="Script" uid="uid://d248sqs3fwusd" path="res://src/modules/inventory/item/item_recipe.gd" id="1_rvb5t"]
+[ext_resource type="Script" uid="uid://qet3wckgs5yt" path="res://src/modules/building/building.gd" id="2_dfo3a"]
+[ext_resource type="PackedScene" uid="uid://cweg2ds8sfpw7" path="res://src/modules/inventory/item/item_physical/ItemCube.tscn" id="2_ka0nb"]
+
+[resource]
+script = ExtResource("2_dfo3a")
+building_name = "BuildingTest"
+building_display_name = "Test"
+building_group = "Test"
+building_mesh = ExtResource("1_jk2kt")
+building_physical = ExtResource("2_ka0nb")
+metadata/_custom_type_script = "uid://qet3wckgs5yt"
