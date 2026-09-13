@@ -14,6 +14,7 @@
   - [x] generic recipes
   - [ ] items groups
   - [ ] consummable/interactable items
+  - [ ] energy infusing items (powah)?
 - [ ] inventory:
   - [-] managing inventory with click
   - [ ] sort button (group -> by name)
@@ -36,7 +37,7 @@
   - [x] give / clear inventory
   - [x] set time of day
   - [ ] god mode
-      - [ ] change difficulty
+  - [ ] change difficulty
 - [ ] code:
   - [x] variable in snake case
   - [x] constant in upper case snake case

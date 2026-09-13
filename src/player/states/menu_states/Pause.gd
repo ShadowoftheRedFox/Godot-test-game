@@ -4,7 +4,7 @@ class_name PlayerMenuPauseState extends MenuMachineState
 const PAUSE: PackedScene = preload("uid://b30nyqm72dwjv")
 var pause_menu: PlayerPauseMenu = null
 
-func get_state_name() -> String:
+func get_state_name() -> StringName:
     return "pause"
 
 func setup_menu() -> void:
@@ -33,10 +33,7 @@ func exit() -> void:
     _close_menu()
 
 func handle_input(_event: InputEvent) -> void:
-    var c: bool = Input.is_action_just_pressed("action_pause")
-    var p: bool = Input.is_action_just_pressed("action_pause")
-
-    if p || c:
+    if Input.is_action_just_pressed("action_pause"):
         _close_menu()
 
 func _close_menu() -> void:

@@ -1,7 +1,7 @@
 ## The player build list menu UI.
 class_name PlayerMenuBuildListState extends MenuMachineState
 
-func get_state_name() -> String:
+func get_state_name() -> StringName:
     return "buildindList"
 
 func setup_menu() -> void:

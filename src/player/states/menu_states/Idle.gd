@@ -1,7 +1,7 @@
 ## The normal player UI. Mainly show the toolbar.
 class_name PlayerMenuIdleState extends MenuMachineState
 
-func get_state_name() -> String:
+func get_state_name() -> StringName:
     return "idle"
 
 func setup_menu() -> void:

@@ -15,11 +15,11 @@ func _init() -> void:
 @abstract func initialiaze() -> void
 
 ## Get the name of the state. Should be unique in a machine.
-@abstract func get_state_name() -> String
+@abstract func get_state_name() -> StringName
 
 ## Emitted when the state finishes and wants to transition to another state.
 @warning_ignore("unused_signal")
-signal finished(next_state_path: String, data: Dictionary)
+signal finished(next_state_path: StringName, data: Dictionary)
 
 ## Called by the state machine when receiving unhandled input events.
 @warning_ignore("unused_parameter")
@@ -39,7 +39,7 @@ func physics_update(delta: float) -> void:
 ## Called by the state machine upon changing the active state. The `data` parameter
 ## is a dictionary with arbitrary data the state can use to initialize itself.
 @warning_ignore("unused_parameter")
-func enter(previous_state_path: String, data: Dictionary = {}) -> void:
+func enter(previous_state_path: StringName, data: Dictionary = {}) -> void:
     pass
 
 ## Called by the state machine before changing the active state. Use this function

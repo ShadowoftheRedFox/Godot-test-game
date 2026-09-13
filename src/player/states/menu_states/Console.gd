@@ -4,7 +4,7 @@ class_name PlayerMenuConsoleState extends MenuMachineState
 const CONSOLE: PackedScene = preload("uid://fgfsequli1l4")
 var console_menu: ConsoleMenu = null
 
-func get_state_name() -> String:
+func get_state_name() -> StringName:
     return "console"
 
 func setup_menu() -> void:

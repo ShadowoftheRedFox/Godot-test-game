@@ -5,7 +5,7 @@ class_name StateMachine
 var state: StateMachineState = null
 
 ## Map of registered states in the machine.
-var _possible_states: Dictionary[String, StateMachineState] = {}
+var _possible_states: Dictionary[StringName, StateMachineState] = {}
 
 func _init(initial_state: StateMachineState, possible_state: Array[StateMachineState]) -> void:
     assert(initial_state != null, "Initial state machine's state can't be null")
@@ -43,11 +43,11 @@ func add_state(added_state: StateMachineState) -> void:
     _possible_states.set(added_state.get_state_name(), added_state)
 
 ## Check if the machine has a state of this name.
-func has_state(name: String) -> bool:
+func has_state(name: StringName) -> bool:
     return _possible_states.has(name)
 
 ## Get the state with the matching name. Null if it does not exists.
-func get_state(name: String) -> StateMachineState:
+func get_state(name: StringName) -> StateMachineState:
     return _possible_states.get(name)
 
 ## Send inputs to the state.
@@ -63,12 +63,12 @@ func _physics_process(delta: float) -> void:
     state.physics_update(delta)
 
 ## Change to a new state.
-func _transition_to_next_state(target_state: String, data: Dictionary = {}) -> void:
+func _transition_to_next_state(target_state: StringName, data: Dictionary = {}) -> void:
     if !has_state(target_state):
         push_error("Trying to transition to state " + target_state + " but it does not exist.")
         return
 
-    var previous_state: String = state.get_state_name()
+    var previous_state: StringName = state.get_state_name()
     state.exit()
     state = get_state(target_state)
     state.enter(previous_state, data)
