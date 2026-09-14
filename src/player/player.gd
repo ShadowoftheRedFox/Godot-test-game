@@ -51,9 +51,18 @@ func _setup_menu_machine() -> void:
     ])
 
 func _on_ui_changed() -> void:
-    console_menu.visible = input_component.in_console
-    inventory_menu.visible = input_component.in_inventory
-    pause_menu.visible = input_component.in_main_menu
+    # console_menu.visible = input_component.in_console
+    # inventory_menu.visible = input_component.in_inventory
+    # pause_menu.visible = input_component.in_main_menu
+    pass
+
+func _input(event: InputEvent) -> void:
+    _menu_state_machine._input(event)
+    _state_machine._input(event)
+
+func _process(delta: float) -> void:
+    _menu_state_machine._process(delta)
+    _state_machine._process(delta)
 
 func _physics_process(delta: float) -> void:
     input_component.update()
@@ -71,6 +80,9 @@ func _physics_process(delta: float) -> void:
     # TODO better shoot
     if input_component.special_up or input_component.special_down:
         _shoot(-5 if input_component.special_up else 5)
+
+    _menu_state_machine._physics_process(delta)
+    _state_machine._physics_process(delta)
 
 ## Quit main menu and resume the game. Called from other scripts.
 func resume_main_menu() -> void:
@@ -107,22 +119,22 @@ func _on_effect() -> void:
 func setup_ui() -> void:
     # we do not pass by the load_menu function from main_game
     # because we want to have a reference of our node
-    console_menu = CONSOLE.instantiate()
+    # console_menu = CONSOLE.instantiate()
     inventory_menu = INVENTORY.instantiate()
     toolbar_menu = TOOLBAR.instantiate()
-    inventory_menu.inventory = inventory._inventory
+    # inventory_menu.inventory = inventory._inventory
     toolbar_menu.inventory = inventory._inventory
-    pause_menu = PAUSE.instantiate()
+    # pause_menu = PAUSE.instantiate()
 
-    Global.MAIN.hud_root.add_child(console_menu)
-    Global.MAIN.hud_root.add_child(inventory_menu)
+    # Global.MAIN.hud_root.add_child(console_menu)
+    # Global.MAIN.hud_root.add_child(inventory_menu)
     Global.MAIN.hud_root.add_child(toolbar_menu)
-    Global.MAIN.pause_root.add_child(pause_menu)
+    # Global.MAIN.pause_root.add_child(pause_menu)
 
     _on_ui_changed()
 
 func remove_ui() -> void:
-    console_menu.queue_free()
-    inventory_menu.queue_free()
+    # console_menu.queue_free()
+    # inventory_menu.queue_free()
     toolbar_menu.queue_free()
-    pause_menu.queue_free()
+    # pause_menu.queue_free()

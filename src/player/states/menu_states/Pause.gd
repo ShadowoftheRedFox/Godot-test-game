@@ -18,12 +18,13 @@ func setup_menu() -> void:
         disabled = true
         return
     pause_menu = temp
+    pause_menu.visible = false
     Global.MAIN.pause_root.add_child(pause_menu)
 
 func remove_menu() -> void:
     pause_menu.queue_free()
 
-func enter(_previous_state_path: String, _data: Dictionary = {}) -> void:
+func enter(_previous_state_path: StringName, _data: Dictionary = {}) -> void:
     pause_menu.visible = true
     # listen for visibility changes, because the pause menu can close itself
     # when pressing the resume button

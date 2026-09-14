@@ -18,12 +18,13 @@ func setup_menu() -> void:
         disabled = true
         return
     console_menu = temp
+    console_menu.visible = false
     Global.MAIN.hud_root.add_child(console_menu)
 
 func remove_menu() -> void:
     console_menu.queue_free()
 
-func enter(_previous_state_path: String, _data: Dictionary = {}) -> void:
+func enter(_previous_state_path: StringName, _data: Dictionary = {}) -> void:
     console_menu.visible = true
 
 func exit() -> void:
