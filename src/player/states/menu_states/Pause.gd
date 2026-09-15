@@ -19,6 +19,9 @@ func setup_menu() -> void:
         return
     pause_menu = temp
     pause_menu.visible = false
+    # listen for visibility changes, because the pause menu can close itself
+    # when pressing the resume button
+    pause_menu.visibility_changed.connect(_close_menu)
     Global.MAIN.pause_root.add_child(pause_menu)
 
 func remove_menu() -> void:
@@ -26,17 +29,17 @@ func remove_menu() -> void:
 
 func enter(_previous_state_path: StringName, _data: Dictionary = {}) -> void:
     pause_menu.visible = true
-    # listen for visibility changes, because the pause menu can close itself
-    # when pressing the resume button
-    pause_menu.visibility_changed.connect(_close_menu)
 
 func exit() -> void:
-    _close_menu()
+    if pause_menu.visible:
+        pause_menu.visible = false
+        _close_menu()
 
 func handle_input(_event: InputEvent) -> void:
     if Input.is_action_just_pressed("action_pause"):
+        pause_menu.visible = false
         _close_menu()
 
 func _close_menu() -> void:
-    pause_menu.visible = false
-    finished.emit("idle")
+    if !pause_menu.visible:
+        finished.emit("idle")

@@ -45,6 +45,7 @@ func _setup_menu_machine() -> void:
     _menu_state_machine = StateMachine.new(idle, [
         PlayerMenuBuildingState.new(),
         PlayerMenuBuildListState.new(),
+        PlayerMenuConsoleState.new(),
         idle,
         PlayerMenuInventoryState.new(),
         PlayerMenuPauseState.new(),

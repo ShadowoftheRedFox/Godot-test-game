@@ -88,20 +88,16 @@ func set_size(new_size: Vector2i) -> int:
 func add_item(item: InventoryItem, amount: int, position: int = 0) -> int:
     print("called add item")
     if amount <= 0:
-        print("amount 0")
         return 0
     if item == null:
-        print("item null")
         return amount
 
     # check if we already got an item
     var last_item: int = get_last_index_of_item(item, true)
     if last_item > position:
-        print("last item")
         # if yes, add at this slot first
         return add_item(item, amount, last_item)
 
-    print("position: ", position, " size: ", int_size)
     # loop from position to the end of out array
     for i: int in range(position, int_size):
         var current_item: InventoryItem = items[i]
@@ -109,12 +105,10 @@ func add_item(item: InventoryItem, amount: int, position: int = 0) -> int:
 
         # if the slot is full, or not the same item, skip
         if current_amount >= max_items_per_slot || (current_item != null && !item.equals(current_item)):
-            print("full or not same item")
             continue
 
         # calculate the space left in this slot
         var space_left: int = max_items_per_slot - current_amount
-        print("space left ", space_left)
         # if there is enough space for our amount, add it and finish
         if space_left >= amount:
             amounts[i] += amount
@@ -129,9 +123,7 @@ func add_item(item: InventoryItem, amount: int, position: int = 0) -> int:
         items_updated.emit(i)
 
         if amount == 0:
-            print("zero")
             return 0
-    print("end return")
     return amount
 
 ## Remove all items from the inventory.
