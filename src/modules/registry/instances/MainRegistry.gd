@@ -11,7 +11,6 @@ func _init() -> void:
 func get_name() -> StringName:
     return "MainRegistry"
 
-
 func add_object(obj: Object) -> bool:
     if obj == null || obj is not Registry:
         return false

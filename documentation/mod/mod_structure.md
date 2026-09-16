@@ -12,6 +12,9 @@ The mod must be a folder in the [mod folder](../../mod/) called `mod-name` or `m
 Inside the mod folder, the game will read the following files:
 
 - `infos.json`: A mandatory file. Must be a valid JSON file. Define general informations about the mod.
+- `icon.png`: The icon of the mod. Should be around 200x200px in size.
+- `settings.config`: A valid **SettingsFile** file containing the different settings of the mod to be displayed in the settings menu. See [settings.md](./settings.md) for more informations.
+- 
 
 ### infos.json
 

@@ -2,7 +2,7 @@
     "useTabs": false,
     "tabWidth": 4,
     "printWidth": 80,
-    "endOfLine": "crlf",
+    "endOfLine": "lf",
     "overrides": [
         {
             "files": ["*.md"],
@@ -12,4 +12,3 @@
         }
     ]
 }
-

@@ -1,3 +1,13 @@
+<div style="display:inline-flex; gap:1rem;">
+
+![Dynamic Regex Badge](https://img.shields.io/badge/dynamic/regex?url=https%3A%2F%2Fraw.githubusercontent.com%2FShadowoftheRedFox%2FGodot-test-game%2F087984d115c886b82c80a0225ac2d8616d300900%2Fproject.godot&search=config%2Fversion%3D%22(.*)%22&replace=%241&style=for-the-badge&label=Game%20version&color=purple)
+
+![GitHub Issues](https://img.shields.io/github/issues-raw/ShadowoftheRedFox/Godot-test-game?style=for-the-badge)
+
+![GitHub License](https://img.shields.io/github/license/ShadowoftheRedFox/Godot-test-game?style=for-the-badge&color=blue)
+
+</div>
+
 # Introduction
 
 This is just a public repository I share with friends about a game, or just about anaything, that I want to do.
