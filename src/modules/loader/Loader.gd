@@ -1,5 +1,6 @@
-## A registry with signal and amount of items to load.
-@abstract class_name LoadingRegistry extends Registry
+## An interface class used to load things and keep exterior actors updated.
+## All loading task are done in a separate thread.
+@abstract class_name Loader extends RefCounted
 
 @warning_ignore_start("unused_signal")
 ## Signal emitted when the loading is starting.
@@ -10,6 +11,9 @@ signal loading_ended()
 
 ## Signals something has been loaded, with the current progress, between 0 and 1.
 signal loading_progress(progress: float)
+
+## Signals something has gone wrong, and the loading has stoppe, with the associated error.
+signal loading_failed(error: String)
 @warning_ignore_restore("unused_signal")
 
 ## Return the current progress. It must be a value between 0 and 1.
@@ -23,12 +27,3 @@ signal loading_progress(progress: float)
 
 ## Starts the loading.
 @abstract func load() -> void
-
-## Remove the prefix from the given value and return the trimmed value.
-## Prefix are separated from their value by a ":"
-static func _trim_prefix(mod_name: StringName, value: StringName) -> StringName:
-    # remove the mod prefix if there is one
-    var prefix: String = mod_name + ":"
-    if value.begins_with(prefix):
-        value = value.trim_prefix(prefix) as StringName
-    return value

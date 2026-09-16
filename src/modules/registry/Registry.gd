@@ -1,4 +1,4 @@
-## Dictionary that holds a type of resource to be fetched during runtime.
+## Dictionary wrapper that holds a type of resource to be fetched during runtime.
 @abstract class_name Registry extends RefCounted
 
 ## Get the name of the registry. Must be unique.
@@ -20,6 +20,11 @@
 ## Check if the given object ID is registered.
 ## Return true if it registered, false otherwise.
 @abstract func has_object(id: Variant) -> bool
+
+## Transform the ID.
+## Useful if the ID if the object must be changed when stored or fetched.
+func _transform_id(id: Variant) -> Variant:
+    return id
 
 ## Returns the amount of objects registered inside.
 @abstract func size() -> int
