@@ -19,3 +19,9 @@ static func get_random_string(length: int) -> String:
         res += sample[randi() % 63]
 
     return res
+
+## Checks if the given value blank, meaning it does not contain any characters
+## except blank characters (spaces, line breaks...)
+static func is_blank(value: String) -> bool:
+    var regexp: RegEx = RegEx.create_from_string("^(\\s*)$")
+    return regexp.search(value) != null

@@ -1,6 +1,9 @@
 ## Only contains constant to fetch
 class_name ConstantManager
 
+## The game name.
+const GAME_NAME: StringName = "WTFisTHIS"
+
 ## Contains all item names in the game.
 var ITEM_NAMES: PackedStringArray = PackedStringArray()
 ## Contains all building names in the game.

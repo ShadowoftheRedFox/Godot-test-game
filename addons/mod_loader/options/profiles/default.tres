@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ModLoaderOptionsProfile" format=3 uid="uid://ch2svi71xvnmp"]
+
+[ext_resource type="Script" uid="uid://f46uvi5y8oqi" path="res://addons/mod_loader/resources/options_profile.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+override_path_to_mods = "res://mod/mods"
+override_path_to_configs = "res://mod/configs"
+override_path_to_workshop = "res://mod/workshop"

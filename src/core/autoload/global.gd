@@ -19,6 +19,9 @@ var IM: InventoryModule = InventoryModule.new()
 # when the controller is initialized, it'll set himself up here
 var environment: EnvironmentController = null
 
+## The main registry, holding the other registries
+var REGISTRIES: MainRegistry = MainRegistry.new()
+
 ## The main game script.
 ## It is set up when the main game loads.
 var MAIN: MainGame = null

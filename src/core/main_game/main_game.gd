@@ -16,7 +16,7 @@ enum WorldLayer {
 const PLAYER_SCENE_UID: String = "uid://26srdfxbxw6k"
 const TEST_SCENE_UID: String = "uid://b8brfdyr57ked"
 const MAIN_MENU_SCENE_UID: String = "uid://de2bged6t63hi"
-
+const MAIN_LOADING_SCENE_UID: String = "uid://b5eukuh2tpuev"
 const DEBUG_OVERLAY_UID: String = "uid://gwa7n875db7o"
 
 var player: Player = null

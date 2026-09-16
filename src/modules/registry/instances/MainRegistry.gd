@@ -4,12 +4,14 @@ class_name MainRegistry extends Registry
 ## Internal dictionary holding the registered registries.
 var _registries: Dictionary[StringName, Registry] = {}
 
+const NAME: StringName = "MainRegistry"
+
 func _init() -> void:
     # TODO load main registries
     pass
 
 func get_name() -> StringName:
-    return "MainRegistry"
+    return NAME
 
 func add_object(obj: Object) -> bool:
     if obj == null || obj is not Registry:
