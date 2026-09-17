@@ -48,3 +48,7 @@
   - [ ] easy mod addition
   - [ ] generic settings tabs
   - [ ] way to load resources pretty (other than addon watching a specific folder)
+
+Check this out:
+https://itch.io/c/7216862/godot-cheatsheets
+https://itch.io/c/6593422/my-cool-guides

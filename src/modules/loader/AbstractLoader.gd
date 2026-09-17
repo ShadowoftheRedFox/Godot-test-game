@@ -9,7 +9,8 @@ signal loading_started()
 ## Signal emitted when the loading has ended, with the result.
 signal loading_ended(result: Variant)
 
-## Signals something has gone wrong, and the loading has stoppe, with the associated error.
+## Signals something has gone wrong, and the loading has stoppe, with the
+## associated error.
 signal loading_failed(error: String)
 @warning_ignore_restore("unused_signal")
 
@@ -24,3 +25,18 @@ signal loading_failed(error: String)
 
 ## Starts the loading.
 @abstract func load() -> void
+
+## Gets the result once the loading is finished, even after the event has been
+## emitted.
+## Returns null if the loading is not finished.
+## **NOTE:** The return value of the loading could be null, so use is_finished
+## for a more reliable way to know if the loading is done.
+@abstract func get_result() -> Variant
+
+## Return true if the loader has not yet ended, even if it has not started yet.
+func is_loading() -> bool:
+    return get_progress() < 1.0
+
+## Return true when the loading has ended.
+func is_finished() -> bool:
+    return !is_loading()

@@ -1,16 +1,16 @@
-## Load the given _task in a thread and return the result.
-@abstract class_name TaskLoader extends AbstractLoader
+## Load the given task in a thread and return the result.
+class_name TaskLoader extends AbstractLoader
 
-## Get the _task to perfom by the loader.
-@abstract func get_task() -> AbstractTask
-
-## Flag to know if the _task has finished loading.
+## Flag to know if the task has finished loading.
 var _finished_loading: bool = false
-## Floag to know if the _task is currently loading.
+## Floag to know if the task is currently loading.
 var _loading: bool = false
 
-## The _task currently running.
+## The task currently running.
 var _task: AbstractTask = null
+
+func _init(task: AbstractTask) -> void:
+    _task = task
 
 func get_amount_loaded() -> int:
     return 1 if _finished_loading else 0
@@ -23,13 +23,12 @@ func load() -> void:
     if _finished_loading || _loading:
         return
 
-    # get the _task
-    _task = get_task()
+    # check the task
     if _task == null:
         loading_failed.emit(ErrorList.ERR_V_IS_NULL % "Given task")
         return
 
-    # prepare to load the _task
+    # prepare to load the task
     _loading = true
     _task.result.connect(_task_end)
     _task.fail.connect(_task_fail)
