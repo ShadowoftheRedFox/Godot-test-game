@@ -1,16 +1,13 @@
 ## An interface class used to load things and keep exterior actors updated.
 ## All loading task are done in a separate thread.
-@abstract class_name Loader extends RefCounted
+@abstract class_name AbstractLoader extends RefCounted
 
 @warning_ignore_start("unused_signal")
 ## Signal emitted when the loading is starting.
 signal loading_started()
 
-## Signal emitted when the loading has ended.
-signal loading_ended()
-
-## Signals something has been loaded, with the current progress, between 0 and 1.
-signal loading_progress(progress: float)
+## Signal emitted when the loading has ended, with the result.
+signal loading_ended(result: Variant)
 
 ## Signals something has gone wrong, and the loading has stoppe, with the associated error.
 signal loading_failed(error: String)

@@ -1,5 +1,5 @@
 ## The main item. Holds the main game items, but also the entry point for mod items.
-class_name ItemRegistry extends Registry
+class_name ItemRegistry extends AbstractRegistry
 
 var _items: Dictionary[StringName, InventoryItem] = {}
 

@@ -21,6 +21,7 @@ var environment: EnvironmentController = null
 
 ## The main registry, holding the other registries
 var REGISTRIES: MainRegistry = MainRegistry.new()
+var LOADER: MultiTaskLoader
 
 ## The main game script.
 ## It is set up when the main game loads.

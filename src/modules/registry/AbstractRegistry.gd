@@ -1,5 +1,5 @@
 ## Dictionary wrapper that holds a type of resource to be fetched during runtime.
-@abstract class_name Registry extends RefCounted
+@abstract class_name AbstractRegistry extends RefCounted
 
 ## Get the name of the registry. Must be unique.
 @abstract func get_name() -> StringName
