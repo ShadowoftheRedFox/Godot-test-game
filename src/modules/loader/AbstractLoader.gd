@@ -15,12 +15,15 @@ signal loading_failed(error: String)
 @warning_ignore_restore("unused_signal")
 
 ## Return the current progress. It must be a value between 0 and 1.
-@abstract func get_progress() -> float
+func get_progress() -> float:
+    if get_amount_to_load() == 0:
+        return 0.0
+    return float(get_amount_loaded()) / float(get_amount_to_load())
 
-## Get the amount of object to load.
+## Get the amount of object to load. Must be a value greater or equal to 1.
 @abstract func get_amount_to_load() -> int
 
-## Get the amount of object to loaded.
+## Get the amount of object to loaded. Must be between 0 and `get_amount_to_load()`.
 @abstract func get_amount_loaded() -> int
 
 ## Starts the loading.

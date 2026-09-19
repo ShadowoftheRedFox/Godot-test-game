@@ -57,6 +57,5 @@ camera = NodePath("../CameraAnchor/Camera3D")
 [node name="Inventory" type="Node" parent="." unique_id=934331513]
 unique_name_in_owner = true
 script = ExtResource("6_v7rlw")
-size = Vector2i(5, 3)
 items = Array[ExtResource("7_20ow7")]([ExtResource("8_20ow7")])
 amounts = Array[int]([10])

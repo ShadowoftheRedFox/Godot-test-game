@@ -2,9 +2,9 @@ class_name PhysicalItem extends Node3D
 
 ## Current item data.
 @export var item: InventoryItem = null
-## Reference to teh instantiated item physical node.
+## Reference to the instantiated item physical node.
 var itemPhysical: RigidBody3D = null
-## Reference to the mesh instance that will host teh item mesh.
+## Reference to the mesh instance that will host the item mesh.
 var mesh3d: MeshInstance3D = null
 
 func _ready() -> void:

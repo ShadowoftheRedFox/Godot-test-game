@@ -35,7 +35,7 @@ func _category_name(category: Building.BuildingCategory) -> String:
         _:
             return "Unknown"
 
-## Create teh menus
+## Create the menus
 func _setup_menus() -> void:
     for n: String in Global.CONST.BUILDING_NAMES:
         _setup_menu(n)
