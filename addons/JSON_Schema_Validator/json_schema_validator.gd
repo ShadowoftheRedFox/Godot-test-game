@@ -89,7 +89,7 @@ const ERR_FORMAT = "String '%s' does not match its corresponding format '%s'"
 
 # This is one and only function that need you to call outside
 # If all validation checks passes, this OK
-func validate(json_data : String, schema: String) -> String:
+func validate(json_data: String, schema: String) -> String:
 	var error: int
 
 	var json = JSON.new()
@@ -99,7 +99,7 @@ func validate(json_data : String, schema: String) -> String:
 
 	# General validation input schema as JSONSchema file
 	error = json.parse(schema)
-	if not error == OK : return ERR_WRONG_SCHEMA_GEN + error_string(error)
+	if not error == OK: return ERR_WRONG_SCHEMA_GEN + error_string(error)
 	var test_json_conv = JSON.new()
 	test_json_conv.parse(schema)
 	var parsed_schema = test_json_conv.get_data()
@@ -183,7 +183,7 @@ func _type_selection(json_data: String, schema: Dictionary, key: String = DEF_KE
 
 
 func _var_to_array(variant) -> Array:
-	var result : Array = []
+	var result: Array = []
 	if typeof(variant) == TYPE_ARRAY:
 		result = variant
 	else:
@@ -192,11 +192,10 @@ func _var_to_array(variant) -> Array:
 
 func _validate_array(input_data: Array, input_schema: Dictionary, property_name: String = DEF_KEY_NAME) -> String:
 	# TODO: contains minContains maxContains uniqueItems
-
 	# Initialize variables
-	var error : String = "" # Variable to store any error messages
-	var items_array : Array # Array of items in the schema
-	var suberror : Array = [] # Array of suberrors in each item
+	var error: String = "" # Variable to store any error messages
+	var items_array: Array # Array of items in the schema
+	var suberror: Array = [] # Array of suberrors in each item
 	var additional_items_schema: Dictionary # Schema for additional items in the input data
 	var is_additional_item_allowed: bool # Flag to check if additional items are allowed
 
@@ -213,7 +212,7 @@ func _validate_array(input_data: Array, input_schema: Dictionary, property_name:
 	if input_schema.has(JSKW_MAX_ITEMS):
 			# Check if non negative number
 			if input_schema.maxItems < 0:
-				return ERR_WRONG_SCHEMA_GEN + "minItems must be a non-negative number."
+				return ERR_WRONG_SCHEMA_GEN + "maxItems must be a non-negative number."
 
 			if input_data.size() > input_schema.maxItems:
 				return ERR_MORE_ITEMS % [input_data.size(), input_schema.maxItems]
@@ -393,7 +392,7 @@ func _validate_number(input_data: float, input_schema: Dictionary, property_name
 
 func _validate_object(input_data: Dictionary, input_schema: Dictionary, property_name: String = DEF_KEY_NAME) -> String:
 	# TODO: patternProperties
-	var error : String = ""
+	var error: String = ""
 
 	# Process dependencies
 	if input_schema.has(JSKW_DEPEND):
@@ -425,7 +424,6 @@ func _validate_object(input_data: Dictionary, input_schema: Dictionary, property
 
 	# Process properties
 	if input_schema.has(JSKW_PROP):
-
 		# Process required
 		if input_schema.has(JSKW_REQ):
 			if typeof(input_schema.required) != TYPE_ARRAY: return ERR_REQ_PROP_GEN % property_name
@@ -486,22 +484,22 @@ func _validate_object(input_data: Dictionary, input_schema: Dictionary, property
 
 func _validate_string(input_data: String, input_schema: Dictionary, property_name: String = DEF_KEY_NAME) -> String:
 	# TODO: format
-	var error : String = ""
+	var error: String = ""
 	if input_schema.has(JSKW_LENGTH_MIN):
 		if not (typeof(input_schema[JSKW_LENGTH_MIN]) == TYPE_INT || typeof(input_schema[JSKW_LENGTH_MIN]) == TYPE_FLOAT):
-			return ERR_TYPE_MISMATCH_GEN % [JST_INTEGER, property_name+"."+JSKW_LENGTH_MIN]
+			return ERR_TYPE_MISMATCH_GEN % [JST_INTEGER, property_name + "." + JSKW_LENGTH_MIN]
 		if input_data.length() < input_schema[JSKW_LENGTH_MIN]:
-			return ERR_INVALID_JSON_GEN % ERR_RANGE_S % [property_name, input_data.length(), JSM_LESS ,input_schema[JSKW_LENGTH_MIN]]
+			return ERR_INVALID_JSON_GEN % ERR_RANGE_S % [property_name, input_data.length(), JSM_LESS, input_schema[JSKW_LENGTH_MIN]]
 
 	if input_schema.has(JSKW_LENGTH_MAX):
 		if not (typeof(input_schema[JSKW_LENGTH_MAX]) == TYPE_INT || typeof(input_schema[JSKW_LENGTH_MAX]) == TYPE_FLOAT):
-			return ERR_TYPE_MISMATCH_GEN % [JST_INTEGER, property_name+"."+JSKW_LENGTH_MAX]
+			return ERR_TYPE_MISMATCH_GEN % [JST_INTEGER, property_name + "." + JSKW_LENGTH_MAX]
 		if input_data.length() > input_schema[JSKW_LENGTH_MAX]:
 			return ERR_INVALID_JSON_GEN % ERR_RANGE_S % [property_name, input_data.length(), JSM_GREATER, input_schema[JSKW_LENGTH_MAX]]
 
 	if input_schema.has(JSKW_PATTERN):
 		if not (typeof(input_schema[JSKW_PATTERN]) == TYPE_STRING):
-			return ERR_TYPE_MISMATCH_GEN % [JST_STRING, property_name+"."+JSKW_PATTERN]
+			return ERR_TYPE_MISMATCH_GEN % [JST_STRING, property_name + "." + JSKW_PATTERN]
 		var regex = RegEx.new()
 		regex.compile(input_schema[JSKW_PATTERN])
 		if regex.search(input_data) == null:
