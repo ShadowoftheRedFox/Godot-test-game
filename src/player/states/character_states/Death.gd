@@ -2,7 +2,7 @@
 class_name PlayerDeathState extends StateMachineState
 
 func get_state_name() -> StringName:
-    return "death"
+	return "death"
 
 func initialiaze() -> void:
-    pass
+	pass

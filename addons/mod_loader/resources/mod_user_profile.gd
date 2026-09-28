@@ -8,11 +8,11 @@ var name := ""
 ## A list of all installed mods
 ## [codeblock]
 ## "mod_list": {
-##     "Namespace-ModName": {
-##         "current_config": "default",
-##         "is_active": false,
-##         "zip_path": "",
-##     },
+##	 "Namespace-ModName": {
+##		 "current_config": "default",
+##		 "is_active": false,
+##		 "zip_path": "",
+##	 },
 ## [/codeblock]
 var mod_list := {}
 

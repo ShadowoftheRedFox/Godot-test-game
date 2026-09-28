@@ -1,0 +1,11 @@
+{
+    "$schema": "../schemas/item.json",
+    "id": "ItemIronOre",
+    "display_name": "Iron ore",
+    "stack_size": 100,
+    "behaviors": [
+        {
+            "name": "TestItemBehavior"
+        }
+    ]
+}

@@ -52,10 +52,10 @@ static func find_steam_workshop_zips() -> Array[String]:
 # traverses directories relative to where a Steam game and its workshop content
 # would be installed. Based on code by Blobfish (developer of Brotato).
 # For reference, these are the paths of a Steam game and its workshop folder:
-#   GAME     = Steam/steamapps/common/GameName
+#   GAME	 = Steam/steamapps/common/GameName
 #   WORKSHOP = Steam/steamapps/workshop/content/AppID
 # Eg. Brotato:
-#   GAME     = Steam/steamapps/common/Brotato
+#   GAME	 = Steam/steamapps/common/Brotato
 #   WORKSHOP = Steam/steamapps/workshop/content/1942280
 static func _get_path_to_workshop() -> String:
 	if ModLoaderStore.ml_options.override_path_to_workshop:
@@ -103,7 +103,7 @@ static func _get_steam_app_id() -> String:
 			return ""
 
 		steam_app_id = str(file_content.app_id)
-	else :
+	else:
 		ModLoaderLog.error("Can't open steam_data file, \"%s\". Please make sure the file exists and is valid." % game_install_directory.path_join("steam_data.json"), LOG_NAME)
 
 	return steam_app_id

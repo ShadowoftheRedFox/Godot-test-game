@@ -2,10 +2,10 @@
 class_name PlayerMenuBuildingState extends MenuMachineState
 
 func get_state_name() -> StringName:
-    return "building"
+	return "building"
 
 func setup_menu() -> void:
-    pass
+	pass
 
 func remove_menu() -> void:
-    pass
+	pass

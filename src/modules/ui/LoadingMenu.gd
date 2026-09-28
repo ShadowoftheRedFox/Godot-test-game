@@ -16,9 +16,9 @@ signal setp_ended(step: int)
 @warning_ignore_restore("unused_signal")
 
 ## Return the number of loading steps to do. Must be greater or equal to 1.
-@abstract func get_step_size() -> int
+@abstract func get_step_amount() -> int
 
-## Get the value of the current step. Must be greater or equal to 0, and less than `get_step_size()`.
+## Get the currently loading step index. Must be greater or equal to 0, and less than `get_step_amount()`.
 @abstract func get_step() -> int
 
 ## Return the progress of the current step. It must be a value between 0 and 1.

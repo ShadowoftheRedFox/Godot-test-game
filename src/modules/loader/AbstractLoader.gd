@@ -16,9 +16,9 @@ signal loading_failed(error: String)
 
 ## Return the current progress. It must be a value between 0 and 1.
 func get_progress() -> float:
-    if get_amount_to_load() == 0:
-        return 0.0
-    return float(get_amount_loaded()) / float(get_amount_to_load())
+	if get_amount_to_load() == 0:
+		return 0.0
+	return float(get_amount_loaded()) / float(get_amount_to_load())
 
 ## Get the amount of object to load. Must be a value greater or equal to 1.
 @abstract func get_amount_to_load() -> int
@@ -38,8 +38,8 @@ func get_progress() -> float:
 
 ## Return true if the loader has not yet ended, even if it has not started yet.
 func is_loading() -> bool:
-    return get_progress() < 1.0
+	return get_progress() < 1.0
 
 ## Return true when the loading has ended.
 func is_finished() -> bool:
-    return !is_loading()
+	return !is_loading()

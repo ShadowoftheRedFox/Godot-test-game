@@ -2,7 +2,7 @@
 class_name PlayerSlidingState extends StateMachineState
 
 func get_state_name() -> StringName:
-    return "sliding"
+	return "sliding"
 
 func initialiaze() -> void:
-    pass
+	pass

@@ -9,7 +9,7 @@ var disabled: bool = false
 
 ## Call the initialize function on startup.
 func _init() -> void:
-    initialiaze()
+	initialiaze()
 
 ## Define here what happens when the class is created.
 @abstract func initialiaze() -> void
@@ -24,30 +24,30 @@ signal finished(next_state_path: StringName, data: Dictionary)
 ## Called by the state machine when receiving unhandled input events.
 @warning_ignore("unused_parameter")
 func handle_input(event: InputEvent) -> void:
-    pass
+	pass
 
 ## Called by the state machine on the engine's main loop tick.
 @warning_ignore("unused_parameter")
 func update(delta: float) -> void:
-    pass
+	pass
 
 ## Called by the state machine on the engine's physics update tick.
 @warning_ignore("unused_parameter")
 func physics_update(delta: float) -> void:
-    pass
+	pass
 
 ## Called by the state machine upon changing the active state. The `data` parameter
 ## is a dictionary with arbitrary data the state can use to initialize itself.
 @warning_ignore("unused_parameter")
 func enter(previous_state_path: StringName, data: Dictionary = {}) -> void:
-    pass
+	pass
 
 ## Called by the state machine before changing the active state. Use this function
 ## to clean up the state.
 func exit() -> void:
-    pass
+	pass
 
 ## Called when the machine is getting destroyed.
 ## Used for long term clean up, such as residual nodes.
 func destroy() -> void:
-    pass
+	pass

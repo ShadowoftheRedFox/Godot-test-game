@@ -15,7 +15,7 @@
 
 ## Get the registred object matching the ID.
 ## Return the object if it is registred, null otherwise.
-@abstract func get_object(id: Variant) -> Object
+@abstract func get_object(id: Variant) -> Variant
 
 ## Check if the given object ID is registered.
 ## Return true if it registered, false otherwise.
@@ -24,7 +24,7 @@
 ## Transform the ID.
 ## Useful if the ID if the object must be changed when stored or fetched.
 func _transform_id(id: Variant) -> Variant:
-    return id
+	return id
 
 ## Returns the amount of objects registered inside.
 @abstract func size() -> int

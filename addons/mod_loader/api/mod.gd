@@ -69,8 +69,8 @@ static func install_script_extension(child_script_path: String) -> void:
 ## [b]Examples:[/b][br]
 ## [codeblock]
 ## ModLoaderMod.install_script_hooks(
-##     "res://tools/utilities.gd",
-##     extensions_dir_path.path_join("tools/utilities-hook.gd")
+##	 "res://tools/utilities.gd",
+##	 extensions_dir_path.path_join("tools/utilities-hook.gd")
 ## )
 ## [/codeblock]
 static func install_script_hooks(vanilla_script_path: String, hook_script_path: String) -> void:
@@ -150,54 +150,54 @@ static func install_script_hooks(vanilla_script_path: String, hook_script_path: 
 ##
 ##
 ## func _ready():
-##     $CanvasLayer/Control/Label.text = "Version: %s" % version
-##     print(Utilities.format_date(15, 11, 2024))
+##	 $CanvasLayer/Control/Label.text = "Version: %s" % version
+##	 print(Utilities.format_date(15, 11, 2024))
 ## [/codeblock]
 ##
 ## It can be hooked in [code]mod_main.gd[/code] like this
 ## [codeblock]
 ## func _init() -> void:
-##     ModLoaderMod.add_hook(change_version, "res://main.gd", "_ready")
-##     ModLoaderMod.add_hook(time_travel, "res://tools/utilities.gd", "format_date")
-##     # Multiple hooks can be added to a single method.
-##     ModLoaderMod.add_hook(add_season, "res://tools/utilities.gd", "format_date")
+##	 ModLoaderMod.add_hook(change_version, "res://main.gd", "_ready")
+##	 ModLoaderMod.add_hook(time_travel, "res://tools/utilities.gd", "format_date")
+##	 # Multiple hooks can be added to a single method.
+##	 ModLoaderMod.add_hook(add_season, "res://tools/utilities.gd", "format_date")
 ##
 ##
 ## # The script we are hooking is attached to a node, which we can get from reference_object
 ## # then we can change any variables it has
 ## func change_version(chain: ModLoaderHookChain) -> void:
-##     # Using a typecast here (with "as") can help with autocomplete and avoiding errors
-##     var main_node := chain.reference_object as MainGame
-##     main_node.version = "Modloader Hooked!"
-##     # _ready, which we are hooking, does not have any arguments
-##     chain.execute_next()
+##	 # Using a typecast here (with "as") can help with autocomplete and avoiding errors
+##	 var main_node := chain.reference_object as MainGame
+##	 main_node.version = "Modloader Hooked!"
+##	 # _ready, which we are hooking, does not have any arguments
+##	 chain.execute_next()
 ##
 ##
 ## # Parameters can be manipulated easily by changing what is passed into .execute_next()
 ## # The vanilla method (Utilities.format_date) takes 3 arguments, our hook method takes
 ## # the ModLoaderHookChain followed by the same 3
 ## func time_travel(chain: ModLoaderHookChain, day: int, month: int, year: int) -> String:
-##     print("time travel!")
-##     year -= 100
-##     # Just the vanilla arguments are passed along in the same order, wrapped into an Array
-##     var val = chain.execute_next([day, month, year])
-##     return val
+##	 print("time travel!")
+##	 year -= 100
+##	 # Just the vanilla arguments are passed along in the same order, wrapped into an Array
+##	 var val = chain.execute_next([day, month, year])
+##	 return val
 ##
 ##
 ## # The return value can be manipulated by calling the next hook (or vanilla) first
 ## # then changing it and returning the new value.
 ## func add_season(chain: ModLoaderHookChain, day: int, month: int, year: int) -> String:
-##     var output = chain.execute_next([day, month, year])
-##     match month:
-##         12, 1, 2:
-##             output += ", Winter"
-##         3, 4, 5:
-##             output += ", Spring"
-##         6, 7, 8:
-##             output += ", Summer"
-##         9, 10, 11:
-##             output += ", Autumn"
-##     return output
+##	 var output = chain.execute_next([day, month, year])
+##	 match month:
+##		 12, 1, 2:
+##			 output += ", Winter"
+##		 3, 4, 5:
+##			 output += ", Spring"
+##		 6, 7, 8:
+##			 output += ", Summer"
+##		 9, 10, 11:
+##			 output += ", Autumn"
+##	 return output
 ## [/codeblock]
 ##
 static func add_hook(mod_callable: Callable, script_path: String, method_name: String) -> void:
@@ -247,7 +247,6 @@ static func add_translation(resource_path: String) -> void:
 		ModLoaderLog.info("Added Translation from Resource -> %s" % resource_path, LOG_NAME)
 	else:
 		ModLoaderLog.fatal("Failed to load translation at path: %s" % [resource_path], LOG_NAME)
-
 
 
 ## Marks the given scene for to be refreshed. It will be refreshed at the correct point in time later.[br]

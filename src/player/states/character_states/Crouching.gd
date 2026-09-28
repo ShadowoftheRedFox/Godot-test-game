@@ -2,7 +2,7 @@
 class_name PlayerCrouchingState extends StateMachineState
 
 func get_state_name() -> StringName:
-    return "crouching"
+	return "crouching"
 
 func initialiaze() -> void:
-    pass
+	pass

@@ -5,34 +5,37 @@ const CONSOLE: PackedScene = preload("uid://fgfsequli1l4")
 var console_menu: ConsoleMenu = null
 
 func get_state_name() -> StringName:
-    return "console"
+	return "console"
 
 func setup_menu() -> void:
-    var temp: Node = CONSOLE.instantiate()
-    if temp == null:
-        printerr("Failed to load the console menu")
-        disabled = true
-        return
-    if temp is not ConsoleMenu:
-        printerr("The provided scene is not a ConsoleMenu")
-        disabled = true
-        return
-    console_menu = temp
-    console_menu.visible = false
-    Global.MAIN.hud_root.add_child(console_menu)
+	var temp: Node = CONSOLE.instantiate()
+	if temp == null:
+		printerr("Failed to load the console menu")
+		disabled = true
+		return
+	if temp is not ConsoleMenu:
+		printerr("The provided scene is not a ConsoleMenu")
+		disabled = true
+		return
+	console_menu = temp
+	console_menu.visible = false
+	Global.MAIN.hud_root.add_child(console_menu)
 
 func remove_menu() -> void:
-    console_menu.queue_free()
+	console_menu.queue_free()
 
 func enter(_previous_state_path: StringName, _data: Dictionary = {}) -> void:
-    console_menu.visible = true
+	console_menu.visible = true
 
 func exit() -> void:
-    console_menu.visible = false
+	console_menu.visible = false
 
 func handle_input(_event: InputEvent) -> void:
-    var c: bool = Input.is_action_just_pressed("action_console")
-    var p: bool = Input.is_action_just_pressed("action_pause")
+	var c: bool = Input.is_action_just_pressed("action_console")
+	var p: bool = Input.is_action_just_pressed("action_pause")
 
-    if p || c:
-        finished.emit("idle")
+	if p || c:
+		finished.emit("idle")
+
+func destroy() -> void:
+	Global.MAIN.hud_root.remove_child(console_menu)

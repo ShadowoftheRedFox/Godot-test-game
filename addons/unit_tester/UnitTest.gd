@@ -3,11 +3,11 @@
 
 ## Initialize the script before launching the test.
 func initialize() -> void:
-    pass
+	pass
 
 ## Clean the script after launching the test.
 func clean() -> void:
-    pass
+	pass
 
 ## Run the unit tests.
 @abstract func test() -> void

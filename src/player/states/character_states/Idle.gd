@@ -2,7 +2,7 @@
 class_name PlayerIdleState extends StateMachineState
 
 func get_state_name() -> StringName:
-    return "idle"
+	return "idle"
 
 func initialiaze() -> void:
-    pass
+	pass

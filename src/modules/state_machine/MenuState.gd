@@ -7,7 +7,7 @@
 @abstract func remove_menu() -> void
 
 func initialiaze() -> void:
-    setup_menu()
+	setup_menu()
 
 func destroy() -> void:
-    remove_menu()
+	remove_menu()

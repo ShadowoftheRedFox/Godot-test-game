@@ -3,30 +3,30 @@ class_name Building extends Resource
 ## The category of the building.
 ## Some category will call specific functions and/or do specific actions.
 enum BuildingCategory {
-    ## No specific category. The default value.
-    UNCATEGORIZED,
-    ## Proction building (resources, electricity...)
-    PRODUCTION,
-    ## Storage building (items, fluids...)
-    STORAGE,
-    ## Base buildings (walls, floors, doors...)
-    BUILDING,
-    ## Decoration buildings
-    DECORATION,
-    ## Transportation buildings (trains, conveyor, pipes...)
-    TRANSPORTATION,
+	## No specific category. The default value.
+	UNCATEGORIZED,
+	## Proction building (resources, electricity...)
+	PRODUCTION,
+	## Storage building (items, fluids...)
+	STORAGE,
+	## Base buildings (walls, floors, doors...)
+	BUILDING,
+	## Decoration buildings
+	DECORATION,
+	## Transportation buildings (trains, conveyor, pipes...)
+	TRANSPORTATION,
 }
 
 ## The status of the building, if it can produce something.
 enum BuildingStatus {
-    ## Disabled, by either the player or electricity requirements.
-    DISABLED,
-    ## Paused, the items requirements are not meet to run.
-    PAUSED,
-    ## Running, everything is OK.
-    RUNNING,
-    ## Running and is boosted.
-    BOOSTED
+	## Disabled, by either the player or electricity requirements.
+	DISABLED,
+	## Paused, the items requirements are not meet to run.
+	PAUSED,
+	## Running, everything is OK.
+	RUNNING,
+	## Running and is boosted.
+	BOOSTED
 }
 
 @export_group("General", "building_")
@@ -50,7 +50,7 @@ enum BuildingStatus {
 
 ## Whether or not this item is visible in the building menu.
 func visible_in_building_menu() -> bool:
-    return true
+	return true
 
 # ## If this building uses electricty, returns the position where the cables
 # ## should conect to it.
