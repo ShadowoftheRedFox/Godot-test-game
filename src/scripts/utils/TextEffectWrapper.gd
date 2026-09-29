@@ -160,7 +160,7 @@ func char(codepoint: int) -> TextEffectWrapper:
 	return self
 
 ## Makes a paragraph with the following options:
-func p(options: Dictionary[String, String] = {}) -> TextEffectWrapper:
+func p(_options: Dictionary[String, String] = {}) -> TextEffectWrapper:
 	#TODO
 	return self
 
@@ -170,7 +170,7 @@ func br() -> TextEffectWrapper:
 	return self
 
 ## Horizontal rule with the following options:
-func hr(options: Dictionary[String, String] = {}) -> TextEffectWrapper:
+func hr(_options: Dictionary[String, String] = {}) -> TextEffectWrapper:
 	#TODO
 	return self
 
@@ -198,12 +198,12 @@ func fill() -> TextEffectWrapper:
 func indent(amount: int = 1) -> TextEffectWrapper:
 	if amount <= 1:
 		amount = 1
-	for i: int in range(amount):
+	for _i: int in range(amount):
 		_value = apply_tag(_value, "indent")
 	return self
 
 ## Makes an url with the following options:
-func url(link: String, options: Dictionary[String, String] = {}) -> TextEffectWrapper:
+func url(_link: String, _options: Dictionary[String, String] = {}) -> TextEffectWrapper:
 	#TODO
 	return self
 
@@ -213,11 +213,11 @@ func hint(text: String) -> TextEffectWrapper:
 	return self
 
 ## Add an image with the following options:
-func img(options: Dictionary[String, String] = {}) -> TextEffectWrapper:
+func img(_options: Dictionary[String, String] = {}) -> TextEffectWrapper:
 	#TODO
 	return self
 ## Change the font with the following options:
-func font(options: Dictionary[String, String] = {}) -> TextEffectWrapper:
+func font(_options: Dictionary[String, String] = {}) -> TextEffectWrapper:
 	#TODO
 	return self
 
@@ -230,7 +230,7 @@ func font_size(size: int = 1) -> TextEffectWrapper:
 
 ## A drop cap is the starting letter of a paragraph that can span multiple lines.
 ## Makes a drop cap, with the following options:
-func dropcap(font: String, font_size: int, color: String, _outline_size: int, _outline_color: String, margins: Array[int] = []) -> TextEffectWrapper:
+func dropcap(_font: String, _font_size: int, _color: String, _outline_size: int, _outline_color: String, _margins: Array[int] = []) -> TextEffectWrapper:
 	#TODO
 	return self
 
@@ -275,22 +275,22 @@ func outline_color(_color: Color) -> TextEffectWrapper:
 	return self
 
 ## Creates a table with the following options:
-func table(options: Dictionary[String, String] = {}) -> TextEffectWrapper:
+func table(_options: Dictionary[String, String] = {}) -> TextEffectWrapper:
 	# TODO
 	return self
 
 ## Creates a table's cell with the following options:
-func cell(options: Dictionary[String, String] = {}) -> TextEffectWrapper:
+func cell(_options: Dictionary[String, String] = {}) -> TextEffectWrapper:
 	# TODO
 	return self
 
 ## Create an unordered list with the following options:
-func ul(options: Dictionary[String, String] = {}) -> TextEffectWrapper:
+func ul(_options: Dictionary[String, String] = {}) -> TextEffectWrapper:
 	# TODO
 	return self
 
 ## Create an unordered list with the following options:
-func ol(options: Dictionary[String, String] = {}) -> TextEffectWrapper:
+func ol(_options: Dictionary[String, String] = {}) -> TextEffectWrapper:
 	# TODO
 	return self
 
