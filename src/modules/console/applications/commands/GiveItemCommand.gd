@@ -9,7 +9,7 @@ func configure() -> void:
 
 func get_definition(_caller: CommandApplication) -> CommandInputDefinition:
 	return CommandInputDefinition.new([
-		CommandInputArgument.new("item", "The name of the item to give.", CommandInputArgument.REQUIRED, ItemRegistry.get_self().get_item_name_list(), null, CommandInputArgument.STRING),
+		CommandInputArgument.new("item", "The name of the item to give.", CommandInputArgument.REQUIRED, PackedStringArray(ItemRegistry.get_self().get_item_name_list()), null, CommandInputArgument.STRING),
 		CommandInputArgument.new("amount", "The amount of item to give. Must be greater than 0.", CommandInputArgument.OPTIONAL, null, 1, CommandInputArgument.INT),
 	])
 

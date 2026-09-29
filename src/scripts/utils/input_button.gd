@@ -3,7 +3,7 @@
 class_name InputButton extends Button
 
 ## Emitted when the key changed
-signal key_changed(ew_key: Key)
+signal key_changed(key: Key)
 
 ## The action to edit on input
 @export var action: StringName
@@ -29,12 +29,12 @@ func _ready() -> void:
 	InputMap.project_settings_loaded.connect(_update_text)
 
 func _gui_input(event: InputEvent) -> void:
-	if not _listening or disabled or event is InputEventMouse:
+	if !_listening || disabled || event is InputEventMouse:
 		return
 
 	if event is InputEventKey:
-		_update_input_map((event as InputEventKey).physical_keycode)
 		get_viewport().set_input_as_handled()
+		_update_input_map((event as InputEventKey).physical_keycode, (event as InputEventKey).location)
 
 	_listening = false
 
@@ -60,6 +60,9 @@ func _update_input_map(key: Key, location: KeyLocation = KeyLocation.KEY_LOCATIO
 		event.physical_keycode = KEY_NONE
 
 	InputMap.action_add_event(action, event)
+	# since we just added a new veent, it has been added to the end of the action event array
+	# so we need to edit our key_id
+	key_id = InputMap.action_get_events(action).size() - 1
 	_update_text()
 	key_changed.emit(event.physical_keycode)
 	# save changes

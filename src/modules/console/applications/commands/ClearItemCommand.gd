@@ -9,7 +9,7 @@ func configure() -> void:
 
 func get_definition(_caller: CommandApplication) -> CommandInputDefinition:
 	return CommandInputDefinition.new([
-		CommandInputArgument.new("item", "The name of the item(s) to clear.", CommandInputArgument.REQUIRED, ItemRegistry.get_self().get_item_name_list(), null, CommandInputArgument.STRING),
+		CommandInputArgument.new("item", "The name of the item(s) to clear.", CommandInputArgument.REQUIRED, PackedStringArray(ItemRegistry.get_self().get_item_name_list()), null, CommandInputArgument.STRING),
 		CommandInputArgument.new("amout", "The amount of items to clear. Must be positive", CommandInputArgument.OPTIONAL, null, null, CommandInputArgument.INT),
 	])
 
