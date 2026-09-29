@@ -79,10 +79,10 @@ func _get_result(force: bool = false) -> void:
 	_result = _thread.wait_to_finish()
 	if !_thread_error.is_empty():
 		_has_failed = true
-		loading_failed.emit.call_deferred(_thread_error)
+		loading_failed.emit(_thread_error)
 	else:
 		_has_finished = true
-		loading_ended.emit.call_deferred(_result)
+		loading_ended.emit(_result)
 
 # handle freeing this object when the thread is still running
 func free() -> void:

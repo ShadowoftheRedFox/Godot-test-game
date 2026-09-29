@@ -27,9 +27,9 @@ class Step extends AbstractLoader:
 		assert(loader != null, ErrorList.ERR_V_IS_NULL % "loader")
 		_name = name
 		_loader = loader
-		_loader.loading_started.connect(func() -> void: loading_ended.emit())
-		_loader.loading_ended.connect(func() -> void: loading_started.emit())
-		_loader.loading_failed.connect(func(err: String) -> void: loading_failed.emit(err))
+		_loader.loading_started.connect(_on_loading_started)
+		_loader.loading_ended.connect(_on_loading_ended)
+		_loader.loading_failed.connect(_on_loading_failed)
 
 	func get_progress() -> float:
 		return _loader.get_progress()
@@ -45,6 +45,15 @@ class Step extends AbstractLoader:
 
 	func get_result() -> Variant:
 		return _loader.get_result()
+
+	func _on_loading_started() -> void:
+		loading_started.emit()
+
+	func _on_loading_ended(result: Variant = null) -> void:
+		loading_ended.emit(result)
+
+	func _on_loading_failed(err: String = "") -> void:
+		loading_failed.emit(err)
 
 	## Get the name of this step.
 	func get_name() -> String:
@@ -62,10 +71,10 @@ func get_step_amount_to_load() -> int:
 func get_step_amount_loaded() -> int:
 	return get_current_step().get_amount_loaded()
 
-## Get the current step loading.
+## Get the current step loading. If the loading is finished, return the last step in the list.
 func get_current_step() -> Step:
 	if _steps.size() > 0 && _steps.size() == _steps_loaded:
-		return null
+		return _steps[_steps.size() - 1]
 	return _steps[_steps_loaded]
 
 func get_amount_loaded() -> int:
@@ -77,9 +86,6 @@ func get_amount_to_load() -> int:
 func load() -> void:
 	_steps.make_read_only()
 	loading_started.emit()
-	if _steps.size() == 0:
-		loading_ended.emit()
-		return
 
 	_has_started = true
 	_step_start()
@@ -114,17 +120,19 @@ func get_result() -> Variant:
 	return result
 
 func _step_start() -> void:
-	if is_finished():
+	if _steps_loaded == _steps.size():
+		get_result()
 		return
 	step_started.emit(_steps_loaded)
+	get_current_step().loading_failed.connect(_step_fail, ConnectFlags.CONNECT_ONE_SHOT)
+	get_current_step().loading_ended.connect(_step_end, ConnectFlags.CONNECT_ONE_SHOT)
 	get_current_step().load()
-	get_current_step().loading_failed.connect(_step_fail)
 
 func _step_fail(err: String) -> void:
 	_has_failed = true
 	loading_failed.emit("Step %s has failed: %s" % [get_current_step().get_name(), err])
 
-func _step_end() -> void:
+func _step_end(_result: Variant) -> void:
 	step_ended.emit(_steps_loaded)
 	_steps_loaded += 1
 	_step_start()
