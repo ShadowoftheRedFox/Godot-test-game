@@ -54,22 +54,19 @@ func _get_directory_file_list_checker(folder_path: String, file_name: String, li
 ## The result is a dictionnary such as `{folders: PackedStringArray, files: PackedStringArray}`, with both array of the same size.
 static func get_directory_file_list_separated(folder_path: String, file_pattern: FilePattern = null, path_pattern: FilePattern = null, recursive: bool = false) -> Dictionary:
 	var reader: FolderReader = FolderReader.new()
-	var result: Dictionary = {}
-	result.set("folders", PackedStringArray())
-	result.set("files", PackedStringArray())
+	var folders: PackedStringArray = []
+	var files: PackedStringArray = []
 	reader._recursive = recursive
-	reader._scan_directory(folder_path, reader._get_directory_file_list_spearated_checker.bind(result, file_pattern, path_pattern))
-	return result
+	reader._scan_directory(folder_path, reader._get_directory_file_list_spearated_checker.bind(folders, files, file_pattern, path_pattern))
+	return {"folders": folders, "files": files}
 
 ## Inner function of get_directory_file_list_separated.
-func _get_directory_file_list_spearated_checker(folder_path: String, file_name: String, result: Dictionary, file_pattern: FilePattern, path_pattern: FilePattern) -> void:
+# BUG bind doesn't seem to pass the array by reference
+func _get_directory_file_list_spearated_checker(folder_path: String, file_name: String, folders: PackedStringArray, files: PackedStringArray, file_pattern: FilePattern, path_pattern: FilePattern) -> void:
 	var file: String = folder_path + file_name
 	if (file_pattern == null || file_pattern.match(file)) && (path_pattern == null || path_pattern.match(folder_path)):
-		@warning_ignore_start("unsafe_cast")
-		(result.get("folders") as PackedStringArray).append(folder_path)
-		(result.get("files") as PackedStringArray).append(file_name)
-		@warning_ignore_restore("unsafe_cast")
-
+		folders.append(folder_path)
+		files.append(file_name)
 
 ## Inner function of scan_directory.
 func _scan_directory(path: String, file_check: Callable) -> void:
@@ -87,7 +84,7 @@ func _scan_directory(path: String, file_check: Callable) -> void:
 		if file_name == "":
 			break
 		# special name files
-		if file_name == "." or file_name == "..":
+		if file_name == "." || file_name == "..":
 			continue
 		# get the current full path to the file
 		var full_path: String = path.path_join(file_name)

@@ -67,7 +67,7 @@ func get_step_progress() -> float:
 func get_step_amount_to_load() -> int:
 	return get_current_step().get_amount_to_load()
 
-## Return the amounf ot step finished. Must be a value between 0 and `get_amount_step_to_load()`.
+## Return the amount of step finished. Must be a value between 0 and `get_amount_step_to_load()`.
 func get_step_amount_loaded() -> int:
 	return get_current_step().get_amount_loaded()
 
@@ -104,7 +104,7 @@ func get_progress() -> float:
 	return float(get_amount_loaded()) / float(get_amount_to_load())
 
 ## Return the list of result of each steps, in the same order of the steps.
-## Return null if the loading isn't finished.
+## Return null if the loading isn't finished or failed.
 func get_result() -> Variant:
 	if !_has_started || _has_failed:
 		return null
