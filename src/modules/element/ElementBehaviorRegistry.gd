@@ -1,30 +1,17 @@
-## Holds the game items behavior call for parsing.
-class_name ItemBehaviorRegistry extends AbstractRegistry
+## Holds the game elements behavior call for parsing.
+@abstract class_name ElementBehaviorRegistry extends AbstractRegistry
 
 var _behaviors: Dictionary[StringName, Callable] = {}
 
-#TODO mod compatible with prefixes, and can ignore prefix if name is unique
-
-## The constant name of this registry.
-const NAME: StringName = "ItemBehaviorRegistry"
-
-func _init() -> void:
-	add_behavior(TestItemBehavior.new())
-
-## Shortcut to get itself from the main registry.
-static func get_self() -> ItemBehaviorRegistry:
-	return Global.REGISTRIES.get_registry(NAME)
-
-func get_name() -> StringName:
-	return NAME
+#TODO mod compatible with prefixes, and can ignore prefix if name is un
 
 func _freeze() -> void:
 	_behaviors.make_read_only()
 
 func add_object(obj: Object) -> bool:
-	if obj == null || obj is not ItemBehavior:
+	if obj == null || obj is not ElementBehavior:
 		return false
-	return add_behavior(obj as ItemBehavior)
+	return add_behavior(obj as ElementBehavior)
 
 @warning_ignore_start("unsafe_call_argument")
 func get_object(id: Variant) -> Variant:
@@ -42,13 +29,13 @@ func size() -> int:
 
 ## Add a behavior in the registered behavior list.
 ## Return true on success, false otherwise.
-func add_behavior(behavior: ItemBehavior) -> bool:
+func add_behavior(behavior: ElementBehavior) -> bool:
 	assert(!behavior.get_factory().is_null(), ErrorList.ERR_V_IS_NULL % "behavior factory")
 	return _behaviors.set(behavior.get_behavior_name(), behavior.get_factory())
 
 ## Remove a behavior from the behavior list.
 ## Return true on success, false otherwise.
-func remove_behavior(behavior: ItemBehavior) -> bool:
+func remove_behavior(behavior: ElementBehavior) -> bool:
 	if behavior == null || !has_behavior(behavior):
 		return true
 	return remove_behavior_name(behavior.get_behavior_name())
@@ -67,7 +54,7 @@ func get_behavior(name: StringName) -> Callable:
 
 ## Check if the behavior is registered.
 ## Return true if it registered, false otherwise.
-func has_behavior(behavior: ItemBehavior) -> bool:
+func has_behavior(behavior: ElementBehavior) -> bool:
 	return has_behavior_name(behavior.get_behavior_name())
 
 ## Check if the behavior name is registered.

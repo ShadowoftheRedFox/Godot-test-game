@@ -11,6 +11,10 @@ func _init() -> void:
 	# TODO load main registries
 	add_registry(ItemRegistry.new())
 	add_registry(ItemBehaviorRegistry.new())
+	add_registry(FluidRegistry.new())
+	add_registry(FluidBehaviorRegistry.new())
+	add_registry(BuildingRegistry.new())
+	add_registry(BuildingBehaviorRegistry.new())
 
 func get_name() -> StringName:
 	return NAME

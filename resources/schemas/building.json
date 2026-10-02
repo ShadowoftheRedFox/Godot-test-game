@@ -1,43 +1,36 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "title": "ItemSchema",
-    "description": "The schema to define items.",
+    "title": "BuildingSchema",
+    "description": "The schema to define buildings.",
     "type": "object",
-    "required": ["id", "display_name", "stack_size", "behaviors"],
+    "required": ["id", "display_name", "behaviors"],
     "additionalProperties": true,
     "properties": {
         "id": {
             "type": "string",
-            "title": "The unique ID of this item's definition.",
+            "title": "The unique ID of this building's definition.",
             "minLength": 3,
             "maxLength": 31
         },
         "display_name": {
             "type": "string",
-            "title": "The display name of this item.",
+            "title": "The display name of this building.",
             "minLength": 3,
             "maxLength": 31
         },
-        "stack_size": {
-            "type": "number",
-            "title": "The maximum amout this item can be stacked.",
-            "minimum": 1,
-            "multipleOf": 1,
-            "default": 1
-        },
         "behaviors": {
             "type": "array",
-            "title": "A list of behaviors for this item.",
+            "title": "A list of behaviors for this building.",
             "items": {
                 "$ref": "#/$defs/behavior",
                 "type": "object",
-                "title": "The behavior of an item",
+                "title": "The behavior of an building",
                 "required": ["name"],
                 "additionalProperties": true,
                 "properties": {
                     "name": {
                         "type": "string",
-                        "title": "The unique identifier of this item's behavior",
+                        "title": "The unique identifier of this building's behavior",
                         "minLength": 3,
                         "maxLength": 31
                     }
@@ -48,13 +41,13 @@
     "$defs": {
         "behavior": {
             "type": "object",
-            "title": "The behavior of an item",
+            "title": "The behavior of an building",
             "required": ["name"],
             "additionalProperties": true,
             "properties": {
                 "name": {
                     "type": "string",
-                    "title": "The unique identifier of this item's behavior",
+                    "title": "The unique identifier of this building's behavior",
                     "minLength": 3,
                     "maxLength": 31
                 }

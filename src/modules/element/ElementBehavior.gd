@@ -1,15 +1,15 @@
-## Adds functionnality to an item. Called everytime an item is used.
-@abstract class_name ItemBehavior extends Resource
+## Adds functionnality to an element. Called everytime an element is used.
+@abstract class_name ElementBehavior extends Resource
 
-## The factory that will create teh instance of this behavior.[br]
+## The factory that will create the instance of this behavior.[br]
 ## It will be given the parsed data from the JSON in a dictionary.[br]
-## It must return an instance of `ItemBehavior`.
+## It must return an instance of `ElementBehavior`.
 @abstract func get_factory() -> Callable
-## Get a unique name for this behavior to be found by the item defintion.
+## Get a unique name for this behavior to be found by the element definition.
 @abstract func get_behavior_name() -> StringName
-## Called everytime an item is used or interacted with, described by the `interaction`.
+## Called everytime an element is used or interacted with, described by the `interaction`.
 ## Additional data can be added via the `data` dictionary.
-@abstract func behave(item_definition_id: StringName, interaction: ItemDefinition.Interaction = ItemDefinition.Interaction.UNKNOWN, data: Dictionary = {}) -> void
+@abstract func behave(element_definition_id: StringName, interaction: int = 0, data: Dictionary = {}) -> void
 ## A JSON version of this behavior.[br]
 ## Must declare all value that needs to be parsed to get the behavior back when stringified.
 @abstract func _to_json() -> String

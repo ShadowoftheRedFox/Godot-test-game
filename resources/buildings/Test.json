@@ -1,0 +1,10 @@
+{
+    "$schema": "../schemas/building.json",
+    "id": "BuildingTest",
+    "display_name": "Test",
+    "behaviors": [
+        {
+            "name": "TestBuildingBehavior"
+        }
+    ]
+}

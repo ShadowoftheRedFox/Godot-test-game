@@ -5,7 +5,7 @@ class_name ThreadLoader extends AbstractLoader
 var _callable: Variant = null
 ## The thread used to load.
 var _thread: Thread = null
-## Stored result when teh thread has finished.
+## Stored result when the thread has finished.
 var _result: Variant = null
 
 var _has_failed: bool = false

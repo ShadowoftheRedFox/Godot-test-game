@@ -1,0 +1,10 @@
+{
+    "$schema": "../schemas/fluid.json",
+    "id": "FluidWater",
+    "display_name": "Water",
+    "behaviors": [
+        {
+            "name": "TestFluidBehavior"
+        }
+    ]
+}

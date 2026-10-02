@@ -9,8 +9,8 @@ var _loader: GameLoader = null
 
 func _init() -> void:
 	_loader = GameLoader.new()
-	_loader.loading_ended.connect(end.bind("normal"))
-	_loader.loading_failed.connect(end.bind("failed"))
+	_loader.loading_ended.connect(end)
+	_loader.loading_failed.connect(end)
 
 func _ready() -> void:
 	_loader.load()
@@ -31,8 +31,7 @@ func get_step() -> int:
 func get_progress() -> float:
 	return _loader.get_progress()
 
-func end(result: Variant, text: String) -> void:
-	print("End %s" % text)
-	print(result)
-	print("Items loaded: ", ", ".join(ItemRegistry.get_self().get_item_name_list()))
+func end(result: Variant) -> void:
+	if result is String:
+		ModLoaderLog.fatal("Loading error: %s" % result, ConstantManager.CORE_MOD_NAME)
 	remove(MainGame.MAIN_MENU_SCENE_UID)
