@@ -59,4 +59,10 @@ func to_json() -> String:
 	var stringified_behaviors: PackedStringArray = []
 	for b: ItemBehavior in _behaviors.values():
 		stringified_behaviors.append(b.to_json())
-	return '{"id":"%s","display_name":"%s","stack_size":%d,behaviors:[%s]}' % [_id, _display_name, _stack_size, ",".join(stringified_behaviors)]
+
+	return JSON.stringify({
+		"id": _id,
+		"display_name": _display_name,
+		"stack_size": _stack_size,
+		"behaviors": ",".join(stringified_behaviors)
+	})

@@ -22,4 +22,7 @@ func _to_string() -> String:
 func to_json() -> String:
 	var json: String = _to_json()
 	assert(JSON.parse_string(json) != null, ErrorList.INVALID_JSON)
-	return '{"type":"%s","data":%s}' % [get_behavior_name(), json]
+	return JSON.stringify({
+		"type": get_behavior_name(),
+		"data": _to_json(),
+	})
