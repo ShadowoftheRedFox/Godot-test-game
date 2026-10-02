@@ -2,9 +2,8 @@
 
 [ext_resource type="Script" uid="uid://qlyorv3odc5j" path="res://src/ui/menu/sub_menu/load_save/load_node.gd" id="1_pt7vt"]
 
-[node name="LoadNode" type="Control" unique_id=348963181]
+[node name="LoadNode" type="MarginContainer" unique_id=392459250]
 custom_minimum_size = Vector2(0, 32)
-layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -14,15 +13,7 @@ size_flags_horizontal = 3
 script = ExtResource("1_pt7vt")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1045629699]
-layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -15.5
-offset_bottom = 15.5
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 
 [node name="Display" type="HBoxContainer" parent="VBoxContainer" unique_id=1474278545]
 layout_mode = 2

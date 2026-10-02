@@ -1,4 +1,4 @@
-extends Control
+extends UIMenu
 
 @onready var name_edit: LineEdit = %NameEdit
 

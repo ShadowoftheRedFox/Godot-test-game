@@ -13,7 +13,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[node name="InGameMainMenu" type="MarginContainer" unique_id=2037458206]
+[node name="Console" type="MarginContainer" unique_id=2037458206]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

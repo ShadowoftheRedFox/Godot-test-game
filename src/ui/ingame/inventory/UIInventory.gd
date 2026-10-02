@@ -1,4 +1,5 @@
-class_name UIInventory extends MarginContainer
+class_name UIInventory extends UIMenu
+
 const INVENTORY_SLOT: PackedScene = preload("uid://dnsinxvoqcmqu")
 
 ## Grid where the inventory slots are.

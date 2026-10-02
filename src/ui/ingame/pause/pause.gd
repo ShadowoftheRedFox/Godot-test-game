@@ -1,4 +1,4 @@
-class_name PlayerPauseMenu extends MarginContainer
+class_name PlayerPauseMenu extends UIMenu
 
 # Main menu button
 @onready var resume: Button = %Resume

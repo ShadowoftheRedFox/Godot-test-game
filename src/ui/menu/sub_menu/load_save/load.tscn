@@ -36,8 +36,7 @@ func _on_search_filter_text_changed(new_text: String) -> void:
 
 "
 
-[node name="LoadMenu" type="Control" unique_id=1435295231]
-layout_mode = 3
+[node name="LoadMenu" type="MarginContainer" unique_id=93388668]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -46,12 +45,7 @@ grow_vertical = 2
 script = SubResource("GDScript_e44vd")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=441321759]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20

@@ -1,4 +1,4 @@
-class_name InventorySlot extends Control
+class_name InventorySlot extends UIMenu
 
 @export_range(10.0, 100.0) var slot_square_size: float = 80.0
 

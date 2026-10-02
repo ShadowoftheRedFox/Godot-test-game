@@ -3,8 +3,7 @@
 [ext_resource type="Script" uid="uid://2v3h1b0tukdu" path="res://src/ui/menu/sub_menu/create.gd" id="1_8f8or"]
 [ext_resource type="Texture2D" uid="uid://4nmymi1tv81w" path="res://assets/icons/shuffle.svg" id="2_dhxp2"]
 
-[node name="Create" type="Control" unique_id=1249162522]
-layout_mode = 3
+[node name="Create" type="MarginContainer" unique_id=279260664]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -13,12 +12,7 @@ grow_vertical = 2
 script = ExtResource("1_8f8or")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1314193426]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20

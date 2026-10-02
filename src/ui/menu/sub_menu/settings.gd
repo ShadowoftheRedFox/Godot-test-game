@@ -1,4 +1,4 @@
-class_name SettingsSubMenu extends Control
+class_name SettingsSubMenu extends UIMenu
 
 # Submenu button
 @onready var settings_general: Button = %SettingsGeneral

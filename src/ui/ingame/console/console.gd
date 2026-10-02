@@ -1,4 +1,4 @@
-class_name ConsoleMenu extends MarginContainer
+class_name ConsoleMenu extends UIMenu
 
 @onready var console: RichTextLabel = %Console
 @onready var edit: LineEdit = %ConsoleEdit

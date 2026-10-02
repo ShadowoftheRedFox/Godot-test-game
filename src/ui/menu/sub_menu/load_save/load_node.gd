@@ -1,4 +1,4 @@
-class_name LoadNode extends Control
+class_name LoadNode extends UIMenu
 
 var _save: GameSave = null
 

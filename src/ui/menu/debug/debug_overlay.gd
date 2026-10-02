@@ -1,4 +1,4 @@
-class_name DebugOverlay extends Control
+class_name DebugOverlay extends UIMenu
 
 const VERSION_SETTINGS: String = "application/config/version"
 
