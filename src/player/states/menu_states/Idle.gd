@@ -20,7 +20,7 @@ func setup_menu() -> void:
 	toolbar_menu = temp
 	toolbar_menu.visible = true
 	toolbar_menu.inventory = Global.player.inventory._inventory
-	Global.MAIN.hud_root.add_child(toolbar_menu)
+	Global.MAIN.ui_root.add_child(toolbar_menu)
 
 func remove_menu() -> void:
 	toolbar_menu.queue_free()
@@ -43,4 +43,4 @@ func handle_input(_event: InputEvent) -> void:
 		return
 
 func destroy() -> void:
-	Global.MAIN.hud_root.remove_child(toolbar_menu)
+	Global.MAIN.ui_root.remove_child(toolbar_menu)

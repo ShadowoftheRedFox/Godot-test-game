@@ -19,7 +19,7 @@ func setup_menu() -> void:
 		return
 	console_menu = temp
 	console_menu.visible = false
-	Global.MAIN.hud_root.add_child(console_menu)
+	Global.MAIN.ui_root.add_child(console_menu)
 
 func remove_menu() -> void:
 	console_menu.queue_free()
@@ -38,4 +38,4 @@ func handle_input(_event: InputEvent) -> void:
 		finished.emit("idle")
 
 func destroy() -> void:
-	Global.MAIN.hud_root.remove_child(console_menu)
+	Global.MAIN.ui_root.remove_child(console_menu)

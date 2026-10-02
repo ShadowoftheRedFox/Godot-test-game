@@ -1,4 +1,4 @@
-class_name MainMenu extends MarginContainer
+class_name MainMenu extends UIMenu
 
 @onready var continue_button: Button = %Continue
 @onready var new_game_button: Button = %"New Game"

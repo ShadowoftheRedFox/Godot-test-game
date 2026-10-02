@@ -20,7 +20,7 @@ func setup_menu() -> void:
 	inventory_menu = temp
 	inventory_menu.inventory = Global.player.inventory._inventory
 	inventory_menu.visible = false
-	Global.MAIN.hud_root.add_child(inventory_menu)
+	Global.MAIN.ui_root.add_child(inventory_menu)
 
 func remove_menu() -> void:
 	inventory_menu.queue_free()
@@ -39,4 +39,4 @@ func handle_input(_event: InputEvent) -> void:
 		finished.emit("idle")
 
 func destroy() -> void:
-	Global.MAIN.hud_root.remove_child(inventory_menu)
+	Global.MAIN.ui_root.remove_child(inventory_menu)

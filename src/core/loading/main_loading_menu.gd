@@ -20,7 +20,7 @@ func _process(_delta: float) -> void:
 	global_progress.value = _loader.get_progress() * global_progress.max_value
 
 	step_label.text = "Loading"
-	global_progress.value = _loader.get_current_step().get_progress() * global_progress.max_value
+	step_progress.value = _loader.get_step_progress() * step_progress.max_value
 
 func get_step_amount() -> int:
 	return _loader.get_amount_to_load()
@@ -35,3 +35,4 @@ func end(result: Variant, text: String) -> void:
 	print("End %s" % text)
 	print(result)
 	print("Items loaded: ", ", ".join(ItemRegistry.get_self().get_item_name_list()))
+	remove(MainGame.MAIN_MENU_SCENE_UID)

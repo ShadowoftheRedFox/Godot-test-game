@@ -45,7 +45,7 @@ func _on_save_button() -> void:
 func _on_main_menu_button() -> void:
 	Global.MAIN.remove_player()
 	Global.MAIN.remove_current_scene()
-	Global.MAIN.load_menu(MainGame.MAIN_MENU_SCENE_UID, MainGame.MenuLayer.HUD)
+	Global.MAIN.load_menu(MainGame.MAIN_MENU_SCENE_UID, MainGame.MenuLayer.UI)
 	get_tree().paused = false
 
 func _on_quit_button() -> void:

@@ -97,7 +97,7 @@ func get_progress() -> float:
 		return 1.0
 
 	# update the current step
-	get_current_step().get_progress()
+	get_step_progress()
 
 	if get_amount_to_load() == 0:
 		return 0.0

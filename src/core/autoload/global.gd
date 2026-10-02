@@ -23,7 +23,7 @@ var environment: EnvironmentController = null
 var REGISTRIES: MainRegistry = MainRegistry.new()
 
 ## The main game script.
-## It is set up when the main game loads.
+## It is set up when the main game loads, since it is the main entry point of the game.
 var MAIN: MainGame = null
 
 func _init() -> void:

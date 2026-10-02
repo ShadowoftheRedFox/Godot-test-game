@@ -11,7 +11,7 @@ func _threader_read_item_file(parent_folder: String, file_name: String) -> Strin
 	var file: FileUtils = FileUtils.new(parent_folder)
 	print(file)
 	var content: String = file.read(file_name)
-	var definition:ItemDefinition = ItemDefinition.parse(ConstantManager.CORE_MOD_NAME, content)
+	var definition: ItemDefinition = ItemDefinition.parse(ConstantManager.CORE_MOD_NAME, content)
 	ItemRegistry.get_self().add_item(definition)
 	return definition.get_id()
 

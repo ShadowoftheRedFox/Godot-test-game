@@ -93,7 +93,7 @@ func load() -> void:
 	seed(world_seed.hash())
 
 	Global.MAIN.load_scene(MainGame.TEST_SCENE_UID)
-	Global.MAIN.remove_menu(MainGame.MAIN_MENU_SCENE_UID, MainGame.MenuLayer.HUD)
+	Global.MAIN.remove_menu(MainGame.MAIN_MENU_SCENE_UID, MainGame.MenuLayer.UI)
 
 ## check if the current save has the minimal informations required.
 func _valid_config(config: ConfigFile) -> bool:

@@ -1,7 +1,7 @@
 class_name MainGame extends Node
 
 enum MenuLayer {
-	HUD,
+	UI,
 	PAUSE,
 	TRANSITION,
 	DEBUG,
@@ -15,6 +15,7 @@ enum WorldLayer {
 # Main menu and test level references
 const PLAYER_SCENE_UID: String = "uid://26srdfxbxw6k"
 const TEST_SCENE_UID: String = "uid://b8brfdyr57ked"
+const STARTING_LOADING_SCENE_UID: String = "uid://b5eukuh2tpuev"
 const MAIN_MENU_SCENE_UID: String = "uid://de2bged6t63hi"
 const MAIN_LOADING_SCENE_UID: String = "uid://b5eukuh2tpuev"
 const DEBUG_OVERLAY_UID: String = "uid://gwa7n875db7o"
@@ -29,13 +30,13 @@ var _current_scene: BaseScene = null
 @onready var entity_root: Node3D = %EntityRoot
 
 # UI root nodes
-@onready var hud_root: Control = %HudRoot
+@onready var ui_root: Control = %UIRoot
 @onready var pause_root: Control = %PauseRoot
 @onready var transition_root: Control = %TransitionRoot
 @onready var debug_root: Control = %DebugRoot
 
 func _ready() -> void:
-	load_menu(MAIN_MENU_SCENE_UID, MenuLayer.HUD)
+	load_menu(STARTING_LOADING_SCENE_UID, MenuLayer.UI)
 	_init_systems()
 
 ## Called for loading a scene
@@ -54,22 +55,22 @@ func remove_current_scene() -> void:
 	_current_scene = null
 
 ## Remove the current scene
-func remove_menu(menu_uid: String, layer: MenuLayer = MenuLayer.HUD) -> void:
+func remove_menu(menu_uid: String, layer: MenuLayer = MenuLayer.UI) -> void:
 	# get the root for the given layer
 	var root: Control = _get_menu_root(layer)
 	if root == null:
 		return
 
-	var menu: Node = root.get_node_or_null(Utils.get_raw_uid(menu_uid))
+	var menu: UIMenu = root.get_node_or_null(Utils.get_raw_uid(menu_uid))
 	if menu == null || menu.is_queued_for_deletion():
 		return
 
 	root.remove_child(menu)
 	menu.queue_free()
 
-## Called for loading a menu
-## NOTE: the menu must extends Control
-func load_menu(menu_uid: String, layer: MenuLayer = MenuLayer.HUD) -> void:
+## Called for loading a menu.[br]
+## NOTE: the menu must extends UIMenu.
+func load_menu(menu_uid: String, layer: MenuLayer = MenuLayer.UI) -> void:
 	# call when idle
 	_deferred_load_menu.call_deferred(menu_uid, layer)
 
@@ -97,7 +98,7 @@ func toggle_debug_overlay() -> void:
 	overlay_child.name = DEBUG_OVERLAY_UID
 	debug_root.add_child(overlay_child)
 
-# Handles internal change and loading of new scene
+# Handles internal change and loading of new scene.
 func _deferred_load_scene(scene_uid: String) -> void:
 	if _current_scene != null:
 		_current_scene.queue_free()
@@ -124,7 +125,7 @@ func _deferred_load_scene(scene_uid: String) -> void:
 	level_root.add_child(_current_scene)
 	_place_player_at_level_spawn()
 
-# Handles internal change and loading of new menu
+# Handles internal change and loading of new menu.
 func _deferred_load_menu(menu_uid: String, layer: MenuLayer) -> void:
 	var new_menu_packed: PackedScene = \
 		ResourceLoader.load(menu_uid, "PackedScene") as PackedScene
@@ -136,12 +137,12 @@ func _deferred_load_menu(menu_uid: String, layer: MenuLayer) -> void:
 	if _new_menu == null:
 		push_error("Loaded scene does not exist")
 		return
-	if _new_menu is not Control:
+	if _new_menu is not UIMenu:
 		_new_menu.free()
-		push_error("Loaded scene is not of type Control")
+		push_error("Loaded scene is not of type UIMenu")
 		return
 
-	var new_menu: Control = _new_menu as Control
+	var new_menu: UIMenu = _new_menu as UIMenu
 
 	# get the root for the given layer
 	var root: Control = _get_menu_root(layer)
@@ -158,10 +159,10 @@ func _deferred_load_menu(menu_uid: String, layer: MenuLayer) -> void:
 	root.add_child(new_menu)
 
 ## Return the given menu root. Return null on error.
-func _get_menu_root(layer: MenuLayer = MenuLayer.HUD) -> Control:
+func _get_menu_root(layer: MenuLayer = MenuLayer.UI) -> Control:
 	match layer:
-		MenuLayer.HUD:
-			return hud_root
+		MenuLayer.UI:
+			return ui_root
 		MenuLayer.PAUSE:
 			return pause_root
 		MenuLayer.DEBUG:

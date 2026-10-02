@@ -38,16 +38,16 @@ func _init(folder_path: String, file_reader: Callable, file_pattern: FolderReade
 
 func get_amount_loaded() -> int:
 	var v: int = 0
-	#_get_amount_loaded_mutex.lock()
+	_get_amount_loaded_mutex.lock()
 	v = _get_amount_loaded
-	#_get_amount_loaded_mutex.unlock()
-	return v if _thread != null && _thread.is_started() && !_thread.is_alive() else 0
+	_get_amount_loaded_mutex.unlock()
+	return v
 
 func get_amount_to_load() -> int:
 	var v: int = 0
-	#_get_amount_to_load_mutex.lock()
+	_get_amount_to_load_mutex.lock()
 	v = _get_amount_to_load
-	#_get_amount_to_load_mutex.unlock()
+	_get_amount_to_load_mutex.unlock()
 	return v
 
 ## The thread function.
@@ -60,7 +60,7 @@ func _load_folder() -> Array[Variant]:
 
 	# upate the amount to load by the amount of items found (+1 because this search action count as 1)
 	_get_amount_to_load_mutex.lock()
-	_get_amount_to_load = files.size() + 1
+	_get_amount_to_load = files.size() + 1 # + 10
 	_get_amount_to_load_mutex.unlock()
 	# update the amount loaded to 1 (the search action is done)
 	_get_amount_loaded_mutex.lock()
@@ -74,4 +74,18 @@ func _load_folder() -> Array[Variant]:
 		_get_amount_loaded += 1
 		_get_amount_loaded_mutex.unlock()
 
+	# fake delay
+	# Global.get_tree().create_timer(1).timeout.connect(_fake.bind(10))
+
+	# while (_get_amount_loaded < _get_amount_to_load):
+	# 	pass
+
 	return _read
+
+# func _fake(remaining: int) -> void:
+# 	if remaining == 0:
+# 		return
+# 	_get_amount_loaded_mutex.lock()
+# 	_get_amount_loaded += 1
+# 	_get_amount_loaded_mutex.unlock()
+# 	Global.get_tree().create_timer(1).timeout.connect(_fake.bind(remaining - 1))

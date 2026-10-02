@@ -61,7 +61,6 @@ static func get_directory_file_list_separated(folder_path: String, file_pattern:
 	return {"folders": folders, "files": files}
 
 ## Inner function of get_directory_file_list_separated.
-# BUG bind doesn't seem to pass the array by reference
 func _get_directory_file_list_spearated_checker(folder_path: String, file_name: String, folders: PackedStringArray, files: PackedStringArray, file_pattern: FilePattern, path_pattern: FilePattern) -> void:
 	var file: String = folder_path + file_name
 	if (file_pattern == null || file_pattern.match(file)) && (path_pattern == null || path_pattern.match(folder_path)):

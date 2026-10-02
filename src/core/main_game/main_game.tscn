@@ -18,14 +18,13 @@ unique_name_in_owner = true
 [node name="EntityRoot" type="Node3D" parent="World" unique_id=1018693614]
 unique_name_in_owner = true
 
-[node name="HudLayer" type="CanvasLayer" parent="." unique_id=1667857095]
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=1667857095]
 process_mode = 1
 layer = 10
 
-[node name="HudRoot" type="Control" parent="HudLayer" unique_id=773616015]
+[node name="UIRoot" type="Control" parent="UILayer" unique_id=773616015]
 unique_name_in_owner = true
 clip_contents = true
-layout_direction = 1
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -34,6 +33,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+layout_direction = 1
 
 [node name="PauseLayer" type="CanvasLayer" parent="." unique_id=372240901]
 process_mode = 2
