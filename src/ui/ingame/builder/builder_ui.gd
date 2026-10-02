@@ -1,4 +1,4 @@
-class_name BuildingMenuList extends MarginContainer
+class_name BuildingMenuList extends UIMenu
 
 @onready var menu_list: VBoxContainer = %MenuList
 @onready var content_list: VBoxContainer = %ContentList
@@ -15,43 +15,22 @@ var item_slots: Dictionary[String, Button] = {}
 func _ready() -> void:
 	_setup_menus()
 
-func _load_building(building_name: String) -> Building:
-	return ResourceLoader.load(Global.CONST.BUILDING_FOLDER + building_name + ".tres", "Building", ResourceLoader.CACHE_MODE_REUSE)
+func _category_name(category: BuildingDefinition.Category) -> String:
+	var keys: Array = BuildingDefinition.Category.keys()
+	if category > keys.size() || category < 0:
+		return "Unknown"
 
-func _category_name(category: Building.BuildingCategory) -> String:
-	match category:
-		Building.BuildingCategory.UNCATEGORIZED:
-			return "Uncategorized"
-		Building.BuildingCategory.PRODUCTION:
-			return "Production"
-		Building.BuildingCategory.STORAGE:
-			return "Storage"
-		Building.BuildingCategory.BUILDING:
-			return "Building"
-		Building.BuildingCategory.DECORATION:
-			return "Decoration"
-		Building.BuildingCategory.TRANSPORTATION:
-			return "Transportation"
-		_:
-			return "Unknown"
+	return keys[category]
 
-## Create the menus
+## Create the menus.
 func _setup_menus() -> void:
-	for n: String in Global.CONST.BUILDING_NAMES:
-		_setup_menu(n)
+	for building_name: StringName in BuildingRegistry.get_self().get_building_name_list():
+		var building: BuildingDefinition = BuildingRegistry.get_self().get_building(building_name)
+		_setup_category(building)
+		_setup_group(building)
+		_setup_slot(building)
 
 	_finalize_menus()
-
-## Create the menu for the given item
-func _setup_menu(b_name: String) -> void:
-	var building: Building = _load_building(b_name)
-	if building == null:
-		printerr("Couldn't load building ", b_name)
-		return
-
-	_setup_category(building)
-	_setup_group(building)
-	_setup_slot(b_name, building)
 
 ## Add the menus to the tree.
 func _finalize_menus() -> void:
@@ -72,53 +51,53 @@ func _finalize_menus() -> void:
 			content_list.move_child(children[i], i)
 
 ## Setup the category for the following building
-func _setup_category(building: Building) -> void:
-	var c_name: String = _category_name(building.building_category)
+func _setup_category(building: BuildingDefinition) -> void:
+	var c_name: String = _category_name(building._category)
 	if _category_menu_nodes.has(c_name):
 		return
 
 	var bb: Button = Button.new()
 	bb.text = c_name
-	bb.name = str(building.building_category)
+	bb.name = c_name
 	_category_menu_nodes.set(c_name, bb)
 
 	var bc: Control = Control.new()
-	bc.name = str(building.building_category)
+	bc.name = str(BuildingDefinition.Category)
 	bc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	bc.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_category_content_nodes.set(c_name, bc)
 
-	bb.pressed.connect(_show_category.bind(building.building_category))
+	bb.pressed.connect(_show_category.bind(BuildingDefinition.Category))
 
 ## Setup the group for the following building
-func _setup_group(building: Building) -> void:
-	if _group_nodes.has(building.building_group):
+func _setup_group(building: BuildingDefinition) -> void:
+	if _group_nodes.has(building._group):
 		return
 
 	var gn: FoldableContainer = FoldableContainer.new()
-	gn.title = building.building_group.capitalize()
+	gn.title = building._group.capitalize()
 	gn.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	_group_nodes.set(building.building_group, gn)
+	_group_nodes.set(BuildingDefinition.Category, gn)
 
-	var bc: Control = _category_content_nodes.get(_category_name(building.building_category))
+	var bc: Control = _category_content_nodes.get(_category_name(BuildingDefinition.Category))
 	bc.add_child(gn)
 
 ## Setup the slot for the following building
-func _setup_slot(b_name: String, building: Building) -> void:
+func _setup_slot(building: BuildingDefinition) -> void:
 	# TODO reuse the slot display for the building
-	if item_slots.has(b_name):
+	if item_slots.has(building.get_id()):
 		return
 
 	var b: Button = Button.new()
-	b.text = b_name
-	item_slots.set(b_name, b)
+	b.text = building.get_display_name()
+	item_slots.set(building.get_id(), b)
 
-	var gn: FoldableContainer = _group_nodes.get(building.building_group)
+	var gn: FoldableContainer = _group_nodes.get(BuildingDefinition.Category)
 	gn.add_child(b)
 
 
 ## Hides all other category other then the targeted one
-func _show_category(category: Building.BuildingCategory) -> void:
+func _show_category(category: BuildingDefinition.Category) -> void:
 	var c_name: String = _category_name(category)
 	for c: String in _category_content_nodes.keys():
 		var ctrl: Control = _category_content_nodes.get(c)

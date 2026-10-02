@@ -18,6 +18,16 @@
             "minLength": 3,
             "maxLength": 31
         },
+        "category": {
+            "type": "string",
+            "title": "The category of the building. Must be a key of \"BuildingDefinition.Category\"."
+        },
+        "group": {
+            "type": "string",
+            "title": "The group of the building inside its category.",
+            "minLength": 3,
+            "maxLength": 31
+        },
         "behaviors": {
             "type": "array",
             "title": "A list of behaviors for this building.",
