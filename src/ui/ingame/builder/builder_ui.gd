@@ -17,7 +17,7 @@ func _ready() -> void:
 
 func _category_name(category: BuildingDefinition.Category) -> String:
 	var keys: Array = BuildingDefinition.Category.keys()
-	if category > keys.size() || category < 0:
+	if category >= keys.size() || category < 0:
 		return "Unknown"
 
 	return keys[category]
@@ -53,33 +53,39 @@ func _finalize_menus() -> void:
 ## Setup the category for the following building
 func _setup_category(building: BuildingDefinition) -> void:
 	var c_name: String = _category_name(building._category)
+	# skip if the button already exists
 	if _category_menu_nodes.has(c_name):
 		return
 
+	# setup the button to display the categor content
 	var bb: Button = Button.new()
-	bb.text = c_name
-	bb.name = c_name
+	bb.text = c_name.capitalize()
 	_category_menu_nodes.set(c_name, bb)
 
+	# setup the category content
 	var bc: Control = Control.new()
-	bc.name = str(BuildingDefinition.Category)
 	bc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	bc.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_category_content_nodes.set(c_name, bc)
 
-	bb.pressed.connect(_show_category.bind(BuildingDefinition.Category))
+	bb.pressed.connect(_show_category.bind(building._category))
 
 ## Setup the group for the following building
 func _setup_group(building: BuildingDefinition) -> void:
-	if _group_nodes.has(building._group):
+	# get a correct group name
+	var group_name: String = "Ungrouped" if Utils.is_blank(building._group) else building._group.capitalize()
+
+	# skip if the group container already exists
+	if _group_nodes.has(group_name):
 		return
 
+	# create the group container
 	var gn: FoldableContainer = FoldableContainer.new()
-	gn.title = building._group.capitalize()
+	gn.title = group_name
 	gn.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	_group_nodes.set(BuildingDefinition.Category, gn)
+	_group_nodes.set(_category_name(building._category), gn)
 
-	var bc: Control = _category_content_nodes.get(_category_name(BuildingDefinition.Category))
+	var bc: Control = _category_content_nodes.get(_category_name(building._category))
 	bc.add_child(gn)
 
 ## Setup the slot for the following building
@@ -92,9 +98,8 @@ func _setup_slot(building: BuildingDefinition) -> void:
 	b.text = building.get_display_name()
 	item_slots.set(building.get_id(), b)
 
-	var gn: FoldableContainer = _group_nodes.get(BuildingDefinition.Category)
+	var gn: FoldableContainer = _group_nodes.get(_category_name(building._category))
 	gn.add_child(b)
-
 
 ## Hides all other category other then the targeted one
 func _show_category(category: BuildingDefinition.Category) -> void:

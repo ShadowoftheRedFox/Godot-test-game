@@ -1,7 +1,6 @@
-## A state in a state machine.
+## A state in a state machine.[br]
 ## Virtual base class for all states.
-## Extend this class and override its methods to implement a state.
-@abstract class_name StateMachineState
+@abstract class_name StateMachineState extends RefCounted
 
 ## Flag at the startup. If set to true, the state will be removed from the
 ## state machine. Should be set at the initialization.
@@ -22,24 +21,20 @@ func _init() -> void:
 signal finished(next_state_path: StringName, data: Dictionary)
 
 ## Called by the state machine when receiving unhandled input events.
-@warning_ignore("unused_parameter")
-func handle_input(event: InputEvent) -> void:
+func handle_input(_event: InputEvent) -> void:
 	pass
 
 ## Called by the state machine on the engine's main loop tick.
-@warning_ignore("unused_parameter")
-func update(delta: float) -> void:
+func update(_delta: float) -> void:
 	pass
 
 ## Called by the state machine on the engine's physics update tick.
-@warning_ignore("unused_parameter")
-func physics_update(delta: float) -> void:
+func physics_update(_delta: float) -> void:
 	pass
 
 ## Called by the state machine upon changing the active state. The `data` parameter
 ## is a dictionary with arbitrary data the state can use to initialize itself.
-@warning_ignore("unused_parameter")
-func enter(previous_state_path: StringName, data: Dictionary = {}) -> void:
+func enter(_previous_state_path: StringName, _data: Dictionary = {}) -> void:
 	pass
 
 ## Called by the state machine before changing the active state. Use this function
@@ -51,3 +46,7 @@ func exit() -> void:
 ## Used for long term clean up, such as residual nodes.
 func destroy() -> void:
 	pass
+
+func free() -> void:
+	destroy()
+	super.free()

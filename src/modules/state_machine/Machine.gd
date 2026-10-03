@@ -1,5 +1,5 @@
 ## Implementation of the state machine pattern.
-class_name StateMachine
+class_name StateMachine extends RefCounted
 
 ## The current state of the machine.
 var state: StateMachineState = null
@@ -15,7 +15,7 @@ func _init(initial_state: StateMachineState, possible_state: Array[StateMachineS
 		add_state(s)
 
 	initialize()
-	assert(_possible_states.size() != 0, "No states given")
+	assert(_possible_states.size() > 0, "No states given")
 	_ready(initial_state)
 
 ## Called when the state machine is created.
@@ -38,7 +38,7 @@ func add_state(added_state: StateMachineState) -> void:
 	if added_state.disabled:
 		return
 	if has_state(added_state.get_state_name()):
-		push_error("State \"", added_state.get_state_name(), "\" is already registered in the state list")
+		push_error("State \"%s\" is already registered in the state list" % added_state.get_state_name())
 		return
 	_possible_states.set(added_state.get_state_name(), added_state)
 
@@ -65,15 +65,20 @@ func _physics_process(delta: float) -> void:
 ## Change to a new state.
 func _transition_to_next_state(target_state: StringName, data: Dictionary = {}) -> void:
 	if !has_state(target_state):
-		push_error("Trying to transition to state " + target_state + " but it does not exist.")
+		push_error("Trying to transition to state %s but it does not exist." % target_state)
 		return
 
+	# call defered because it can cause state to switch really fast when reaind input actions
 	var previous_state: StringName = state.get_state_name()
-	state.exit()
+	state.exit.call_deferred()
 	state = get_state(target_state)
-	state.enter(previous_state, data)
+	state.enter.call_deferred(previous_state, data)
 
 ## Clean the machine state before it is freed.
 func destroy() -> void:
 	for s: StateMachineState in _possible_states.values():
 		s.destroy()
+
+func free() -> void:
+	destroy()
+	super.free()

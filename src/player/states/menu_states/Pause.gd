@@ -2,10 +2,12 @@
 class_name PlayerMenuPauseState extends MenuMachineState
 
 const PAUSE: PackedScene = preload("uid://b30nyqm72dwjv")
+const NAME: StringName = &"pause"
+
 var pause_menu: PlayerPauseMenu = null
 
 func get_state_name() -> StringName:
-	return "pause"
+	return NAME
 
 func setup_menu() -> void:
 	var temp: Node = PAUSE.instantiate()
@@ -25,10 +27,11 @@ func setup_menu() -> void:
 	Global.MAIN.pause_root.add_child(pause_menu)
 
 func remove_menu() -> void:
-	pause_menu.queue_free()
+	pause_menu.remove()
 
 func enter(_previous_state_path: StringName, _data: Dictionary = {}) -> void:
 	pause_menu.visible = true
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func exit() -> void:
 	if pause_menu.visible:
@@ -42,7 +45,4 @@ func handle_input(_event: InputEvent) -> void:
 
 func _close_menu() -> void:
 	if !pause_menu.visible:
-		finished.emit("idle")
-
-func destroy() -> void:
-	Global.MAIN.pause_root.remove_child(pause_menu)
+		finished.emit(PlayerMenuIdleState.NAME)
