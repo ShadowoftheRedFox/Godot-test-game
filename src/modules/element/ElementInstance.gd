@@ -1,5 +1,5 @@
 ## Instance of an element, with the general methods associated.
-@abstract class_name ElementInstance extends RefCounted
+@abstract class_name ElementInstance extends Node
 
 var _definition_id: StringName = &""
 

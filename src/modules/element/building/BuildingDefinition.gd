@@ -41,13 +41,25 @@ var _group: String = ""
 ## Mesh of the building.
 var building_mesh: Mesh = null
 
-func _init(id: StringName, display_name: String, category: Category = Category.UNCATEGORIZED, group: String = "", behaviors: Array[ElementBehavior] = []) -> void:
+## Whether or not this building must be hidden from the build menu.[br]
+## An example of a hidden building can be building that spawn naturally but cannot be crafted, such as ruins.
+var _hidden: bool = false
+
+func _init(
+		id: StringName,
+		display_name: String,
+		category: Category = Category.UNCATEGORIZED,
+		group: String = "",
+		behaviors: Array[ElementBehavior] = [],
+		hidden: bool = false
+	) -> void:
 	assert(!Utils.is_blank(id), ErrorList.ERR_V_NOT_BLANK % "id")
 	assert(category != null, ErrorList.ERR_V_IS_NULL % "category")
 	_id = id
 	_display_name = display_name
 	_category = category
 	_group = group
+	_hidden = hidden
 	_add_behaviors(behaviors)
 
 ## Get the list of behavior on this building.
@@ -66,11 +78,13 @@ static func parse(mod: String, json_string: String) -> BuildingDefinition:
 
 	@warning_ignore("unsafe_call_argument")
 	return BuildingDefinition.new(\
-		json.get("id", ""), \
-		json.get("display_name", ""), \
-		Category.get(json.get("category", Category.keys()[Category.UNCATEGORIZED])), \
-		json.get("group", ""), \
-		_parse_behaviors(json, BuildingBehaviorRegistry.get_self()))
+		json.get("id", ""),
+		json.get("display_name", ""),
+		Category.get(json.get("category", Category.keys()[Category.UNCATEGORIZED])),
+		json.get("group", ""),
+		_parse_behaviors(json, BuildingBehaviorRegistry.get_self()),
+		json.get("hidden", false)
+	)
 
 ## Transform the building definition to the JSON string.[br]
 ## All JSON generated must be parsed back by `BuildingDefinition.parse()`.

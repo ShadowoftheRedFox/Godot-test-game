@@ -1,5 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "item",
     "title": "ItemSchema",
     "description": "The schema to define items.",
     "type": "object",

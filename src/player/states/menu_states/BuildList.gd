@@ -23,7 +23,10 @@ func setup_menu() -> void:
 	building_list_menu.visible = false
 	Global.MAIN.ui_root.add_child(building_list_menu)
 
+	building_list_menu.building_clicked.connect(_on_building_choosen)
+
 func remove_menu() -> void:
+	building_list_menu.building_clicked.disconnect(_on_building_choosen)
 	building_list_menu.remove()
 
 func enter(_previous_state_path: StringName, _data: Dictionary = {}) -> void:
@@ -40,3 +43,6 @@ func handle_input(_event: InputEvent) -> void:
 	if p || c:
 		finished.emit(PlayerMenuIdleState.NAME)
 		return
+
+func _on_building_choosen(id: StringName) -> void:
+	finished.emit(PlayerMenuBuildingState.NAME, {"building": id})

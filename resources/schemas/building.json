@@ -1,9 +1,10 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "building",
     "title": "BuildingSchema",
     "description": "The schema to define buildings.",
     "type": "object",
-    "required": ["id", "display_name", "behaviors"],
+    "required": ["id", "display_name", "behaviors", "recipes"],
     "additionalProperties": true,
     "properties": {
         "id": {
@@ -45,6 +46,18 @@
                         "maxLength": 31
                     }
                 }
+            }
+        },
+        "hidden": {
+            "type": "boolean",
+            "title": "Whether or not this building is hidden from the build menus, such as natural building that cannot be crafted.",
+            "default": false
+        },
+        "recipes": {
+            "type": "array",
+            "title": "The list of recipes to place this building.",
+            "items": {
+                "$ref": "recipe.json"
             }
         }
     },

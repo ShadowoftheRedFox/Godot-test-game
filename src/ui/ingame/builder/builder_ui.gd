@@ -12,6 +12,9 @@ var _group_nodes: Dictionary[String, FoldableContainer] = {}
 ## Link an item to it's slot
 var item_slots: Dictionary[String, Button] = {}
 
+## Emitted when the player click to bluid the given building ID.
+signal building_clicked(id: StringName)
+
 func _ready() -> void:
 	_setup_menus()
 
@@ -100,6 +103,8 @@ func _setup_slot(building: BuildingDefinition) -> void:
 
 	var gn: FoldableContainer = _group_nodes.get(_category_name(building._category))
 	gn.add_child(b)
+
+	b.pressed.connect(func() -> void: building_clicked.emit(building.get_id()))
 
 ## Hides all other category other then the targeted one
 func _show_category(category: BuildingDefinition.Category) -> void:

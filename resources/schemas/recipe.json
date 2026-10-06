@@ -1,0 +1,39 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "recipe",
+    "title": "Recipes for items, fluids or building. Used only from the schema.",
+    "type": "object",
+    "$comment": "TODO research to unlock recipe",
+    "required": ["time", "power", "crafter", "input", "output"],
+    "properties": {
+        "time": {
+            "type": "number",
+            "title": "The time in seconds to complete craft this recipe."
+        },
+        "power": {
+            "type": "number",
+            "title": "The amount of power used to complete this recipe."
+        },
+        "crafter": {
+            "type": "array",
+            "title": "A list of element behavior ID that the crafter needs to be able to craft this recipe.",
+            "items": {
+                "type": "string"
+            }
+        },
+        "input": {
+            "type": "object",
+            "title": "The dictionary of element [name, int] to describe the recipe inputs.",
+            "patternProperties": {
+                "*": { "type": "number", "minimum": 1, "multipleOf": 1 }
+            }
+        },
+        "output": {
+            "type": "object",
+            "title": "The dictionary of element [name, int] to describe the recipe outputs.",
+            "patternProperties": {
+                "*": { "type": "number", "minimum": 1, "multipleOf": 1 }
+            }
+        }
+    }
+}

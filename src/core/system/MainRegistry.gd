@@ -8,7 +8,6 @@ var _registries: Dictionary[StringName, AbstractRegistry] = {}
 const NAME: StringName = "MainRegistry"
 
 func _init() -> void:
-	# TODO load main registries
 	add_registry(ItemRegistry.new())
 	add_registry(ItemBehaviorRegistry.new())
 	add_registry(FluidRegistry.new())

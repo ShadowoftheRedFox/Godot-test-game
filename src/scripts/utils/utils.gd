@@ -5,6 +5,8 @@ class_name Utils
 static func get_raw_uid(uid: String) -> String:
 	return uid.trim_prefix("uid://")
 
+const BASE64_CHARSET: String = "abdcefghijklmnopqrstuvwxyzABDCEFGHIJKLMNOPQRSTUVWXYZ0123456789+/"
+
 ## Generate a random string of the given length.
 ## The sample is the base64 characters.
 ## If length is less than 0, return an empty string.
@@ -12,11 +14,10 @@ static func get_raw_uid(uid: String) -> String:
 static func get_random_string(length: int) -> String:
 	assert(length >= 0, "Can't have a negative string length!")
 	length = clampi(length, 0, 1000)
-	var sample: String = "abdcefghijklmnopqrstuvwxyzABDCEFGHIJKLMNOPQRSTUVWXYZ0123456789+/"
 	var res: String = ""
 
 	for i: int in range(length):
-		res += sample[randi() % 63]
+		res += BASE64_CHARSET[randi() % (BASE64_CHARSET.length() - 1)]
 
 	return res
 
