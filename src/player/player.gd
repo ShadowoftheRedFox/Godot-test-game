@@ -100,11 +100,3 @@ func setup_ui() -> void:
 
 func remove_ui() -> void:
 	_menu_state_machine.destroy()
-
-func _notification(what: int) -> void:
-	if what != NOTIFICATION_PREDELETE:
-		return
-	_state_machine.destroy()
-	_menu_state_machine.destroy()
-	Global.get_tree().paused = false
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
