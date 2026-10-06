@@ -54,4 +54,3 @@ func _on_quit_button() -> void:
 func _on_resume_button() -> void:
 	_reset()
 	visible = false
-	Global.player.resume_main_menu()

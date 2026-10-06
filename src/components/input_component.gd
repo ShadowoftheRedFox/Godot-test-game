@@ -13,14 +13,11 @@ var interacts: bool = false
 var special_up: bool = false
 var special_down: bool = false
 
-var in_inventory: bool = false
-var in_main_menu: bool = false
-var in_console: bool = false
-
 func update() -> void:
 	# for quick quit in dev mode
-	if in_main_menu && Input.is_key_pressed(KEY_CTRL):
+	if Input.is_action_pressed("action_pause") && Input.is_key_pressed(KEY_CTRL):
 		Global.quit_game()
+		return
 
 	# if in GUI, don't get inputs and reset their values
 	if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:

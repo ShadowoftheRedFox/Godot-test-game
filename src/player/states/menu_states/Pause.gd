@@ -32,8 +32,10 @@ func remove_menu() -> void:
 func enter(_previous_state_path: StringName, _data: Dictionary = {}) -> void:
 	pause_menu.visible = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	Global.get_tree().paused = true
 
 func exit() -> void:
+	# BUG when going back to main menu, the menu stays open and the game is paused
 	if pause_menu.visible:
 		pause_menu.visible = false
 		_close_menu()
@@ -45,4 +47,5 @@ func handle_input(_event: InputEvent) -> void:
 
 func _close_menu() -> void:
 	if !pause_menu.visible:
+		Global.get_tree().paused = false
 		finished.emit(PlayerMenuIdleState.NAME)

@@ -78,7 +78,3 @@ func _transition_to_next_state(target_state: StringName, data: Dictionary = {}) 
 func destroy() -> void:
 	for s: StateMachineState in _possible_states.values():
 		s.destroy()
-
-func free() -> void:
-	destroy()
-	super.free()

@@ -67,11 +67,6 @@ func _physics_process(delta: float) -> void:
 	_menu_state_machine._physics_process(delta)
 	_state_machine._physics_process(delta)
 
-## Quit main menu and resume the game. Called from other scripts.
-func resume_main_menu() -> void:
-	input_component.in_main_menu = false
-	input_component.update()
-
 # shoot a ray from the middle of the screen in the direction of the camera
 func _shoot(value: int) -> void:
 	var camera: Camera3D = camera_component.camera
@@ -105,3 +100,11 @@ func setup_ui() -> void:
 
 func remove_ui() -> void:
 	_menu_state_machine.destroy()
+
+func _notification(what: int) -> void:
+	if what != NOTIFICATION_PREDELETE:
+		return
+	_state_machine.destroy()
+	_menu_state_machine.destroy()
+	Global.get_tree().paused = false
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
