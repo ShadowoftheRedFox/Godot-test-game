@@ -1,12 +1,12 @@
 ## Instance of an element, with the general methods associated.
-@abstract class_name ElementInstance extends Node
+@abstract class_name ElementInstance extends Node3D
 
 var _definition_id: StringName = &""
 
 func _init(definition_id: StringName) -> void:
 	assert(!Utils.is_blank(definition_id), ErrorList.ERR_V_NOT_BLANK % "definition_id")
-	assert(get_definition() != null, ErrorList.ERR_V_IS_NULL % (definition_id + " definition's"))
 	_definition_id = definition_id
+	assert(get_definition() != null, ErrorList.ERR_V_IS_NULL % (definition_id + " definition's"))
 
 ## Get the element's definition ID.
 func get_definition_id() -> StringName:

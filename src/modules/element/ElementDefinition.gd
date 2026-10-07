@@ -17,6 +17,8 @@ var _display_name: String = ""
 ## A behavior can only be registered once.
 var _behaviors: Dictionary[StringName, ElementBehavior] = {}
 
+# TODO path to a .tres file to act as resource in the schema that loads for resources to fetch
+
 ## Get the unique ID of this element's definition.
 func get_id() -> StringName:
 	return _id

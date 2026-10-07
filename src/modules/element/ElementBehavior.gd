@@ -21,7 +21,7 @@ func _to_string() -> String:
 ## All behavior must be of the form `{"type": String, "data": JSON}`.
 func to_json() -> String:
 	var json: String = _to_json()
-	assert(JSON.parse_string(json) != null, ErrorList.INVALID_JSON)
+	assert(JSON.parse_string(json) != null, ErrorList.ERR_INVALID_JSON)
 	return JSON.stringify({
 		"type": get_behavior_name(),
 		"data": _to_json(),
